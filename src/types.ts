@@ -1,21 +1,21 @@
 
-export interface IconProps {
+export interface EmojiProps {
     content: string;
     size: number;
     blur: number;
     opacity: number;
-    zIndex: number;
+    zIndex?: number;
     color?: string;
-    initialX?: number; // Precomputed X position
-    initialY?: number; // Precomputed Y position
+    initialX: number;
+    initialY: number;
     duration?: number;
 }
 
 export interface SlideProps {
+    heading: string;
+    body: string;
     background: string;
-    text: string;
-    subtext: string;
-    icons: IconProps[];
+    emojis: EmojiProps[];
 }
 
 export interface SliderProps {

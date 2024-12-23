@@ -1,3 +1,4 @@
+import React from "react";
 
 export interface EmojiProps {
     content: string;
@@ -20,4 +21,30 @@ export interface SlideProps {
 
 export interface SliderProps {
     slides: SlideProps[];
+}
+
+export interface FrostedGlassProps {
+    children: React.ReactNode;
+    width?: string;
+    maxWidth?: string;
+    borderRadius?: string;
+    blur?: string;
+    padding?: string;
+}
+
+export interface EmojiParticle {
+    id: number;
+    emoji: string;
+    style: {
+        size: number;
+        velocity: number;
+        xStart: number;
+        xEnd: number;
+        curve: number;
+        blur: boolean;
+    };
+}
+
+export interface FloatingEmojisProps {
+    emojiList: string[];
 }

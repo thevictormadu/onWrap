@@ -13,10 +13,13 @@ export interface EmojiProps {
 }
 
 export interface SlideProps {
-    heading: string;
-    body: string;
-    background: string;
+    data: string;
+    subText?: string;
+    preText?: string;
+    title: string;
+    background?: string;
     emojis: EmojiProps[];
+    keyProp: number;
 }
 
 export interface SliderProps {
@@ -30,6 +33,7 @@ export interface FrostedGlassProps {
     borderRadius?: string;
     blur?: string;
     padding?: string;
+    margin?: string;
 }
 
 export interface EmojiParticle {

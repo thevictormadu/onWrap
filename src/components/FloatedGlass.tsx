@@ -1,9 +1,10 @@
 import React from 'react';
 import { FrostedGlassProps } from '../types';
+import { motion } from 'framer-motion';
 
 
 
-const FrostedGlass: React.FC<FrostedGlassProps> = ({
+const FloatedGlass: React.FC<FrostedGlassProps> = ({
                                                        children,
                                                        width,
                                                        maxWidth = "350px",
@@ -13,7 +14,7 @@ const FrostedGlass: React.FC<FrostedGlassProps> = ({
     margin = "0",
                                                    }) => {
     return (
-        <div
+        <motion.div
             className={"frosted-glass"}
             style={{
                 width: width || "auto",
@@ -29,11 +30,28 @@ const FrostedGlass: React.FC<FrostedGlassProps> = ({
                 alignItems: "center",
                 justifyContent: "center",
                 margin: margin,
+                position: "relative",
+                overflow: "hidden",
+            }}
+            animate={{
+                y: [0, -20, 0], // Float up and down
+                rotateX: [-15, 0, -15], // Perspective rotation on X-axis
+                boxShadow: [
+                    "0px 0px 5px 2px rgba(52, 152, 219, 0.1)", // Glow starts
+                    "0px 0px 5px 3px rgba(52, 152, 219, 0.3)", // Brighter glow
+                    "0px 0px 5px 2px rgba(52, 152, 219, 0.1)", // Glow dims back
+                ],
+            }}
+            transition={{
+                duration: 7,
+                repeat: Infinity,
+                ease: "easeInOut",
             }}
         >
+
             {children}
-        </div>
+        </motion.div>
     );
 };
 
-export default FrostedGlass;
+export default FloatedGlass;

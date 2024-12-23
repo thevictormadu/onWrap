@@ -3,9 +3,12 @@ import githubLogo from "../assets/github-logo.png";
 import victorPic from "../assets/victor.png";
 import FrostedGlass from "./FrostedGlass.tsx";
 import FloatingEmojis from "./FloatingEmojis.tsx";
+import {useNavigate} from "react-router-dom";
+
 
 
 export default function Home() {
+    const navigate = useNavigate();
   return (
       <div style={{display: "flex", flexDirection: "column", gap: "3rem", alignItems: "center", justifyContent: "center", height: "100vh"}} >
           <MotionGradientBg/>
@@ -47,18 +50,34 @@ export default function Home() {
                       type="text"
                       placeholder="your GitHub username"
                   />
-                  <button style={{
-                      width: "100%",
-                      transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-                      borderRadius: "0.5rem",
-                      fontWeight: "bold",
-                      padding: "1rem",
-                      background: "linear-gradient(45deg, #833BDB, #1E8CD0)",
-                      marginTop: "2rem",
-                  }}>onClick = onWrap(2024)</button>
+    <button
+        onClick={() => navigate("/wrap")}
+        style={{
+            width: "100%",
+            transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+            borderRadius: "0.5rem",
+            fontWeight: "bold",
+            padding: "1rem",
+            background: "linear-gradient(45deg, #833BDB, #1E8CD0)",
+            marginTop: "2rem",
+            border: "none",
+            color: "#fff",
+            cursor: "pointer",
+            outline: "none",
+        }}
+        onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow =
+                "0 0 10px rgba(131, 59, 219, 0.6), 0 0 20px rgba(30, 140, 208, 0.6)";
+        }}
+        onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = "none";
+        }}
+    >
+        onWrap(2024)
+    </button>
                   <div style={{display: "flex", width: "100%", justifyContent: "space-between", alignItems: "center", marginTop: "1.5rem"}}>
                       <p style={{margin:0, opacity:0.8}}>#GitHubOnWrap</p>
-                      <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", gap:5}}> <img src={githubLogo} alt="GitHub Logo"/> <a style={{margin:0, opacity:0.8}}>source code</a></div>
+                      <div style={{display: "flex", alignItems: "center", gap:5}}> <img src={githubLogo} alt="GitHub Logo"/> <a style={{margin:0, opacity:0.8}}>source code</a></div>
 
                   </div>
 

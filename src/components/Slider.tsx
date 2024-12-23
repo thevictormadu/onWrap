@@ -61,8 +61,8 @@ const Slider: React.FC<SliderProps> = ({ slides }) => {
             style={{
                 display: "flex",
                 position: "relative",
-                width: "100%",
-                height: "100vh",
+                width: "400px",
+                height: "100%",
                 overflow: "hidden",
             }}
         >

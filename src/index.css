@@ -15,6 +15,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+body{
+  margin: 0;
+  padding: 0;
+}
 p {
   margin: 0;
 }
@@ -53,6 +57,21 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.frosted-glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  opacity: 0.4;
+  z-index: 1;
+  pointer-events: none;
+}
+
+
+
 
 
 @Keyframes spinBg {
@@ -60,4 +79,9 @@ button:focus-visible {
   transform: rotate(0deg) scale(2);
 }
   100% {transform: rotate(1turn) scale(2);}
+}
+
+@keyframes moveMesh {
+  0% { background-position: 0 0; }
+  100% { background-position: 20px 20px; }
 }

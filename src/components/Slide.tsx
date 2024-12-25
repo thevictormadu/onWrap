@@ -44,7 +44,6 @@ export default function Slide({
         const duration = 1000;
         const target = Number(data);
 
-        // Function to update the count smoothly
         const animate = (timestamp: number) => {
             if (!startTime) startTime = timestamp;
             const progress = timestamp - startTime;

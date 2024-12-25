@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { easeInOutQuad } from "../utils.ts"; // Import easing function
+import React, {useState, useEffect} from "react";
+import {easeInOutQuad} from "../utils.ts";
 
 interface CountdownProps {
-    target: number; // Target number for the countdown
-    duration: number; // Duration of the countdown in seconds
+    target: number;
+    duration: number;
 }
 
-const Countdown: React.FC<CountdownProps> = ({ target, duration }) => {
+const Countdown: React.FC<CountdownProps> = ({target, duration}) => {
     const [currentValue, setCurrentValue] = useState(0);
 
     useEffect(() => {
-        const totalDuration = duration * 1000; // Convert duration to milliseconds
+        const totalDuration = duration * 1000;
         const startTime = Date.now();
 
         const animate = () => {
             const elapsed = Date.now() - startTime;
-            const progress = Math.min(elapsed / totalDuration, 1); // Normalize progress [0, 1]
-            const easedProgress = easeInOutQuad(progress); // Apply easing
+            const progress = Math.min(elapsed / totalDuration, 1);
+            const easedProgress = easeInOutQuad(progress);
             const newValue = Math.floor(target * easedProgress);
 
             setCurrentValue(newValue);
@@ -28,7 +28,8 @@ const Countdown: React.FC<CountdownProps> = ({ target, duration }) => {
 
         requestAnimationFrame(animate);
 
-        return () => {}; // No cleanup needed for `requestAnimationFrame`
+        return () => {
+        };
     }, [target, duration]);
 
     return <span>{currentValue}</span>;

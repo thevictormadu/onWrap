@@ -8,7 +8,6 @@ export default function FloatingEmojis({emojiList, zIndex = 0}: FloatingEmojisPr
 
     const emojiRef = useRef<EmojiParticle[]>([]);
 
-    // Check for mobile screen
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768);
@@ -41,8 +40,6 @@ export default function FloatingEmojis({emojiList, zIndex = 0}: FloatingEmojisPr
     useEffect(() => {
         const interval = setInterval(() => {
             addEmoji();
-
-            // Clean up emojis after 10 seconds
             setTimeout(() => {
                 emojiRef.current.shift();
                 setEmojis([...emojiRef.current]);

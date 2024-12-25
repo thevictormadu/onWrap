@@ -31,6 +31,7 @@ const EndNote: React.FC = () => {
 
                 // Backup original styles
                 const originalHeight = divRef.current.style.height || '';
+                const originalPadding = divRef.current.style.height || '';
                 const originalSignatureDisplay = signature?.style.display || '';
                 const originalBottomMargin = bottomMargin?.style.marginBottom || '';
                 const originalTopMargin = topMargin?.style.marginTop || '';
@@ -38,7 +39,8 @@ const EndNote: React.FC = () => {
                 const originalDisplay = downloadButton?.style.display || '';
 
                 // Apply styles for the image
-                divRef.current.style.height = '700px';
+                divRef.current.style.height = '800px';
+                divRef.current.style.padding = '3rem';
                 if (signature) signature.style.display = 'block';
                 if (hiddenBackground) hiddenBackground.style.visibility = 'visible';
                 if (downloadButton) downloadButton.style.display = 'none';
@@ -54,6 +56,7 @@ const EndNote: React.FC = () => {
 
                 // Restore original styles
                 divRef.current.style.height = originalHeight;
+                divRef.current.style.padding = originalPadding;
                 if (signature) signature.style.display = originalSignatureDisplay;
                 if (hiddenBackground) hiddenBackground.style.visibility = originalVisibility;
                 if (downloadButton) downloadButton.style.display = originalDisplay;
@@ -150,7 +153,7 @@ const EndNote: React.FC = () => {
                     <div style={{display: "flex", width: "100%", flex: 1, gap: "1rem"}}>
                         <EndNoteCard title={streakTitle} data={data?.longestStreak.toString() || ""}
                                      glowColor={"251, 158, 198"} delay={0.9}/>
-                        <EndNoteCard title={slangTitle} data={`${slang.emoji} ${slang.slang}`}
+                        <EndNoteCard title={slangTitle} data={slang.slang}
                                      glowColor={"61, 178, 255"} delay={1}/>
                     </div>
                 </div>

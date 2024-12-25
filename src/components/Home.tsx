@@ -97,6 +97,7 @@ export default function Home() {
                                 padding: "1rem",
                                 background: "rgba(217, 217, 217, 0.07)",
                                 marginBottom: "1rem",
+                                color: "#fff",
                             }}
                             value={userName}
                             onChange={(e) => setUserName(e.target.value)}

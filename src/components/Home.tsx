@@ -93,7 +93,7 @@ export default function Home() {
                                 boxSizing: "border-box",
                                 transition: "border-color 0.2s ease, box-shadow 0.2s ease",
                                 borderRadius: "0.5rem",
-                                fontSize: "1rem",
+                                fontSize: "16px",
                                 padding: "1rem",
                                 background: "rgba(217, 217, 217, 0.07)",
                                 marginBottom: "1rem",

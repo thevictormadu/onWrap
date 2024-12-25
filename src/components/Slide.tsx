@@ -68,7 +68,7 @@ export default function Slide({
                 background: background,
                 overflow: "hidden",
                 backgroundSize: "20px 20px",
-                animation: "moveMesh 5s linear infinite",
+                // animation: "moveMesh 5s linear infinite",
             }}
         >
 

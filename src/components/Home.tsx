@@ -2,7 +2,6 @@ import MotionGradientBg from "./MotionGradientBg.tsx";
 import githubLogo from "../assets/github-logo.png";
 import victorPic from "../assets/victor.jpg";
 import FrostedGlass from "./FrostedGlass.tsx";
-import FloatingEmojis from "./FloatingEmojis.tsx";
 import {useNavigate} from "react-router-dom";
 import {useGitHub} from "../context/GithubContext.tsx";
 import {useEffect, useState} from "react";
@@ -42,10 +41,17 @@ export default function Home() {
             gap: "3rem",
             alignItems: "center",
             justifyContent: "center",
-            height: "100vh"
+            height: "100svh",
+            width: "100%",
+            flex: 1,
+            //     background: `
+            //   linear-gradient(90deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px),
+            //   linear-gradient(180deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px)
+            // `,
+            //     backgroundSize: "20px 20px",
         }}>
             <MotionGradientBg opacity={0.15}/>
-            <FloatingEmojis emojiList={['🍀', '🚀', '⚡️', '🚀', '🚀', '🖥️', '⌨️', '⚙️', '📅', '💻']}/>
+            {/*<FloatingEmojis emojiList={['🍀', '🚀', '⚡️', '🚀', '🚀', '🖥️', '⌨️', '⚙️', '📅', '💻']}/>*/}
             <div style={{
                 padding: "2rem",
                 display: "flex",

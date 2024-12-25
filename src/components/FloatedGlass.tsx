@@ -6,7 +6,7 @@ import {motion} from 'framer-motion';
 const FloatedGlass: React.FC<FrostedGlassProps> = ({
                                                        children,
                                                        borderRadius = "16px",
-                                                       blur = "50px",
+                                                       // blur = "50px",
                                                    }) => {
     return (
         <motion.div
@@ -14,10 +14,10 @@ const FloatedGlass: React.FC<FrostedGlassProps> = ({
             style={{
                 width: "100%",
                 borderRadius,
-                backgroundColor: "rgba(255, 255, 255, 0.05)",
-                backdropFilter: `blur(${blur})`,
-                boxShadow: "inset 0 4px 100px rgba(8, 194, 241, 0.3), 0 3px 100px rgba(8, 194, 241, 0.6)",
-                border: "1px solid rgba(8, 194, 241, 0.3)",
+                backgroundColor: "#0D2932",
+                // backdropFilter: `blur(${blur})`,
+                boxShadow: "0 3px 100px rgba(8, 194, 241, 0.4)",
+                border: "1px solid #104D5E",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",

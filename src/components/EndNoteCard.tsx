@@ -39,8 +39,13 @@ export default function EndNoteCard({
             }}
         >
             <div style={{color: "white", textAlign: "left"}}>
-                <p style={{whiteSpace: "nowrap"}}>{title}</p>
-                <p style={{fontSize: "2rem", fontWeight: "bold", marginTop: 10, color: `rgba(${glowColor})`}}>{data}</p>
+                <p style={{whiteSpace: "nowrap", fontSize: "0.9rem"}}>{title}</p>
+                <p style={{
+                    fontSize: "1.7rem",
+                    fontWeight: "bold",
+                    marginTop: 10,
+                    color: `rgba(${glowColor})`
+                }}>{data}</p>
             </div>
         </motion.div>
     );

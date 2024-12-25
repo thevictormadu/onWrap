@@ -44,7 +44,6 @@ export default function EndNoteCard({
                 textAlign: "left",
                 display: "flex",
                 flexDirection: "column",
-                gap: "1rem",
                 justifyContent: "space-between",
                 height: "100%",
                 padding: "1rem",

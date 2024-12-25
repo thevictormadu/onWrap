@@ -160,7 +160,7 @@ const SlideTen: React.FC = () => (
 
 export default function Wrap() {
     useEffect(() => {
-        const audio = new Audio("../../public/Comfy Vibe Jazzy Lo-Fi Hip-Hop __ Royalty Free No Copyright Music - Royalty Free Music  Copyright Free  Tunetank-MP3.mp3");
+        const audio = new Audio("/comfy-vibe.mp3");
         audio.loop = true;
         audio.volume = 0.6;
 

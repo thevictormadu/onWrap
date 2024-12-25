@@ -181,7 +181,7 @@ export default function Wrap() {
             justifyContent: "center",
             alignItems: "center",
             width: "100%",
-            height: "100svh"
+            height: "100%"
         }}>
 
             {/*<MotionGradientBg opacity={0.1}/>*/}

@@ -1,8 +1,8 @@
-html, body {
-    height: 100svh;
+html {
+    height: 100%;
+    height: -webkit-fill-available;
     margin: 0;
     padding: 0;
-    overflow: hidden;
 }
 
 :root {
@@ -22,6 +22,8 @@ html, body {
 }
 
 body {
+    height: 100%;
+    height: -webkit-fill-available;
     margin: 0;
     padding: 0;
 }

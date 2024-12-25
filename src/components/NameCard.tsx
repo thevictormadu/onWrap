@@ -17,7 +17,7 @@ export default function ({title, value}: Props) {
                 width: "100%",
             }}>
                 <div style={{
-                    padding: "1rem", display: "flex",
+                    padding: "0.5rem", display: "flex",
                     justifyContent: "start",
                     alignItems: "center",
                     gap: "1rem",
@@ -30,7 +30,7 @@ export default function ({title, value}: Props) {
                     }}>
                         <p>{title}</p>
                         <p
-                            style={{fontSize: "1.5rem", fontWeight: "bold"}}>{value}</p>
+                            style={{fontSize: "clamp(1.1rem, 2vw, 1.5rem)", fontWeight: "bold"}}>{value}</p>
                     </div>
                 </div>
             </div>

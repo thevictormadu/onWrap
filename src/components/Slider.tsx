@@ -203,11 +203,11 @@ export default function Slider({
             <div style={{
                 position: "absolute",
                 bottom: 10,
-                left: "50%",
+                left: 10,
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                transform: "translateX(-50%)",
+                // transform: "translateX(-50%)",
                 gap: "0.5rem",
                 zIndex: 20,
             }}><IconButton icon={<IoMdRefresh/>} handleClick={goToFirstSlide}/>

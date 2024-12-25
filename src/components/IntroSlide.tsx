@@ -101,7 +101,7 @@ export default function IntroSlide() {
                         animate={{opacity: 1, y: 0}}
                         exit={{opacity: 0, y: -50}}
                         transition={{duration: 1}}
-                        style={{fontSize: "1.5rem", padding: "2rem",}}
+                        style={{fontSize: "1rem", padding: "2rem",}}
                     >
                         Ready to see your achievements, highlights, and the moments that made you shine?
                     </motion.p>

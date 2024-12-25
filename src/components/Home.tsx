@@ -148,8 +148,8 @@ export default function Home() {
                                 style={{
                                     margin: 0,
                                     opacity: 0.8
-                                }}>source
-                                code</a></div>
+                                }}><p style={{color: "white"}}>source
+                                code</p></a></div>
 
                         </div>
                     </div>

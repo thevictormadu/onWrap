@@ -145,7 +145,7 @@ const EndNote: React.FC = () => {
                                      glowColor={"157, 223, 211"} delay={0.6}/>
                     </div>
                     <div style={{display: "flex", width: "100%", flex: 1, gap: "1rem"}}>
-                        <EndNoteCard title={peakPerformanceTitle} data={data?.peakMonth || "We can't figure it out"}
+                        <EndNoteCard title={peakPerformanceTitle} data={data?.peakMonth || "_"}
                                      glowColor={"158, 223, 156"} delay={0.7}/>
                         <EndNoteCard title={prReviewsTitle} data={data?.totalReviews.toString() || ""}
                                      glowColor={"218, 73, 141"} delay={0.8}/>

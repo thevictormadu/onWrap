@@ -7,7 +7,7 @@ export const streakTitle: string = "⚡️ longest streak";
 export const streakSubtext: string = "consecutive days coding";
 
 
-export const starsReceivedIntroduction: string = "You are a star and you know it! - here is the number of times you shone.";
+export const starsReceivedIntroduction: string = "You are a star, and you know it! Here’s how many times you shone.";
 export const starsReceivedAltIntroduction: string = "Not much stardust this year, but hey, the sky's the limit for 2025!";
 export const starsReceivedTitle: string = "🌟 stars received";
 export const starsReceivedSubtext: string = "total stars collected";

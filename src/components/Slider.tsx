@@ -139,7 +139,6 @@ export default function Slider({
                 position: "relative",
                 width: "100%",
                 height: "100svh",
-                overflow: "hidden",
                 backgroundColor: "#000",
             }}
         >

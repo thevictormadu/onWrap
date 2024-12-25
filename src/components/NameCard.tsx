@@ -30,7 +30,7 @@ export default function ({title, value}: Props) {
                     }}>
                         <p>{title}</p>
                         <p
-                            style={{fontSize: "clamp(1.1rem, 2vw, 1.5rem)", fontWeight: "bold"}}>{value}</p>
+                            style={{fontSize: "clamp(1.2rem, 2vw, 1.3rem)", fontWeight: "bold"}}>{value}</p>
                     </div>
                 </div>
             </div>

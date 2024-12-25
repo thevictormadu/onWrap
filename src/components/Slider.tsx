@@ -138,7 +138,7 @@ export default function Slider({
             style={{
                 position: "relative",
                 width: "100%",
-                height: "100vh",
+                height: "100svh",
                 overflow: "hidden",
                 backgroundColor: "#000",
             }}

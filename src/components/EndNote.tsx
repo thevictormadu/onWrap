@@ -179,7 +179,7 @@ const EndNote: React.FC = () => {
                         justifyContent: "center",
                         alignItems: "center",
                         gap: 5,
-                        marginBottom: "6rem",
+                        marginBottom: "5rem",
                         zIndex: 22
                     }}
                 >

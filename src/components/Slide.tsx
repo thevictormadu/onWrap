@@ -85,7 +85,7 @@ export default function Slide({
                     zIndex: 20,
                     width: "100%",
                     height: "100%",
-                    maxWidth: "400px"
+                    maxWidth: "400px",
                 }}
             >
                 <div

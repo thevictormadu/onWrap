@@ -12,6 +12,7 @@ export interface SlideProps {
     background?: string;
     countDown?: boolean;
     emoji?: string;
+    icon: string;
 }
 
 export default function Slide({
@@ -26,6 +27,7 @@ export default function Slide({
         `,
                                   countDown,
                                   emoji,
+                                  icon,
                               }: SlideProps) {
     const [showPretext, setShowPretext] = useState(true);
     const [count, setCount] = useState(0); // Start count from 0
@@ -63,10 +65,9 @@ export default function Slide({
     return (
         <div
             style={{
-                height: "100vh",
+                height: "100%",
                 position: "relative",
                 background: background,
-                overflow: "hidden",
                 backgroundSize: "20px 20px",
                 // animation: "moveMesh 5s linear infinite",
             }}
@@ -101,7 +102,8 @@ export default function Slide({
                         <FloatedGlass
                             blur={"02px"}
                         >
-                            <div style={{color: "white", fontSize: "1.3rem", padding: "1rem"}}>{title}</div>
+                            <div
+                                style={{color: "white", fontSize: "1.3rem", padding: "1rem"}}>{`${icon} ${title}`}</div>
                         </FloatedGlass>
                     </div>
 

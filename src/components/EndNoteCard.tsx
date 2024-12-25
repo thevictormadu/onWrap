@@ -3,6 +3,7 @@ import {motion} from "framer-motion";
 interface Props {
     title: string;
     data: string;
+    icon: string;
     glowColor?: string;
     delay?: number;
 }
@@ -10,6 +11,7 @@ interface Props {
 export default function EndNoteCard({
                                         title,
                                         data,
+                                        icon,
                                         glowColor = "8, 194, 241",
                                         delay = 0.3
                                     }: Props) {
@@ -17,7 +19,6 @@ export default function EndNoteCard({
         <motion.div
             style={{
                 borderRadius: "0.5rem",
-                padding: "1rem",
                 width: "50%",
                 backgroundColor: "#0D2932",
                 // backdropFilter: `blur(5px)`,
@@ -38,10 +39,22 @@ export default function EndNoteCard({
                 delay: delay,
             }}
         >
-            <div style={{color: "white", textAlign: "left"}}>
-                <p style={{whiteSpace: "nowrap", fontSize: "0.9rem"}}>{title}</p>
+            <div style={{
+                color: "white",
+                textAlign: "left",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+                justifyContent: "space-between",
+                height: "100%",
+                padding: "1rem",
+            }}>
+                <div>
+                    <p style={{fontSize: "1.2rem"}}>{icon}</p>
+                    <p>{title}</p>
+                </div>
                 <p style={{
-                    fontSize: "1.7rem",
+                    fontSize: "1.5rem",
                     fontWeight: "bold",
                     marginTop: 10,
                     color: `rgba(${glowColor})`

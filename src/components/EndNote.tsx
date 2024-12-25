@@ -1,22 +1,34 @@
 import NameCard from "./NameCard.tsx";
 import EndNoteCard from "./EndNoteCard.tsx";
 import {
-    commitsTitle,
-    peakPerformanceTitle, prReviewsTitle,
-    pullRequestsTitle, slangTitle,
-    starsReceivedTitle, streakTitle,
+    commitsIcon,
+    commitsTitle, peakPerformanceIcon,
+    peakPerformanceTitle, prReviewsIcon, prReviewsTitle, pullRequestsIcon,
+    pullRequestsTitle, slangIcon, slangTitle, starsReceivedIcon,
+    starsReceivedTitle, streakIcon, streakTitle, topLanguageIcon,
     topLanguageTitle
 } from "../constants.ts";
 import {useGitHub} from "../context/GithubContext.tsx";
 import {getSlang} from "../utils.ts";
 import {LuDownload} from "react-icons/lu";
 import IconButton from "./IconButton.tsx";
-import React, {useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {toJpeg} from "html-to-image";
 
 const EndNote: React.FC = () => {
     const {data} = useGitHub();
     const slang = getSlang(data?.totalCommits || 0);
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 400);
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
     const divRef = useRef<HTMLDivElement>(null);
     const handleDownload = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
@@ -75,7 +87,7 @@ const EndNote: React.FC = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                height: "100vh",
+                height: "100%",
                 position: "relative",
                 background: `
           linear-gradient(90deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px),
@@ -93,9 +105,8 @@ const EndNote: React.FC = () => {
                 style={{
                     textAlign: "center",
                     color: "#08C2F1",
-                    width: "100%",
+                    width: isMobile ? "100%" : "400px",
                     height: "100%",
-                    maxWidth: "400px",
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "space-between",
@@ -133,27 +144,31 @@ const EndNote: React.FC = () => {
                     gap: "1rem",
                 }}>
                     <div style={{display: "flex", width: "100%", flex: 1, gap: "1rem"}}>
-                        <EndNoteCard title={starsReceivedTitle} data={data?.totalStars.toString() || ""}
+                        <EndNoteCard icon={starsReceivedIcon} title={starsReceivedTitle}
+                                     data={data?.totalStars.toString() || ""}
                                      glowColor={"240, 187, 120"}/>
-                        <EndNoteCard title={topLanguageTitle} data={data?.topLanguage || ""}
+                        <EndNoteCard icon={topLanguageIcon} title={topLanguageTitle} data={data?.topLanguage || ""}
                                      glowColor={"255, 135, 135"} delay={0.4}/>
                     </div>
                     <div style={{display: "flex", width: "100%", flex: 1, gap: "1rem"}}>
-                        <EndNoteCard title={commitsTitle} data={data?.totalCommits.toString() || ""}
+                        <EndNoteCard icon={commitsIcon} title={commitsTitle} data={data?.totalCommits.toString() || ""}
                                      glowColor={"135, 162, 2590"} delay={0.5}/>
-                        <EndNoteCard title={pullRequestsTitle} data={data?.totalPRs.toString() || ""}
+                        <EndNoteCard icon={pullRequestsIcon} title={pullRequestsTitle}
+                                     data={data?.totalPRs.toString() || ""}
                                      glowColor={"157, 223, 211"} delay={0.6}/>
                     </div>
                     <div style={{display: "flex", width: "100%", flex: 1, gap: "1rem"}}>
-                        <EndNoteCard title={peakPerformanceTitle} data={data?.peakMonth || "_"}
+                        <EndNoteCard icon={peakPerformanceIcon} title={peakPerformanceTitle}
+                                     data={data?.peakMonth || "_"}
                                      glowColor={"158, 223, 156"} delay={0.7}/>
-                        <EndNoteCard title={prReviewsTitle} data={data?.totalReviews.toString() || ""}
+                        <EndNoteCard icon={prReviewsIcon} title={prReviewsTitle}
+                                     data={data?.totalReviews.toString() || ""}
                                      glowColor={"218, 73, 141"} delay={0.8}/>
                     </div>
                     <div style={{display: "flex", width: "100%", flex: 1, gap: "1rem"}}>
-                        <EndNoteCard title={streakTitle} data={data?.longestStreak.toString() || ""}
+                        <EndNoteCard icon={streakIcon} title={streakTitle} data={data?.longestStreak.toString() || ""}
                                      glowColor={"251, 158, 198"} delay={0.9}/>
-                        <EndNoteCard title={slangTitle} data={slang.slang}
+                        <EndNoteCard icon={slangIcon} title={slangTitle} data={slang.slang}
                                      glowColor={"61, 178, 255"} delay={1}/>
                     </div>
                 </div>

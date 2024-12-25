@@ -138,8 +138,9 @@ export default function Slider({
             style={{
                 position: "relative",
                 width: "100%",
-                height: "100svh",
+                height: "100%",
                 backgroundColor: "#000",
+                
             }}
         >
 

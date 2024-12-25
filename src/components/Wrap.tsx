@@ -10,14 +10,15 @@ import {
 } from "../utils.ts";
 import {useGitHub} from "../context/GithubContext.tsx";
 import {
+    commitsIcon,
     commitsSubtext,
-    commitsTitle,
+    commitsTitle, peakPerformanceIcon,
     peakPerformanceIntroduction, peakPerformanceSubtext,
-    peakPerformanceTitle, prReviewsSubtext, prReviewsTitle,
+    peakPerformanceTitle, prReviewsIcon, prReviewsSubtext, prReviewsTitle, pullRequestsIcon,
     pullRequestsSubtext,
-    pullRequestsTitle, slangSubtext, slangTitle,
+    pullRequestsTitle, slangSubtext, slangIcon, slangTitle, starsReceivedIcon,
     starsReceivedSubtext,
-    starsReceivedTitle, streakSubtext, streakTitle,
+    starsReceivedTitle, streakIcon, streakSubtext, streakTitle, topLanguageIcon,
     topLanguageSubtext,
     topLanguageTitle
 } from "../constants.ts";
@@ -34,6 +35,7 @@ const SlideTwo: React.FC = () => {
 
     return (
         <Slide
+            icon={starsReceivedIcon}
             data={totalStars.toString()}
             subText={starsReceivedSubtext}
             title={starsReceivedTitle}
@@ -49,6 +51,7 @@ const SlideThree: React.FC = () => {
 
     return (
         <Slide
+            icon={topLanguageIcon}
             data={topLanguage}
             subText={topLanguageSubtext}
             title={topLanguageTitle}
@@ -63,6 +66,7 @@ const SlideFour: React.FC = () => {
 
     return (
         <Slide
+            icon={commitsIcon}
             data={commits.toString()}
             subText={commitsSubtext}
             title={commitsTitle}
@@ -78,6 +82,7 @@ const SlideFive: React.FC = () => {
 
     return (
         <Slide
+            icon={pullRequestsIcon}
             data={pullRequest.toString()}
             subText={pullRequestsSubtext}
             title={pullRequestsTitle}
@@ -93,6 +98,7 @@ const SlideSix: React.FC = () => {
 
     return (
         <Slide
+            icon={peakPerformanceIcon}
             data={peakMonth.toString()}
             subText={peakPerformanceSubtext}
             title={peakPerformanceTitle}
@@ -107,6 +113,7 @@ const SlideSeven: React.FC = () => {
 
     return (
         <Slide
+            icon={streakIcon}
             data={longestStreak.toString()}
             subText={streakSubtext}
             title={streakTitle}
@@ -123,6 +130,7 @@ const SlideEight: React.FC = () => {
 
     return (
         <Slide
+            icon={prReviewsIcon}
             data={reviews.toString()}
             subText={prReviewsSubtext}
             title={prReviewsTitle}
@@ -139,6 +147,7 @@ const SlideNine: React.FC = () => {
     const slang = getSlang(commits);
     return (
         <Slide
+            icon={slangIcon}
             data={slang.slang}
             subText={slangSubtext}
             title={slangTitle}
@@ -180,7 +189,8 @@ export default function Wrap() {
             justifyContent: "center",
             alignItems: "center",
             width: "100%",
-            height: "100svh"
+            height: "100svh",
+            overflow: "auto"
         }}>
 
             {/*<MotionGradientBg opacity={0.1}/>*/}

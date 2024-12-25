@@ -21,7 +21,7 @@ export default function IntroSlide() {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                height: "100vh",
+                height: "100%",
                 position: "relative",
                 background: `
           linear-gradient(90deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px),

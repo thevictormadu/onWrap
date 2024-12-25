@@ -10,8 +10,8 @@ export default function IconButtonExample({icon, text, handleClick}: Props) {
     return (
         <button
             style={{
-                border: "1px solid rgba(0, 117, 147, 0.2)",
-                background: "rgba(0, 36, 46, 0.5)",
+                border: "1px solid #0C3D4A",
+                backgroundColor: "#091C22",
                 padding: "0.5rem",
                 borderRadius: "0.5rem",
                 cursor: "pointer",
@@ -24,8 +24,8 @@ export default function IconButtonExample({icon, text, handleClick}: Props) {
                 gap: "0.7rem",
                 outline: "none",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(0, 36, 46, 1)")}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "rgba(0, 36, 46, 0.5)")}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#0D2932")}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#091C22")}
 
             onClick={handleClick}
         >

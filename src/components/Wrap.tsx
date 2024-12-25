@@ -1,7 +1,5 @@
 import Slide from "./Slide";
 import Slider from "./Slider";
-import MotionGradientBg from "./MotionGradientBg.tsx";
-import FloatingEmojis from "./FloatingEmojis.tsx";
 import IntroSlide from "./IntroSlide.tsx";
 import EndNote from "./EndNote.tsx";
 import {
@@ -183,12 +181,12 @@ export default function Wrap() {
             justifyContent: "center",
             alignItems: "center",
             width: "100%",
-            height: "100vh"
+            height: "100%"
         }}>
 
-            <MotionGradientBg opacity={0.1}/>
-            <FloatingEmojis emojiList={['🐹', '⚙️', '💻', '🎮', '🚀', '🚀', '🚀', '🚀', '🚀', '●', '◎', '•', '🎧', '💡', '💡']}
-                            zIndex={2}/>
+            {/*<MotionGradientBg opacity={0.1}/>*/}
+            {/*<FloatingEmojis emojiList={['🐹', '⚙️', '💻', '🎮', '🚀', '🚀', '🚀', '🚀', '🚀', '●', '◎', '•', '🎧', '💡', '💡']}*/}
+            {/*                zIndex={2}/>*/}
             <Slider
                 slides={[SlideOne, SlideTwo, SlideThree, SlideFour, SlideFive, SlideSix, SlideSeven, SlideEight, SlideNine, SlideTen]}/>
 

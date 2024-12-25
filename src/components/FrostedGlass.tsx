@@ -1,24 +1,17 @@
 import React from 'react';
-import { FrostedGlassProps } from '../types';
-
+import {FrostedGlassProps} from '../types';
 
 
 const FrostedGlass: React.FC<FrostedGlassProps> = ({
                                                        children,
-                                                       width,
-                                                       maxWidth = "350px",
                                                        borderRadius = "16px",
                                                        blur = "50px",
-                                                       padding = "2rem",
-    margin = "0",
                                                    }) => {
     return (
         <div
             className={"frosted-glass"}
             style={{
-                width: width || "auto",
-                maxWidth,
-                padding,
+                width: "auto",
                 borderRadius,
                 backgroundColor: "rgba(255, 255, 255, 0.05)",
                 backdropFilter: `blur(${blur})`,
@@ -28,7 +21,6 @@ const FrostedGlass: React.FC<FrostedGlassProps> = ({
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                margin: margin,
             }}
         >
             {children}

@@ -7,7 +7,7 @@ import {
     slangIntroduction,
     starsReceivedAltIntroduction, starsReceivedIntroduction,
     streakAltIntroduction,
-    streakIntroduction
+    streakIntroduction, topLanguageAltIntroduction, topLanguageIntroduction
 } from "./constants.ts";
 import {Slangs} from "./types.ts";
 
@@ -56,6 +56,14 @@ export function getPrReviewsIntroduction(prReviews: number): string {
     }
 }
 
+export function getTopLanguageIntroduction(language: string): string {
+    if (language == "Unknown") {
+        return topLanguageAltIntroduction
+    } else {
+        return topLanguageIntroduction
+    }
+}
+
 export function getSlangIntroduction(commits: number): string {
     if (commits < 5) {
         return slangAltIntroduction
@@ -65,19 +73,31 @@ export function getSlangIntroduction(commits: number): string {
 }
 
 export function getSlang(commits: number): Slangs {
-    if (commits > 150) {
+    if (commits > 2000) {
+        return {slang: "Idan!", emoji: "👑"}
+    } else if (commits > 1500) {
         return {slang: "President General!", emoji: "🎖️"}
+    } else if (commits > 1000) {
+        return {slang: "Raise am!!", emoji: "🙌️"}
+    } else if (commits > 500) {
+        return {slang: "Opor!", emoji: "🫡"}
+    } else if (commits > 400) {
+        return {slang: "Who dey breathe!", emoji: "✌️"}
+    } else if (commits > 300) {
+        return {slang: "E choke!", emoji: "🫣️"}
+    } else if (commits > 200) {
+        return {slang: "Omo!", emoji: "🙂"}
     } else if (commits > 100) {
-        return {slang: "Odogwu!", emoji: "👑"}
-    } else if (commits > 70) {
-        return {slang: "Raise am! Raise am!", emoji: "🙌️"}
-    } else if (commits > 30) {
-        return {slang: "You too do o!", emoji: "🫣️"}
-    } else if (commits > 15) {
-        return {slang: "Omo!", emoji: "🙂️"}
+        return {slang: "Odogwu!", emoji: "🤑"}
+    } else if (commits > 50) {
+        return {slang: "On colos!", emoji: "🤐️"}
+    } else if (commits > 10) {
+        return {slang: "We mueve!", emoji: "🤐️"}
     } else if (commits > 5) {
-        return {slang: "Na wa o!", emoji: "🤐️"}
+        return {slang: "Wahala!", emoji: "🤐️"}
+    } else if (commits > 2) {
+        return {slang: "God abeg!", emoji: "🤲"}
     } else {
-        return {slang: "God Abeg!", emoji: "😩"}
+        return {slang: "Dey play!", emoji: "😩"}
     }
 }

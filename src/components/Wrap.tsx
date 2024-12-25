@@ -6,7 +6,7 @@ import {
     getCommitsIntroduction, getPrReviewsIntroduction,
     getPullRequestIntroduction, getSlang, getSlangIntroduction,
     getStarsReceivedIntroduction,
-    getStreakIntroduction
+    getStreakIntroduction, getTopLanguageIntroduction
 } from "../utils.ts";
 import {useGitHub} from "../context/GithubContext.tsx";
 import {
@@ -18,7 +18,6 @@ import {
     pullRequestsTitle, slangSubtext, slangTitle,
     starsReceivedSubtext,
     starsReceivedTitle, streakSubtext, streakTitle,
-    topLanguageIntroduction,
     topLanguageSubtext,
     topLanguageTitle
 } from "../constants.ts";
@@ -53,7 +52,7 @@ const SlideThree: React.FC = () => {
             data={topLanguage}
             subText={topLanguageSubtext}
             title={topLanguageTitle}
-            preText={topLanguageIntroduction}
+            preText={getTopLanguageIntroduction(topLanguage)}
         />
     );
 };

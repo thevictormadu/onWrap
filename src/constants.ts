@@ -7,14 +7,14 @@ export const streakTitle: string = "⚡️ longest streak";
 export const streakSubtext: string = "consecutive days coding";
 
 
-export const starsReceivedIntroduction: string = "You are a star and you know it! - because what is all these shine shine in 2024.";
+export const starsReceivedIntroduction: string = "You are a star and you know it! - here is the number of times you shone.";
 export const starsReceivedAltIntroduction: string = "Not much stardust this year, but hey, the sky's the limit for 2025!";
 export const starsReceivedTitle: string = "🌟 stars received";
 export const starsReceivedSubtext: string = "total stars collected";
 
 
 export const topLanguageIntroduction: string = "Your coding palette is vibrant and you seem to be enjoying your self! Here’s the language that ruled your 2024.";
-export const topLanguageAltIntroduction: string = "It's like you couldn't pick a favorite! Your languages are all over the place.";
+export const topLanguageAltIntroduction: string = "It's either you couldn't pick a favorite language or your stack is from Mars.";
 export const topLanguageTitle: string = "💡 top language";
 export const topLanguageSubtext: string = "most used language";
 

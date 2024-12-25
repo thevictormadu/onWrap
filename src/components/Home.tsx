@@ -21,7 +21,7 @@ export default function Home() {
         }
 
         try {
-            await fetchGitHubData(userName);
+            await fetchGitHubData(userName.trim());
         } catch (err) {
             console.error("Error fetching data:", err);
         }
@@ -67,71 +67,77 @@ export default function Home() {
                         maxWidth: "400px",
                         padding: "2rem",
                     }}>
-                        <p style={{
-                            margin: "0",
-                            color: "#fff",
-                            fontSize: "2rem",
-                            fontWeight: "bold",
-                            textAlign: "left",
-                        }}>2024: Your GitHub Story <span style={{
-                            background: "linear-gradient(45deg, #75FFE8, #7B57FF)",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                        }}>onWrap</span></p>
-                        <p
-                            style={{
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                handleClick();
+                            }}
+                        >
+                            <p style={{
+                                margin: "0",
+                                color: "#fff",
+                                fontSize: "2rem",
+                                fontWeight: "bold",
+                                textAlign: "left",
+                            }}>
+                                2024: Your GitHub Story <span style={{
+                                background: "linear-gradient(45deg, #75FFE8, #7B57FF)",
+                                WebkitBackgroundClip: "text",
+                                WebkitTextFillColor: "transparent",
+                            }}>onWrap</span>
+                            </p>
+                            <p style={{
                                 color: "#fff",
                                 margin: "2rem 0",
-                            }}
-                        >
-                            Relive the highlights of your 2024 coding adventure.
-                        </p>
-                        <input
-                            style={{
-                                border: "1px solid rgba(255, 255, 255, 0.1)",
-                                width: "100%",
-                                boxSizing: "border-box",
-                                transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-                                borderRadius: "0.5rem",
-                                fontSize: "16px",
-                                padding: "1rem",
-                                background: "rgba(217, 217, 217, 0.07)",
-                                marginBottom: "1rem",
-                                color: "#fff",
-                            }}
-                            value={userName}
-                            onChange={(e) => setUserName(e.target.value)}
-                            type="text"
-                            placeholder="your GitHub username"
-                        />
-                        {error && <p style={{color: "red"}}>Error: {error}</p>}
-                        {loading && <ProgressBar/>}
-                        <button
-                            onClick={handleClick}
-                            style={{
-                                width: "100%",
-                                transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-                                borderRadius: "0.5rem",
-                                fontWeight: "bold",
-                                padding: "1rem",
-                                background: "linear-gradient(45deg, #833BDB, #1E8CD0)",
-                                marginTop: "1rem",
-                                border: "none",
-                                color: "#fff",
-                                cursor: "pointer",
-                                outline: "none",
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.boxShadow =
-                                    "0 0 10px rgba(131, 59, 219, 0.6), 0 0 20px rgba(30, 140, 208, 0.6)";
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.boxShadow = "none";
-                            }}
-
-                        >
-                            onClick = onWrap(2024)
-                        </button>
+                            }}>
+                                Relive the highlights of your 2024 coding adventure.
+                            </p>
+                            <input
+                                style={{
+                                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                                    width: "100%",
+                                    boxSizing: "border-box",
+                                    transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+                                    borderRadius: "0.5rem",
+                                    fontSize: "16px",
+                                    padding: "1rem",
+                                    background: "rgba(217, 217, 217, 0.07)",
+                                    marginBottom: "1rem",
+                                    color: "#fff",
+                                }}
+                                value={userName}
+                                onChange={(e) => setUserName(e.target.value)}
+                                type="text"
+                                placeholder="your GitHub username"
+                            />
+                            {error && <p style={{color: "red"}}>Error: {error}</p>}
+                            {loading && <ProgressBar/>}
+                            <button
+                                type="submit"
+                                style={{
+                                    width: "100%",
+                                    transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+                                    borderRadius: "0.5rem",
+                                    fontWeight: "bold",
+                                    padding: "1rem",
+                                    background: "linear-gradient(45deg, #833BDB, #1E8CD0)",
+                                    marginTop: "1rem",
+                                    border: "none",
+                                    color: "#fff",
+                                    cursor: "pointer",
+                                    outline: "none",
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.boxShadow =
+                                        "0 0 10px rgba(131, 59, 219, 0.6), 0 0 20px rgba(30, 140, 208, 0.6)";
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.boxShadow = "none";
+                                }}
+                            >
+                                onClick = onWrap(2024)
+                            </button>
+                        </form>
                         <div style={{
                             display: "flex",
                             width: "100%",
@@ -140,17 +146,20 @@ export default function Home() {
                             marginTop: "1.5rem"
                         }}>
                             <p style={{margin: 0, opacity: 0.8}}>#GitHubOnWrap</p>
-                            <div style={{display: "flex", alignItems: "center", gap: 5}}><img src={githubLogo}
-                                                                                              alt="GitHub Logo"/> <a
-                                href="https://github.com/thevictormadu/onWrap.git"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{
-                                    margin: 0,
-                                    opacity: 0.8
-                                }}><p style={{color: "white"}}>source
-                                code</p></a></div>
-
+                            <div style={{display: "flex", alignItems: "center", gap: 5}}>
+                                <img src={githubLogo} alt="GitHub Logo"/>
+                                <a
+                                    href="https://github.com/thevictormadu/onWrap.git"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                        margin: 0,
+                                        opacity: 0.8
+                                    }}
+                                >
+                                    <p style={{color: "white"}}>source code</p>
+                                </a>
+                            </div>
                         </div>
                     </div>
 

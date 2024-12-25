@@ -1,6 +1,5 @@
 html {
     height: 100%;
-    height: -webkit-fill-available;
     margin: 0;
     padding: 0;
 }
@@ -23,7 +22,6 @@ html {
 
 body {
     height: 100%;
-    height: -webkit-fill-available;
     margin: 0;
     padding: 0;
 }

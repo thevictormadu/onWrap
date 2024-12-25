@@ -38,6 +38,7 @@ export const GitHubProvider = ({children}: { children: ReactNode }) => {
 
     const fetchGitHubData = async (username: string): Promise<void> => {
         const token = import.meta.env.VITE_GITHUB_TOKEN
+        console.log("Token:", token);
         const query = `
             query FetchGitHubData($username: String!) {
                 user(login: $username) {

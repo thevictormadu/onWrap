@@ -159,7 +159,7 @@ const SlideTen: React.FC = () => (
 export default function Wrap() {
     useEffect(() => {
         const audio = new Audio("/comfy-vibe.mp3");
-        audio.loop = true;
+        // audio.loop = true;
         audio.volume = 0.6;
 
 
@@ -181,7 +181,7 @@ export default function Wrap() {
             justifyContent: "center",
             alignItems: "center",
             width: "100%",
-            height: "100%"
+            height: "100svh"
         }}>
 
             {/*<MotionGradientBg opacity={0.1}/>*/}

@@ -33,7 +33,7 @@ export const pullRequestsSubtext: string = "total pull requests opened";
 
 export const prReviewsIntroduction: string = "We see you enjoy collaborating a lot! Here’s how many pull requests you reviewed in 2024.";
 export const prReviewsAltIntroduction: string = "PR reviews? Looks like you kept your opinions to yourself this year. Share the wisdom next time!";
-export const prReviewsTitle: string = "✏️ pull request reviews";
+export const prReviewsTitle: string = "✏️ PR reviews";
 export const prReviewsSubtext: string = "total PRs reviewed";
 
 

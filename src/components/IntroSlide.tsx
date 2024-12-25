@@ -81,7 +81,7 @@ export default function IntroSlide() {
                             translateY: {duration: 4, repeat: Infinity, repeatType: "mirror"},
                         }}
                         style={{
-                            fontSize: "5rem",
+                            fontSize: "4rem",
                             fontWeight: "bold",
                             margin: "1rem",
                             padding: "0 2rem",
@@ -103,8 +103,7 @@ export default function IntroSlide() {
                         transition={{duration: 1}}
                         style={{fontSize: "1rem", padding: "2rem",}}
                     >
-                        Ready to see your achievements, highlights, and the moments that made you shine based on your
-                        public repos?
+                        Ready to see your achievements, highlights, and the moments that made you shine?
                     </motion.p>
                 </div> : <motion.p
                     className="pretext"

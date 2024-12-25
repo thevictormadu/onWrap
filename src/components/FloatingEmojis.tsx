@@ -1,14 +1,13 @@
-import { useEffect, useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { EmojiParticle, FloatingEmojisProps } from '../types';
+import {useEffect, useState, useRef} from 'react';
+import {motion, AnimatePresence} from 'framer-motion';
+import {EmojiParticle, FloatingEmojisProps} from '../types';
 
-export default function FloatingEmojis({ emojiList }: FloatingEmojisProps) {
+export default function FloatingEmojis({emojiList, zIndex = 0}: FloatingEmojisProps) {
     const [emojis, setEmojis] = useState<EmojiParticle[]>([]);
     const [isMobile, setIsMobile] = useState(false);
 
     const emojiRef = useRef<EmojiParticle[]>([]);
 
-    // Check for mobile screen
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768);
@@ -25,11 +24,11 @@ export default function FloatingEmojis({ emojiList }: FloatingEmojisProps) {
             id: Date.now() + Math.random(),
             emoji: emojiList[Math.floor(Math.random() * emojiList.length)],
             style: {
-                size: isMobile ? Math.random() * 1.5 + 0.5 : Math.random() * 2 + 1,
-                velocity: isMobile ? Math.random() * 5 + 15 : Math.random() * 7 + 20,
+                size: isMobile ? Math.random() + 0.2 : Math.random() * 1.5 + 0.5,
+                velocity: isMobile ? Math.random() * 7 + 20 : Math.random() * 7 + 20,
                 xStart: Math.random() * 100,
                 xEnd: Math.random() * 100,
-                curve: isMobile ? Math.random() * 10 - 5 : Math.random() * 20 - 10,
+                curve: Math.random() * 10 - 5,
                 blur: Math.random() < (isMobile ? 0.1 : 0.3),
             },
         };
@@ -41,13 +40,11 @@ export default function FloatingEmojis({ emojiList }: FloatingEmojisProps) {
     useEffect(() => {
         const interval = setInterval(() => {
             addEmoji();
-
-            // Clean up emojis after 10 seconds
             setTimeout(() => {
                 emojiRef.current.shift();
                 setEmojis([...emojiRef.current]);
             }, 10000);
-        }, isMobile ? 1000 : 500);
+        }, 1000);
 
         return () => clearInterval(interval);
     }, [isMobile]);
@@ -60,10 +57,11 @@ export default function FloatingEmojis({ emojiList }: FloatingEmojisProps) {
                 overflow: 'hidden',
                 width: '100vw',
                 height: '100vh',
+                zIndex: zIndex,
             }}
         >
             <AnimatePresence>
-                {emojis.map(({ id, emoji, style }) => (
+                {emojis.map(({id, emoji, style}) => (
                     <motion.div
                         key={id}
                         initial={{

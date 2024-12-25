@@ -12,28 +12,10 @@ export interface EmojiProps {
     duration?: number;
 }
 
-export interface SlideProps {
-    data: string;
-    subText?: string;
-    preText?: string;
-    title: string;
-    background?: string;
-    emojis: EmojiProps[];
-    keyProp: number;
-}
-
-export interface SliderProps {
-    slides: SlideProps[];
-}
-
 export interface FrostedGlassProps {
     children: React.ReactNode;
-    width?: string;
-    maxWidth?: string;
     borderRadius?: string;
     blur?: string;
-    padding?: string;
-    margin?: string;
 }
 
 export interface EmojiParticle {
@@ -51,4 +33,29 @@ export interface EmojiParticle {
 
 export interface FloatingEmojisProps {
     emojiList: string[];
+    zIndex?: number;
+}
+
+export interface WrapItemsType {
+    introduction: string;
+    value: string;
+    subtext: string;
+    suffix?: string;
+    title: string;
+}
+
+export interface WrapCollection {
+    stars: WrapItemsType;
+    topLanguage: WrapItemsType;
+    commits: WrapItemsType;
+    pullRequests: WrapItemsType;
+    prsMerged: WrapItemsType;
+    peakPerformance: WrapItemsType;
+    streak: WrapItemsType;
+    slang: WrapItemsType;
+}
+
+export interface Slangs {
+    slang: string;
+    emoji: string;
 }

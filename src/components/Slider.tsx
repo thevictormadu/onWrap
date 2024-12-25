@@ -1,138 +1,161 @@
-import React, { useState, useEffect, useRef } from "react";
+import {useState, useEffect, useRef} from "react";
 
 interface SliderProps {
-    slides: React.ReactNode[]; // Each slide is a React component
+    slides: React.ComponentType[];
+    slideDuration?: number;
+    progressBarColor?: string;
+    progressBarHeight?: number;
 }
 
-const Slider: React.FC<SliderProps> = ({ slides }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [progress, setProgress] = useState(0);
-    const timerRef = useRef<NodeJS.Timeout | null>(null);
+export default function Slider({
+                                   slides,
+                                   slideDuration = 10000,
+                                   progressBarColor = "#00d4ff",
+                                   progressBarHeight = 5,
+                               }: SliderProps) {
+    const [currentSlide, setCurrentSlide] = useState<number>(0);
+    const [progressValues, setProgressValues] = useState<number[]>(
+        Array(slides.length).fill(0)
+    );
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-    const SLIDE_DURATION = 5000; // Slide duration in ms
-
-    useEffect(() => {
-        startProgress();
-        return () => clearTimer(); // Cleanup timer on unmount or index change
-    }, [currentIndex]);
-
-    const startProgress = () => {
-        clearTimer();
-        setProgress(0);
-
-        const interval = setInterval(() => {
-            setProgress((prev) => {
-                const next = prev + 1;
-                if (next >= 100) {
-                    clearInterval(interval);
-                    goToNextSlide();
-                }
-                return next;
-            });
-        }, SLIDE_DURATION / 100);
-
-        timerRef.current = interval;
+    // Function to update progress for the current slide
+    const updateProgress = () => {
+        setProgressValues((prev) => {
+            const updatedProgress = [...prev];
+            const increment = 100 / (slideDuration / 100);
+            if (updatedProgress[currentSlide] + increment >= 100) {
+                updatedProgress[currentSlide] = 100;
+                goToNextSlide();
+            } else {
+                updatedProgress[currentSlide] += increment;
+            }
+            return updatedProgress;
+        });
     };
 
-    const clearTimer = () => {
-        if (timerRef.current) clearInterval(timerRef.current);
-    };
-
+    // Move to the next slide
     const goToNextSlide = () => {
-        setCurrentIndex((prev) => (prev + 1) % slides.length);
+        clearInterval(intervalRef.current!);
+        if (currentSlide < slides.length - 1) {
+            setCurrentSlide((prev) => prev + 1);
+        }
+        // else {
+        //     setCurrentSlide(0); // Loop back to the first slide
+        // }
+        resetProgressForNextSlide();
     };
 
     const goToPrevSlide = () => {
-        setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
+        clearInterval(intervalRef.current!);
+        if (currentSlide > 0) {
+            setCurrentSlide((prev) => prev - 1);
+        } else {
+            setCurrentSlide(slides.length - 1); // Loop back to the last slide
+        }
+        resetProgressForNextSlide();
     };
 
+    // Reset progress for the next slide
+    const resetProgressForNextSlide = () => {
+        setProgressValues((prev) => {
+            const updatedProgress = [...prev];
+            updatedProgress[currentSlide] = 0; // Reset the current slide's progress
+            if (currentSlide < slides.length - 1) {
+                updatedProgress[currentSlide + 1] = 0;
+            }
+            return updatedProgress;
+        });
+        clearInterval(intervalRef.current!);
+        intervalRef.current = setInterval(updateProgress, 100);
+    };
+
+    // Handle taps for navigation
     const handleTap = (e: React.MouseEvent<HTMLDivElement>) => {
-        const { clientX } = e;
-        const { innerWidth } = window;
-
-        if (clientX < innerWidth / 2) goToPrevSlide();
-        else goToNextSlide();
+        const screenWidth = window.innerWidth;
+        if (e.clientX > screenWidth / 2) {
+            goToNextSlide();
+        } else {
+            goToPrevSlide();
+        }
     };
+
+    // Start the timer for the current slide
+    useEffect(() => {
+        intervalRef.current = setInterval(updateProgress, 100);
+
+        return () => {
+            if (intervalRef.current) clearInterval(intervalRef.current); // Cleanup on unmount
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentSlide]);
 
     return (
         <div
-            className="slider-container"
+            className="slider"
             onClick={handleTap}
             style={{
-                display: "flex",
                 position: "relative",
-                width: "400px",
-                height: "100%",
+                width: "100%",
+                height: "100vh",
                 overflow: "hidden",
+                backgroundColor: "#000",
             }}
         >
+
+
             {/* Progress Bars */}
             <div
+                className="progress-bars"
                 style={{
                     position: "absolute",
-                    top: "10px",
+                    top: "1rem",
                     left: "0",
-                    right: "0",
+                    width: "100%",
                     display: "flex",
                     justifyContent: "space-between",
-                    padding: "0 10px",
-                    zIndex: 10,
+                    gap: "5px",
+                    zIndex: "10",
                 }}
             >
                 {slides.map((_, index) => (
                     <div
                         key={index}
                         style={{
-                            flex: 1,
-                            height: "4px",
-                            background: "rgba(255, 255, 255, 0.3)",
-                            margin: "0 2px",
-                            position: "relative",
+                            flexGrow: "1",
+                            height: `${progressBarHeight}px`,
+                            backgroundColor: "#555",
+                            opacity: index === currentSlide ? "1" : "0.5",
                             overflow: "hidden",
+                            borderRadius: "5px",
                         }}
                     >
                         <div
                             style={{
-                                width:
-                                    index === currentIndex
-                                        ? `${progress}%`
-                                        : index < currentIndex
-                                            ? "100%"
-                                            : "0%",
+                                width: `${progressValues[index]}%`,
                                 height: "100%",
-                                background: "#fff",
-                                transition: index === currentIndex ? "none" : "width 0.3s ease",
+                                backgroundColor: progressBarColor,
+                                transition: index === currentSlide ? "width 0.1s linear" : undefined,
                             }}
                         />
                     </div>
                 ))}
             </div>
 
-            {/* Slides */}
-            <div
-                style={{
-                    display: "flex",
-                    transform: `translateX(-${currentIndex * 100}%)`,
-                    transition: "transform 0.5s ease",
-                    width: `${slides.length * 100}%`,
-                }}
-            >
-                {slides.map((SlideComponent, index) => (
-                    <div
-                        key={index}
-                        style={{
-                            flex: "1 0 100%",
-                            height: "100vh",
-                            position: "relative",
-                            overflow: "hidden",
-                        }}
-                    >
-                        {SlideComponent}
-                    </div>
-                ))}
-            </div>
+            {/* Slides Rendering */}
+            {slides.map((SlideComponent, index) => (
+                <div
+                    key={index}
+                    style={{
+                        display: currentSlide === index ? "block" : "none",
+                        position: "absolute",
+                        width: "100%",
+                        height: "100%",
+                    }}
+                >
+                    {currentSlide === index && <SlideComponent key={currentSlide}/>}
+                </div>
+            ))}
         </div>
     );
 };
-
-export default Slider;

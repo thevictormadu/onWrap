@@ -1,4 +1,3 @@
-import githubLogo from "../assets/github-logo.png";
 import NameCard from "./NameCard.tsx";
 import EndNoteCard from "./EndNoteCard.tsx";
 import {
@@ -10,10 +9,59 @@ import {
 } from "../constants.ts";
 import {useGitHub} from "../context/GithubContext.tsx";
 import {getSlang} from "../utils.ts";
+import {LuDownload} from "react-icons/lu";
+import IconButton from "./IconButton.tsx";
+import React, {useRef} from "react";
+import {toJpeg} from "html-to-image";
 
 const EndNote: React.FC = () => {
     const {data} = useGitHub();
     const slang = getSlang(data?.totalCommits || 0);
+    const divRef = useRef<HTMLDivElement>(null);
+    const handleDownload = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+
+        if (divRef.current) {
+            try {
+
+                const hiddenBackground = divRef.current.querySelector('.hidden-background') as HTMLElement;
+                const downloadButton = divRef.current.querySelector('.download-button') as HTMLElement;
+                const bottomMargin = divRef.current.querySelector('.bottom-margin') as HTMLElement;
+                const topMargin = divRef.current.querySelector('.top-margin') as HTMLElement;
+
+                // Backup original styles
+                const originalHeight = divRef.current.style.height || '';
+                const originalBottomMargin = bottomMargin?.style.marginBottom || '';
+                const originalTopMargin = topMargin?.style.marginTop || '';
+                const originalVisibility = hiddenBackground?.style.visibility || '';
+                const originalDisplay = downloadButton?.style.display || '';
+
+                // Apply styles for the image
+                divRef.current.style.height = '700px';
+                if (hiddenBackground) hiddenBackground.style.visibility = 'visible';
+                if (downloadButton) downloadButton.style.display = 'none';
+                if (bottomMargin) bottomMargin.style.marginBottom = '0';
+                if (topMargin) topMargin.style.marginTop = '0';
+
+                // Generate the image
+                const dataUrl = await toJpeg(divRef.current);
+                const link = document.createElement('a');
+                link.href = dataUrl;
+                link.download = 'my-github-onwrap.png';
+                link.click();
+
+                // Restore original styles
+                divRef.current.style.height = originalHeight;
+                if (hiddenBackground) hiddenBackground.style.visibility = originalVisibility;
+                if (downloadButton) downloadButton.style.display = originalDisplay;
+                if (bottomMargin) bottomMargin.style.marginBottom = originalBottomMargin;
+                if (topMargin) topMargin.style.marginTop = originalTopMargin;
+
+            } catch (error) {
+                console.error('Error generating image:', error);
+            }
+        }
+    };
 
     return (
         <div
@@ -35,6 +83,7 @@ const EndNote: React.FC = () => {
 
             {/* Foreground Content */}
             <div
+                ref={divRef}
                 style={{
                     textAlign: "center",
                     color: "#08C2F1",
@@ -47,11 +96,27 @@ const EndNote: React.FC = () => {
                     alignItems: "center",
                     padding: "1rem",
                     gap: "1rem",
+                    position: "relative",
 
                 }}
             >
-                <div style={{width: "100%", marginTop: "3rem",}}>
-                    <NameCard title={`@${data?.userId}` || ""} value={"2024 GitHub Year in Code"}/>
+                <div className="hidden-background" style={{
+                    display: "flex",
+                    inset: 0,
+                    position: "absolute",
+                    background: `
+          linear-gradient(90deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px),
+          linear-gradient(180deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px)
+        `,
+                    visibility: "hidden",
+                    overflow: "hidden",
+                    backgroundSize: "20px 20px",
+                    animation: "moveMesh 5s linear infinite",
+                }}>
+
+                </div>
+                <div className="top-margin" style={{width: "100%", marginTop: "3rem",}}>
+                    <NameCard title={`@${data?.userId}`} value={"2024 GitHub Year in Code"}/>
                 </div>
 
                 <div style={{
@@ -82,22 +147,23 @@ const EndNote: React.FC = () => {
                     <div style={{display: "flex", width: "100%", flex: 1, gap: "1rem"}}>
                         <EndNoteCard title={streakTitle} data={data?.longestStreak.toString() || ""}
                                      glowColor={"251, 158, 198"} delay={0.9}/>
-                        <EndNoteCard title={slangTitle} data={`${slang.emoji} ${slang.slang}` || ""}
+                        <EndNoteCard title={slangTitle} data={`${slang.emoji} ${slang.slang}`}
                                      glowColor={"61, 178, 255"} delay={1}/>
                     </div>
                 </div>
 
                 <div
+                    className="download-button"
                     style={{
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
                         gap: 5,
                         marginBottom: "6rem",
+                        zIndex: 20
                     }}
                 >
-                    <img style={{width: "1.5rem"}} src={githubLogo} alt="GitHub Logo"/>
-                    <p style={{opacity: 0.8}}>#GitHubOnWrap</p>
+                    <IconButton text={"download"} icon={<LuDownload/>} handleClick={handleDownload}/>
                 </div>
 
             </div>

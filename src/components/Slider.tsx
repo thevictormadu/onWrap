@@ -1,4 +1,8 @@
-import {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect, useRef} from "react";
+import IconButton from "./IconButton.tsx";
+import {IoMdRefresh} from "react-icons/io";
+import {RiLogoutBoxLine} from "react-icons/ri";
+import {TiArrowLeftOutline, TiArrowRightOutline} from "react-icons/ti";
 
 interface SliderProps {
     slides: React.ComponentType[];
@@ -13,11 +17,25 @@ export default function Slider({
                                    progressBarColor = "#00d4ff",
                                    progressBarHeight = 5,
                                }: SliderProps) {
+    const [isMobile, setIsMobile] = useState(false);
     const [currentSlide, setCurrentSlide] = useState<number>(0);
     const [progressValues, setProgressValues] = useState<number[]>(
         Array(slides.length).fill(0)
     );
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+    // Check for mobile screen
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 500);
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
 
     // Function to update progress for the current slide
     const updateProgress = () => {
@@ -45,6 +63,7 @@ export default function Slider({
         // }
         resetProgressForNextSlide();
     };
+
 
     const goToPrevSlide = () => {
         clearInterval(intervalRef.current!);
@@ -79,6 +98,28 @@ export default function Slider({
             goToPrevSlide();
         }
     };
+
+    const goHome = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        window.location.href = "/";
+    }
+
+    const goNext = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        goToNextSlide();
+    }
+
+    const goPrev = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        goToPrevSlide();
+    }
+
+    const goToFirstSlide = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        clearInterval(intervalRef.current!);
+        setCurrentSlide(0);
+        resetProgressForNextSlide();
+    }
 
     // Start the timer for the current slide
     useEffect(() => {
@@ -156,6 +197,36 @@ export default function Slider({
                     {currentSlide === index && <SlideComponent key={currentSlide}/>}
                 </div>
             ))}
+
+
+            {/*buttons*/}
+            <div style={{
+                position: "absolute",
+                bottom: 10,
+                left: "50%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                transform: "translateX(-50%)",
+                gap: "0.5rem",
+                zIndex: 20,
+            }}><IconButton icon={<IoMdRefresh/>} handleClick={goToFirstSlide}/>
+                <IconButton icon={<RiLogoutBoxLine/>} handleClick={goHome}/>
+            </div>
+
+
+            {/*arrow buttons*/}
+            {!isMobile && (<div style={{
+                position: "absolute",
+                inset: "3rem",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                gap: "0.5rem",
+                zIndex: 20,
+            }}><IconButton icon={<TiArrowLeftOutline/>} handleClick={goPrev}/>
+                <IconButton icon={<TiArrowRightOutline/>} handleClick={goNext}/>
+            </div>)}
         </div>
     );
 };

@@ -2,9 +2,18 @@ import {motion} from "framer-motion";
 import githubLogo from "../assets/github-logo.png";
 import NameCard from "./NameCard.tsx";
 import {useGitHub} from "../context/GithubContext.tsx";
+import {useEffect, useState} from "react";
 
 export default function IntroSlide() {
     const {data} = useGitHub()
+    const [showPretext, setShowPretext] = useState(true);
+    useEffect(() => {
+        setShowPretext(true);
+        const timer = setTimeout(() => {
+            setShowPretext(false);
+        }, 6000);
+        return () => clearTimeout(timer);
+    }, []);
 
     return (
         <div
@@ -45,47 +54,68 @@ export default function IntroSlide() {
                 }}
             >
                 <div style={{marginTop: "3rem"}}>
-                    <NameCard title={`@${data?.userId}` || ""}
+                    <NameCard title={`@${data?.userId}`}
                               value={`${data?.firstName || ""} ${data?.lastName || ""}`}/>
                 </div>
 
+                {showPretext ? <div>
+                    <motion.h1
+                        initial={{opacity: 0, y: 50}}
+                        animate={{
+                            opacity: 1,
+                            y: 0,
+                            textShadow: [
+                                "0 0 10px rgba(255, 255, 255, 0.8)",
+                                "0 0 20px rgba(255, 255, 255, 0.5)",
+                                "0 0 30px rgba(255, 255, 255, 0.8)",
+                            ],
+                            translateY: [0, -10, 0],
+                        }}
+                        transition={{
+                            opacity: {duration: 1},
+                            textShadow: {
+                                duration: 2,
+                                repeat: Infinity,
+                                repeatType: "mirror",
+                            },
+                            translateY: {duration: 4, repeat: Infinity, repeatType: "mirror"},
+                        }}
+                        style={{
+                            fontSize: "6rem",
+                            fontWeight: "bold",
+                            margin: "1rem",
+                            padding: "0 2rem",
 
-                <motion.h1
-                    initial={{opacity: 0, y: 50}}
-                    animate={{
-                        opacity: 1,
-                        y: 0,
-                        textShadow: [
-                            "0 0 10px rgba(255, 255, 255, 0.8)",
-                            "0 0 20px rgba(255, 255, 255, 0.5)",
-                            "0 0 30px rgba(255, 255, 255, 0.8)",
-                        ],
-                        translateY: [0, -10, 0],
-                    }}
-                    transition={{
-                        opacity: {duration: 1},
-                        textShadow: {
-                            duration: 2,
-                            repeat: Infinity,
-                            repeatType: "mirror",
-                        },
-                        translateY: {duration: 4, repeat: Infinity, repeatType: "mirror"},
-                    }}
-                    style={{
-                        fontSize: "6rem",
-                        fontWeight: "bold",
-                        margin: "1rem",
-                        padding: "0 2rem",
-
-                    }}
-                >
+                        }}
+                    >
                                 <span style={{
                                     background: "linear-gradient(45deg, #1E8CD0, #7B57FF)",
                                     WebkitBackgroundClip: "text",
                                     WebkitTextFillColor: "transparent",
                                 }}>YOUR 2024 IN CODE</span>
 
-                </motion.h1>
+                    </motion.h1>
+                    <motion.p
+                        className="pretext"
+                        initial={{opacity: 0, y: 50}}
+                        animate={{opacity: 1, y: 0}}
+                        exit={{opacity: 0, y: -50}}
+                        transition={{duration: 1}}
+                        style={{fontSize: "1.5rem", padding: "2rem",}}
+                    >
+                        Ready to see your achievements, highlights, and the moments that made you shine?
+                    </motion.p>
+                </div> : <motion.p
+                    className="pretext"
+                    initial={{opacity: 0, y: 50}}
+                    animate={{opacity: 1, y: 0}}
+                    exit={{opacity: 0, y: -50}}
+                    transition={{duration: 1}}
+                    style={{fontSize: "1.5rem", padding: "2rem",}}
+                >
+                    Shall we? 🤗
+                </motion.p>}
+
 
                 <div
                     style={{

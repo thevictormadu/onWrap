@@ -135,7 +135,14 @@ export default function Home() {
                             <p style={{margin: 0, opacity: 0.8}}>#GitHubOnWrap</p>
                             <div style={{display: "flex", alignItems: "center", gap: 5}}><img src={githubLogo}
                                                                                               alt="GitHub Logo"/> <a
-                                style={{margin: 0, opacity: 0.8}}>source code</a></div>
+                                href="https://github.com/thevictormadu/onWrap.git"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    margin: 0,
+                                    opacity: 0.8
+                                }}>source
+                                code</a></div>
 
                         </div>
                     </div>

@@ -1,13 +1,13 @@
 export const year: string = "2024";
 
 
-export const streakIntroduction: string = "Consistency is the key, but you are the padlock! It looks like you are a serious person.";
+export const streakIntroduction: string = "Consistency is the key, and you have the padlock! It's obvious you are a serious person.";
 export const streakAltIntroduction: string = "If consistency is the key, then you've lost your key. You weren't very consistent in 2024, but let's see.";
 export const streakTitle: string = "⚡️ longest streak";
 export const streakSubtext: string = "consecutive days coding";
 
 
-export const starsReceivedIntroduction: string = "You are a star and you are bright! Here’s how many stars your projects collected in 2024.";
+export const starsReceivedIntroduction: string = "You are a star and you know it! - because what is all these shine shine in 2024.";
 export const starsReceivedAltIntroduction: string = "Not much stardust this year, but hey, the sky's the limit for 2025!";
 export const starsReceivedTitle: string = "🌟 stars received";
 export const starsReceivedSubtext: string = "total stars collected";
@@ -39,7 +39,7 @@ export const prReviewsSubtext: string = "total PRs reviewed";
 
 export const peakPerformanceIntroduction: string = "Every coder has their moment. Here’s when you were truly unstoppable!";
 export const peakPerformanceAltIntroduction: string = "Peak performance? Let’s call it a gentle incline. Here’s your best month anyway.";
-export const peakPerformanceTitle: string = "🔥 peak performance month";
+export const peakPerformanceTitle: string = "🔥 peak month";
 export const peakPerformanceSubtext: string = "most active month";
 
 

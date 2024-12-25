@@ -24,7 +24,7 @@ import {
     topLanguageSubtext,
     topLanguageTitle
 } from "../constants.ts";
-import IconButton from "./IconButton.tsx";
+import {useEffect} from "react";
 
 const SlideOne: React.FC = () => (
     <IntroSlide
@@ -159,7 +159,22 @@ const SlideTen: React.FC = () => (
 );
 
 export default function Wrap() {
+    useEffect(() => {
+        const audio = new Audio("../../public/Comfy Vibe Jazzy Lo-Fi Hip-Hop __ Royalty Free No Copyright Music - Royalty Free Music  Copyright Free  Tunetank-MP3.mp3");
+        audio.loop = true;
+        audio.volume = 0.6;
 
+
+        audio.play().catch((error) => {
+            console.error("Error playing audio:", error);
+        });
+
+
+        return () => {
+            audio.pause();
+            audio.currentTime = 0;
+        };
+    }, []);
 
     return (
         <div style={{
@@ -170,17 +185,7 @@ export default function Wrap() {
             width: "100%",
             height: "100vh"
         }}>
-            <div style={{
-                position: "absolute",
-                bottom: 10,
-                left: "50%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                zIndex: 9999,
-            }}><IconButton/>
-                <IconButton/>
-                <IconButton/></div>
+
             <MotionGradientBg opacity={0.1}/>
             <FloatingEmojis emojiList={['🐹', '⚙️', '💻', '🎮', '🚀', '🚀', '🚀', '🚀', '🚀', '●', '◎', '•', '🎧', '💡', '💡']}
                             zIndex={2}/>

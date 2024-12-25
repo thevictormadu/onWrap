@@ -23,7 +23,7 @@ const EndNote: React.FC = () => {
 
         if (divRef.current) {
             try {
-
+                const signature = divRef.current.querySelector('.signature') as HTMLElement;
                 const hiddenBackground = divRef.current.querySelector('.hidden-background') as HTMLElement;
                 const downloadButton = divRef.current.querySelector('.download-button') as HTMLElement;
                 const bottomMargin = divRef.current.querySelector('.bottom-margin') as HTMLElement;
@@ -31,6 +31,7 @@ const EndNote: React.FC = () => {
 
                 // Backup original styles
                 const originalHeight = divRef.current.style.height || '';
+                const originalSignatureDisplay = signature?.style.display || '';
                 const originalBottomMargin = bottomMargin?.style.marginBottom || '';
                 const originalTopMargin = topMargin?.style.marginTop || '';
                 const originalVisibility = hiddenBackground?.style.visibility || '';
@@ -38,6 +39,7 @@ const EndNote: React.FC = () => {
 
                 // Apply styles for the image
                 divRef.current.style.height = '700px';
+                if (signature) signature.style.display = 'block';
                 if (hiddenBackground) hiddenBackground.style.visibility = 'visible';
                 if (downloadButton) downloadButton.style.display = 'none';
                 if (bottomMargin) bottomMargin.style.marginBottom = '0';
@@ -52,6 +54,7 @@ const EndNote: React.FC = () => {
 
                 // Restore original styles
                 divRef.current.style.height = originalHeight;
+                if (signature) signature.style.display = originalSignatureDisplay;
                 if (hiddenBackground) hiddenBackground.style.visibility = originalVisibility;
                 if (downloadButton) downloadButton.style.display = originalDisplay;
                 if (bottomMargin) bottomMargin.style.marginBottom = originalBottomMargin;
@@ -151,7 +154,21 @@ const EndNote: React.FC = () => {
                                      glowColor={"61, 178, 255"} delay={1}/>
                     </div>
                 </div>
+                <div
+                    className="signature"
+                    style={{
+                        display: "none",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        margin: "1rem",
+                        zIndex: 20,
+                        fontSize: "0.7rem"
+                    }}
+                >
+                    🤍 made by <span style={{fontWeight: "bold"}}>Victor madu</span>
 
+
+                </div>
                 <div
                     className="download-button"
                     style={{
@@ -160,15 +177,13 @@ const EndNote: React.FC = () => {
                         alignItems: "center",
                         gap: 5,
                         marginBottom: "6rem",
-                        zIndex: 20
+                        zIndex: 22
                     }}
                 >
                     <IconButton text={"download"} icon={<LuDownload/>} handleClick={handleDownload}/>
                 </div>
 
             </div>
-
-
         </div>
     );
 };

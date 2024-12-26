@@ -102,7 +102,8 @@ export default function IntroSlide() {
                         transition={{duration: 1}}
                         style={{fontSize: "1rem", padding: "2rem",}}
                     >
-                        Ready to see your achievements, highlights, and the moments that made you shine?
+                        Ready to see your achievements, highlights, and the moments that made you shine based on your
+                        public repos?
                     </motion.p>
                 </div> : <motion.p
                     className="pretext"

@@ -43,6 +43,7 @@ const EndNote: React.FC = () => {
 
                 // Backup original styles
                 const originalHeight = divRef.current.style.height || '';
+                const originalWidth = divRef.current.style.width || '';
                 const originalPadding = divRef.current.style.height || '';
                 const originalSignatureDisplay = signature?.style.display || '';
                 const originalBottomMargin = bottomMargin?.style.marginBottom || '';
@@ -52,7 +53,8 @@ const EndNote: React.FC = () => {
 
                 // Apply styles for the image
                 divRef.current.style.height = '800px';
-                divRef.current.style.padding = '3rem';
+                divRef.current.style.width = '400px';
+                divRef.current.style.padding = '2rem';
                 if (signature) signature.style.display = 'block';
                 if (hiddenBackground) hiddenBackground.style.visibility = 'visible';
                 if (downloadButton) downloadButton.style.display = 'none';
@@ -68,6 +70,7 @@ const EndNote: React.FC = () => {
 
                 // Restore original styles
                 divRef.current.style.height = originalHeight;
+                divRef.current.style.width = originalWidth;
                 divRef.current.style.padding = originalPadding;
                 if (signature) signature.style.display = originalSignatureDisplay;
                 if (hiddenBackground) hiddenBackground.style.visibility = originalVisibility;

@@ -164,7 +164,7 @@ const EndNote: React.FC = () => {
                                      glowColor={"158, 223, 156"} delay={0.7}/>
                         <EndNoteCard icon={prReviewsIcon} title={prReviewsTitle}
                                      data={data?.totalReviews.toString() || ""}
-                                     glowColor={"218, 73, 141"} delay={0.8}/>
+                                     glowColor={"252, 245, 150"} delay={0.8}/>
                     </div>
                     <div style={{display: "flex", width: "100%", flex: 1, gap: "1rem"}}>
                         <EndNoteCard icon={streakIcon} title={streakTitle} data={data?.longestStreak.toString() || ""}
@@ -195,7 +195,7 @@ const EndNote: React.FC = () => {
                         justifyContent: "center",
                         alignItems: "center",
                         gap: 5,
-                        marginBottom: "0rem",
+                        marginBottom: "10px",
                         zIndex: 22
                     }}
                 >

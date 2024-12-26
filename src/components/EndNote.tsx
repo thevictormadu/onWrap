@@ -162,13 +162,15 @@ const EndNote: React.FC = () => {
                         <EndNoteCard icon={peakPerformanceIcon} title={peakPerformanceTitle}
                                      data={data?.peakMonth || "_"}
                                      glowColor={"158, 223, 156"} delay={0.7}/>
+                        <EndNoteCard icon={streakIcon} title={streakTitle} data={data?.longestStreak.toString() || ""}
+                                     glowColor={"251, 158, 198"} delay={0.9}/>
+
+                    </div>
+                    <div style={{display: "flex", width: "100%", flex: 1, gap: "1rem"}}>
                         <EndNoteCard icon={prReviewsIcon} title={prReviewsTitle}
                                      data={data?.totalReviews.toString() || ""}
                                      glowColor={"252, 245, 150"} delay={0.8}/>
-                    </div>
-                    <div style={{display: "flex", width: "100%", flex: 1, gap: "1rem"}}>
-                        <EndNoteCard icon={streakIcon} title={streakTitle} data={data?.longestStreak.toString() || ""}
-                                     glowColor={"251, 158, 198"} delay={0.9}/>
+
                         <EndNoteCard icon={slangIcon} title={slangTitle} data={slang.slang}
                                      glowColor={"61, 178, 255"} delay={1}/>
                     </div>

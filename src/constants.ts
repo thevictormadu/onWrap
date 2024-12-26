@@ -22,21 +22,21 @@ export const topLanguageIcon: string = "💡";
 export const topLanguageSubtext: string = "most used language";
 
 
-export const commitsIntroduction: string = "You seem to be COMMITed! Let’s see how many times you saved your work in 2024.";
-export const commitsAltIntroduction: string = "If unCOMMITment is a crime, you might be guilty. Let's check the numbers anyway.";
+export const commitsIntroduction: string = "You have no commitment issue! Let’s see how many times you hit ‘commit’ and locked in your progress in 2024.";
+export const commitsAltIntroduction: string = "If un-commitment is a crime, you might be guilty. Let's check the numbers anyway.";
 export const commitsTitle: string = "commits";
-export const commitsIcon: string = "🔆";
+export const commitsIcon: string = "💾";
 export const commitsSubtext: string = "total commits";
 
 
-export const pullRequestsIntroduction: string = "Building bridges with every PR. Let’s see how often you collaborated this year.";
-export const pullRequestsAltIntroduction: string = "PRs? More like Pardon Requests — because you didn’t make much!";
+export const pullRequestsIntroduction: string = "Your pull requests are like olive branches for the codebase—let’s see how often you extended them in 2024.";
+export const pullRequestsAltIntroduction: string = "Pull requests? Or did you pull back? Looks like collaboration wasn’t your thing in 2024.";
 export const pullRequestsTitle: string = "pull requests";
-export const pullRequestsIcon: string = "⤴️";
+export const pullRequestsIcon: string = "🕹️";
 export const pullRequestsSubtext: string = "total pull requests opened";
 
 
-export const prReviewsIntroduction: string = "We see you enjoy collaborating a lot! Here’s how many pull requests you reviewed in 2024.";
+export const prReviewsIntroduction: string = "You’ve been the gatekeeper of quality! Let’s check how many pull requests you reviewed in 2024.";
 export const prReviewsAltIntroduction: string = "PR reviews? Looks like you kept your opinions to yourself this year. Share the wisdom next time!";
 export const prReviewsTitle: string = "PR reviews";
 export const prReviewsIcon: string = "✏️";

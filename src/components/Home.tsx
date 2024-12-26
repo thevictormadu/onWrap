@@ -126,6 +126,7 @@ export default function Home() {
                                     color: "#fff",
                                     cursor: "pointer",
                                     outline: "none",
+                                    fontSize: "1rem",
                                 }}
                                 onMouseEnter={(e) => {
                                     e.currentTarget.style.boxShadow =
@@ -143,11 +144,11 @@ export default function Home() {
                             width: "100%",
                             justifyContent: "space-between",
                             alignItems: "center",
-                            marginTop: "1.5rem"
+                            marginTop: "1.5rem",
                         }}>
-                            <p style={{margin: 0, opacity: 0.8}}>#GitHubOnWrap</p>
+                            <p style={{margin: 0, opacity: 0.8, fontSize: "0.8rem",}}>#GitHubOnWrap</p>
                             <div style={{display: "flex", alignItems: "center", gap: 5}}>
-                                <img src={githubLogo} alt="GitHub Logo"/>
+                                <img src={githubLogo} alt="GitHub Logo" style={{width: '20px'}}/>
                                 <a
                                     href="https://github.com/thevictormadu/onWrap.git"
                                     target="_blank"
@@ -157,7 +158,7 @@ export default function Home() {
                                         opacity: 0.8
                                     }}
                                 >
-                                    <p style={{color: "white"}}>source code</p>
+                                    <p style={{color: "white", fontSize: "0.8rem"}}>source code</p>
                                 </a>
                             </div>
                         </div>
@@ -174,7 +175,7 @@ export default function Home() {
                         padding: "0.5rem 1rem 0.5rem 0.5rem",
                     }}>
                         <img style={{width: "30px", borderRadius: "1rem"}} src={victorPic} alt="Victor Madu"/>
-                        <p style={{fontSize: "0.8rem"}}>built with ❤️ by <span
+                        <p style={{fontSize: "0.7rem"}}>built with ❤️ by <span
                             style={{fontWeight: "bold"}}>Victor Madu</span></p>
                     </div>
 

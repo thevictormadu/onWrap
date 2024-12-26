@@ -30,7 +30,7 @@ export const commitsSubtext: string = "total commits";
 
 
 export const pullRequestsIntroduction: string = "Your pull requests are like olive branches for the codebase—let’s see how often you extended them in 2024.";
-export const pullRequestsAltIntroduction: string = "Pull requests? Or did you pull back? Looks like collaboration wasn’t your thing in 2024.";
+export const pullRequestsAltIntroduction: string = "Pull requests? Or did you pull out? Looks like collaboration wasn’t your thing in 2024.";
 export const pullRequestsTitle: string = "pull requests";
 export const pullRequestsIcon: string = "🕹️";
 export const pullRequestsSubtext: string = "total pull requests opened";

@@ -1,5 +1,4 @@
 html {
-    height: 100svh;
     margin: 0;
     padding: 0;
 }
@@ -11,17 +10,16 @@ html {
     color-scheme: light dark;
     color: rgba(255, 255, 255, 0.87);
     background-color: black;
-
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
 }
 
 body {
     margin: 0;
     padding: 0;
-    height: 100svh;
 }
 
 p {

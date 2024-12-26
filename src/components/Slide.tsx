@@ -65,7 +65,7 @@ export default function Slide({
     return (
         <div
             style={{
-                height: "100%",
+                height: "100svh",
                 position: "relative",
                 background: background,
                 backgroundSize: "20px 20px",

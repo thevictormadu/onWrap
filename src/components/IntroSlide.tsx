@@ -21,16 +21,15 @@ export default function IntroSlide() {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                height: "100%",
                 position: "relative",
                 background: `
           linear-gradient(90deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px),
           linear-gradient(180deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px)
         `,
-                overflow: "hidden",
                 backgroundSize: "20px 20px",
                 animation: "moveMesh 5s linear infinite",
                 width: "100%",
+                height: "100svh",
             }}
         >
 

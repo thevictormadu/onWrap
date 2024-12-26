@@ -87,15 +87,15 @@ const EndNote: React.FC = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                height: "100%",
                 position: "relative",
                 background: `
           linear-gradient(90deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px),
           linear-gradient(180deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px)
         `,
-                overflow: "hidden",
                 backgroundSize: "20px 20px",
                 animation: "moveMesh 5s linear infinite",
+                height: "100%",
+                overflowY: "auto",
             }}
         >
 
@@ -132,7 +132,8 @@ const EndNote: React.FC = () => {
                 }}>
 
                 </div>
-                <div className="top-margin" style={{width: "100%", marginTop: "3rem",}}>
+                <div className="top-margin"
+                     style={{width: "100%", marginTop: "3rem", position: "sticky", top: 30, zIndex: 100}}>
                     <NameCard title={`@${data?.userId}`} value={"2024 GitHub Year in Code"}/>
                 </div>
 
@@ -194,7 +195,7 @@ const EndNote: React.FC = () => {
                         justifyContent: "center",
                         alignItems: "center",
                         gap: 5,
-                        marginBottom: "5rem",
+                        marginBottom: "0rem",
                         zIndex: 22
                     }}
                 >

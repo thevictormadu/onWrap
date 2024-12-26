@@ -138,9 +138,9 @@ export default function Slider({
             style={{
                 position: "relative",
                 width: "100%",
-                height: "100svh",
-                
                 backgroundColor: "#000",
+                height: "100svh",
+                overflow: "hidden",
             }}
         >
 
@@ -217,7 +217,7 @@ export default function Slider({
 
             {/*arrow buttons*/}
             {!isMobile && (<div style={{
-                position: "absolute",
+                position: "fixed",
                 inset: "3rem",
                 display: "flex",
                 justifyContent: "space-between",

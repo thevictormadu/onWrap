@@ -22,8 +22,8 @@ export const topLanguageIcon: string = "💡";
 export const topLanguageSubtext: string = "most used language";
 
 
-export const commitsIntroduction: string = "You have no commitment issue! Let’s see how many times you hit ‘commit’ and locked in your progress in 2024.";
-export const commitsAltIntroduction: string = "If un-commitment is a crime, you might be guilty. Let's check the numbers anyway.";
+export const commitsIntroduction: string = "If coding is a crime, then you have committed so many times - but we don't want to call you a criminal.";
+export const commitsAltIntroduction: string = "If coding is a crime, you might be innocent. You have not committed much.";
 export const commitsTitle: string = "commits";
 export const commitsIcon: string = "💾";
 export const commitsSubtext: string = "total commits";

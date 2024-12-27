@@ -156,7 +156,7 @@ export default function Slider({
                     display: "flex",
                     justifyContent: "space-between",
                     gap: "5px",
-                    zIndex: "10",
+                    zIndex: "55",
                 }}
             >
                 {slides.map((_, index) => (

@@ -43,8 +43,8 @@ const EndNote: React.FC = () => {
 
                 // Backup original styles
                 const originalHeight = divRef.current.style.height || '';
-                const originalWidth = divRef.current.style.width || '';
-                const originalPadding = divRef.current.style.height || '';
+                const originalWidth = divRef.current.style.width || '100%';
+                const originalPadding = divRef.current.style.padding || '';
                 const originalSignatureDisplay = signature?.style.display || '';
                 const originalBottomMargin = bottomMargin?.style.marginBottom || '';
                 const originalTopMargin = topMargin?.style.marginTop || '';
@@ -52,9 +52,9 @@ const EndNote: React.FC = () => {
                 const originalDisplay = downloadButton?.style.display || '';
 
                 // Apply styles for the image
-                divRef.current.style.height = '800px';
+                divRef.current.style.height = '700px';
                 divRef.current.style.width = '400px';
-                divRef.current.style.padding = '2rem';
+                divRef.current.style.padding = '1.5rem';
                 if (signature) signature.style.display = 'block';
                 if (hiddenBackground) hiddenBackground.style.visibility = 'visible';
                 if (downloadButton) downloadButton.style.display = 'none';
@@ -99,6 +99,7 @@ const EndNote: React.FC = () => {
                 animation: "moveMesh 5s linear infinite",
                 height: "100%",
                 overflowY: "auto",
+                overflowX: "hidden"
             }}
         >
 
@@ -136,7 +137,7 @@ const EndNote: React.FC = () => {
 
                 </div>
                 <div className="top-margin"
-                     style={{width: "100%", marginTop: "3rem", position: "sticky", top: 30, zIndex: 100}}>
+                     style={{width: "100%", marginTop: "2rem", position: "sticky", top: 30, zIndex: 50}}>
                     <NameCard title={`@${data?.userId}`} value={"2024 GitHub Year in Code"}/>
                 </div>
 
@@ -184,7 +185,7 @@ const EndNote: React.FC = () => {
                         display: "none",
                         justifyContent: "center",
                         alignItems: "center",
-                        margin: "1rem",
+                        marginTop: "0.5rem",
                         zIndex: 20,
                         fontSize: "0.7rem"
                     }}

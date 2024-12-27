@@ -14,6 +14,8 @@ import {LuDownload} from "react-icons/lu";
 import IconButton from "./IconButton.tsx";
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {toJpeg} from "html-to-image";
+import JetBrainsMonoRegular from '../assets/fonts/JetBrainsMono-Regular.woff2';
+import JetBrainsMonoBold from '../assets/fonts/JetBrainsMono-Bold.woff2';
 
 const EndNote: React.FC = () => {
     const {data} = useGitHub();
@@ -34,17 +36,19 @@ const EndNote: React.FC = () => {
 
     // Font preloading logic
     const loadFonts = useCallback(async () => {
+        // Use the imported font file paths
         const fontRegular = new FontFace(
             "JetBrains Mono",
-            "url(src/assets/fonts/JetBrainsMono-Regular.woff2)",
+            `url(${JetBrainsMonoRegular})`,
             {weight: "400", style: "normal"}
         );
         const fontBold = new FontFace(
             "JetBrains Mono",
-            "url(src/assets/fonts/JetBrainsMono-Bold.woff2)",
+            `url(${JetBrainsMonoBold})`,
             {weight: "700", style: "normal"}
         );
 
+        // Load and add the fonts to the document
         await fontRegular.load();
         document.fonts.add(fontRegular);
 

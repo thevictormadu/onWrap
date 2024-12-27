@@ -12,13 +12,15 @@ import {useGitHub} from "../context/GithubContext.tsx";
 import {getSlang} from "../utils.ts";
 import {LuDownload} from "react-icons/lu";
 import IconButton from "./IconButton.tsx";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {toJpeg} from "html-to-image";
 
 const EndNote: React.FC = () => {
     const {data} = useGitHub();
     const slang = getSlang(data?.totalCommits || 0);
     const [isMobile, setIsMobile] = useState(false);
+    const divRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 400);
@@ -29,12 +31,36 @@ const EndNote: React.FC = () => {
 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-    const divRef = useRef<HTMLDivElement>(null);
+
+    // Font preloading logic
+    const loadFonts = useCallback(async () => {
+        const fontRegular = new FontFace(
+            "JetBrains Mono",
+            "url(src/assets/fonts/JetBrainsMono-Regular.woff2)",
+            {weight: "400", style: "normal"}
+        );
+        const fontBold = new FontFace(
+            "JetBrains Mono",
+            "url(src/assets/fonts/JetBrainsMono-Bold.woff2)",
+            {weight: "700", style: "normal"}
+        );
+
+        await fontRegular.load();
+        document.fonts.add(fontRegular);
+
+        await fontBold.load();
+        document.fonts.add(fontBold);
+    }, []);
+
+
     const handleDownload = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
 
         if (divRef.current) {
             try {
+
+                await loadFonts();
+
                 const signature = divRef.current.querySelector('.signature') as HTMLElement;
                 const hiddenBackground = divRef.current.querySelector('.hidden-background') as HTMLElement;
                 const downloadButton = divRef.current.querySelector('.download-button') as HTMLElement;
@@ -65,7 +91,7 @@ const EndNote: React.FC = () => {
                 const dataUrl = await toJpeg(divRef.current);
                 const link = document.createElement('a');
                 link.href = dataUrl;
-                link.download = 'my-github-onwrap.png';
+                link.download = 'my-github-onwrap.jpg';
                 link.click();
 
                 // Restore original styles

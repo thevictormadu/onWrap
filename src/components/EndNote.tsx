@@ -12,10 +12,8 @@ import {useGitHub} from "../context/GithubContext.tsx";
 import {getSlang} from "../utils.ts";
 import {LuDownload} from "react-icons/lu";
 import IconButton from "./IconButton.tsx";
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {toJpeg} from "html-to-image";
-import JetBrainsMonoRegular from '../assets/fonts/JetBrainsMono-Regular.woff2';
-import JetBrainsMonoBold from '../assets/fonts/JetBrainsMono-Bold.woff2';
 
 const EndNote: React.FC = () => {
     const {data} = useGitHub();
@@ -34,36 +32,12 @@ const EndNote: React.FC = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // Font preloading logic
-    const loadFonts = useCallback(async () => {
-        // Use the imported font file paths
-        const fontRegular = new FontFace(
-            "JetBrains Mono",
-            `url(${JetBrainsMonoRegular})`,
-            {weight: "400", style: "normal"}
-        );
-        const fontBold = new FontFace(
-            "JetBrains Mono",
-            `url(${JetBrainsMonoBold})`,
-            {weight: "700", style: "normal"}
-        );
-
-        // Load and add the fonts to the document
-        await fontRegular.load();
-        document.fonts.add(fontRegular);
-
-        await fontBold.load();
-        document.fonts.add(fontBold);
-    }, []);
-
 
     const handleDownload = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
 
         if (divRef.current) {
             try {
-
-                await loadFonts();
 
                 const signature = divRef.current.querySelector('.signature') as HTMLElement;
                 const hiddenBackground = divRef.current.querySelector('.hidden-background') as HTMLElement;

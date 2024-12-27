@@ -49,7 +49,7 @@ export default function EndNoteCard({
                 padding: "1rem",
             }}>
                 <div>
-                    <p style={{fontSize: "1.2rem"}}>{icon}</p>
+                    <p style={{fontSize: "1rem"}}>{icon}</p>
                     <p>{title}</p>
                 </div>
                 <p style={{

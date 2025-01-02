@@ -1,4 +1,5 @@
-export const year: string = "2024";
+//export const year: number = new Date().getFullYear();
+export const year: number = 2024;
 
 
 export const streakIntroduction: string = "Consistency is the key, and you have the padlock! It's obvious you are a serious person.";

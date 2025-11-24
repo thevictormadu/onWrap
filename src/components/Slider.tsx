@@ -1,8 +1,9 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect, useRef, useCallback} from "react";
 import IconButton from "./IconButton.tsx";
 import {IoMdRefresh} from "react-icons/io";
 import {RiLogoutBoxLine} from "react-icons/ri";
 import {TiArrowLeftOutline, TiArrowRightOutline} from "react-icons/ti";
+import {SLIDE_DURATION, MOBILE_BREAKPOINT, PROGRESS_BAR_COLOR, PROGRESS_BAR_HEIGHT, PROGRESS_UPDATE_INTERVAL} from "../constants/ui.ts";
 
 interface SliderProps {
     slides: React.ComponentType[];
@@ -13,9 +14,9 @@ interface SliderProps {
 
 export default function Slider({
                                    slides,
-                                   slideDuration = 10000,
-                                   progressBarColor = "#00d4ff",
-                                   progressBarHeight = 5,
+                                   slideDuration = SLIDE_DURATION,
+                                   progressBarColor = PROGRESS_BAR_COLOR,
+                                   progressBarHeight = PROGRESS_BAR_HEIGHT,
                                }: SliderProps) {
     const [isMobile, setIsMobile] = useState(false);
     const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -27,7 +28,7 @@ export default function Slider({
     // Check for mobile screen
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth <= 500);
+            setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
         };
 
         handleResize();
@@ -37,11 +38,45 @@ export default function Slider({
     }, []);
 
 
-    // Function to update progress for the current slide
-    const updateProgress = () => {
+    // Move to the next slide
+    const goToNextSlide = useCallback(() => {
+        clearInterval(intervalRef.current!);
+        setCurrentSlide((prev) => {
+            if (prev < slides.length - 1) {
+                return prev + 1;
+            }
+            return prev;
+        });
+    }, [slides.length]);
+
+    const goToPrevSlide = useCallback(() => {
+        clearInterval(intervalRef.current!);
+        setCurrentSlide((prev) => {
+            if (prev > 0) {
+                return prev - 1;
+            }
+            return slides.length - 1;
+        });
+    }, [slides.length]);
+
+    // Reset progress for the next slide
+    const resetProgressForNextSlide = useCallback(() => {
         setProgressValues((prev) => {
             const updatedProgress = [...prev];
-            const increment = 100 / (slideDuration / 100);
+            updatedProgress[currentSlide] = 0;
+            if (currentSlide < slides.length - 1) {
+                updatedProgress[currentSlide + 1] = 0;
+            }
+            return updatedProgress;
+        });
+        clearInterval(intervalRef.current!);
+    }, [currentSlide, slides.length]);
+
+    // Function to update progress for the current slide
+    const updateProgress = useCallback(() => {
+        setProgressValues((prev) => {
+            const updatedProgress = [...prev];
+            const increment = 100 / (slideDuration / PROGRESS_UPDATE_INTERVAL);
             if (updatedProgress[currentSlide] + increment >= 100) {
                 updatedProgress[currentSlide] = 100;
                 goToNextSlide();
@@ -50,44 +85,7 @@ export default function Slider({
             }
             return updatedProgress;
         });
-    };
-
-    // Move to the next slide
-    const goToNextSlide = () => {
-        clearInterval(intervalRef.current!);
-        if (currentSlide < slides.length - 1) {
-            setCurrentSlide((prev) => prev + 1);
-        }
-        // else {
-        //     setCurrentSlide(0); // Loop back to the first slide
-        // }
-        resetProgressForNextSlide();
-    };
-
-
-    const goToPrevSlide = () => {
-        clearInterval(intervalRef.current!);
-        if (currentSlide > 0) {
-            setCurrentSlide((prev) => prev - 1);
-        } else {
-            setCurrentSlide(slides.length - 1); // Loop back to the last slide
-        }
-        resetProgressForNextSlide();
-    };
-
-    // Reset progress for the next slide
-    const resetProgressForNextSlide = () => {
-        setProgressValues((prev) => {
-            const updatedProgress = [...prev];
-            updatedProgress[currentSlide] = 0; // Reset the current slide's progress
-            if (currentSlide < slides.length - 1) {
-                updatedProgress[currentSlide + 1] = 0;
-            }
-            return updatedProgress;
-        });
-        clearInterval(intervalRef.current!);
-        intervalRef.current = setInterval(updateProgress, 100);
-    };
+    }, [currentSlide, slideDuration, goToNextSlide]);
 
     // Handle taps for navigation
     const handleTap = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -121,20 +119,39 @@ export default function Slider({
         resetProgressForNextSlide();
     }
 
+    // Keyboard navigation
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "ArrowRight" || e.key === " ") {
+                e.preventDefault();
+                goToNextSlide();
+            } else if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                goToPrevSlide();
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [goToNextSlide, goToPrevSlide]);
+
     // Start the timer for the current slide
     useEffect(() => {
-        intervalRef.current = setInterval(updateProgress, 100);
+        resetProgressForNextSlide();
+        intervalRef.current = setInterval(updateProgress, PROGRESS_UPDATE_INTERVAL);
 
         return () => {
-            if (intervalRef.current) clearInterval(intervalRef.current); // Cleanup on unmount
+            if (intervalRef.current) clearInterval(intervalRef.current);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentSlide]);
+    }, [currentSlide, updateProgress, resetProgressForNextSlide]);
 
     return (
         <div
             className="slider"
             onClick={handleTap}
+            role="region"
+            aria-label="GitHub wrap slideshow"
+            tabIndex={0}
             style={{
                 position: "relative",
                 width: "100%",
@@ -210,8 +227,8 @@ export default function Slider({
                 // transform: "translateX(-50%)",
                 gap: "0.5rem",
                 zIndex: 20,
-            }}><IconButton icon={<IoMdRefresh/>} handleClick={goToFirstSlide}/>
-                <IconButton icon={<RiLogoutBoxLine/>} handleClick={goHome}/>
+            }}><IconButton icon={<IoMdRefresh/>} handleClick={goToFirstSlide} aria-label="Restart slideshow"/>
+                <IconButton icon={<RiLogoutBoxLine/>} handleClick={goHome} aria-label="Return to home"/>
             </div>
 
 
@@ -224,8 +241,8 @@ export default function Slider({
                 alignItems: "center",
                 gap: "0.5rem",
                 zIndex: 20,
-            }}><IconButton icon={<TiArrowLeftOutline/>} handleClick={goPrev}/>
-                <IconButton icon={<TiArrowRightOutline/>} handleClick={goNext}/>
+            }}><IconButton icon={<TiArrowLeftOutline/>} handleClick={goPrev} aria-label="Previous slide"/>
+                <IconButton icon={<TiArrowRightOutline/>} handleClick={goNext} aria-label="Next slide"/>
             </div>)}
         </div>
     );

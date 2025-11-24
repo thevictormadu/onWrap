@@ -55,13 +55,15 @@ You need a GitHub Personal Access Token to use the GraphQL API:
 
 ### 4. Create Environment File
 
-Create a `.env` file in the root directory:
+Copy the example environment file and add your token:
 
 ```bash
-VITE_GITHUB_TOKEN=your_github_token_here
+cp .env.example .env
 ```
 
-**Important**: Never commit your `.env` file to version control. It's already in `.gitignore`.
+Then edit `.env` and replace `your_github_token_here` with your actual GitHub token.
+
+**Security Warning**: Never commit your `.env` file to version control. It's already in `.gitignore`. If you accidentally commit a token, revoke it immediately at: https://github.com/settings/tokens
 
 ### 5. Run the Development Server
 

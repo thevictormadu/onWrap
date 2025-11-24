@@ -1,36 +1,38 @@
-import NameCard from "./NameCard.tsx";
 import EndNoteCard from "./EndNoteCard.tsx";
 import {
-  commitsIcon,
   commitsTitle,
-  peakPerformanceIcon,
   peakPerformanceTitle,
-  prReviewsIcon,
   prReviewsTitle,
-  pullRequestsIcon,
   pullRequestsTitle,
-  slangIcon,
   slangTitle,
-  starsReceivedIcon,
   starsReceivedTitle,
-  streakIcon,
   streakTitle,
-  topLanguageIcon,
   topLanguageTitle,
+  year,
 } from "../constants.ts";
+import {
+  CommitsIcon,
+  PeakPerformanceIcon,
+  PrReviewsIcon,
+  PullRequestsIcon,
+  SlangIcon,
+  StarsReceivedIcon,
+  StreakIcon,
+  TopLanguageIcon,
+} from "../constants/endNoteIcons.tsx";
 import { useGitHub } from "../context/GithubContext.tsx";
 import { getSlang } from "../utils.ts";
-import { LuDownload } from "react-icons/lu";
-import IconButton from "./IconButton.tsx";
 import React, { useEffect, useRef, useState } from "react";
-import { toJpeg } from "html-to-image";
 import { MOBILE_ENDNOTE_BREAKPOINT } from "../constants/ui.ts";
+import GradientBg from "./GradientBg.tsx";
+import { AbstractShapesBackground } from "./AbstractShapes.tsx";
+import { COLORS, GRADIENTS } from "../constants/colors.ts";
+import { motion } from "framer-motion";
 
 const EndNote: React.FC = () => {
   const { data } = useGitHub();
   const slang = getSlang(data?.totalCommits || 0);
   const [isMobile, setIsMobile] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,75 +46,8 @@ const EndNote: React.FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleDownload = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-
-    if (divRef.current && !isDownloading) {
-      setIsDownloading(true);
-      try {
-        const signature = divRef.current.querySelector(
-          ".signature"
-        ) as HTMLElement;
-        const hiddenBackground = divRef.current.querySelector(
-          ".hidden-background"
-        ) as HTMLElement;
-        const downloadButton = divRef.current.querySelector(
-          ".download-button"
-        ) as HTMLElement;
-        const bottomMargin = divRef.current.querySelector(
-          ".bottom-margin"
-        ) as HTMLElement;
-        const topMargin = divRef.current.querySelector(
-          ".top-margin"
-        ) as HTMLElement;
-
-        // Backup original styles
-        const originalHeight = divRef.current.style.height || "";
-        const originalWidth = divRef.current.style.width || "100%";
-        const originalPadding = divRef.current.style.padding || "";
-        const originalSignatureDisplay = signature?.style.display || "";
-        const originalBottomMargin = bottomMargin?.style.marginBottom || "";
-        const originalTopMargin = topMargin?.style.marginTop || "";
-        const originalVisibility = hiddenBackground?.style.visibility || "";
-        const originalDisplay = downloadButton?.style.display || "";
-
-        // Apply styles for the image
-        divRef.current.style.height = "700px";
-        divRef.current.style.width = "400px";
-        divRef.current.style.padding = "1.5rem";
-        if (signature) signature.style.display = "block";
-        if (hiddenBackground) hiddenBackground.style.visibility = "visible";
-        if (downloadButton) downloadButton.style.display = "none";
-        if (bottomMargin) bottomMargin.style.marginBottom = "0";
-        if (topMargin) topMargin.style.marginTop = "0";
-
-        // Generate the image
-        const dataUrl = await toJpeg(divRef.current);
-        const link = document.createElement("a");
-        link.href = dataUrl;
-        link.download = "my-github-onwrap.jpg";
-        link.click();
-
-        // Restore original styles
-        divRef.current.style.height = originalHeight;
-        divRef.current.style.width = originalWidth;
-        divRef.current.style.padding = originalPadding;
-        if (signature) signature.style.display = originalSignatureDisplay;
-        if (hiddenBackground)
-          hiddenBackground.style.visibility = originalVisibility;
-        if (downloadButton) downloadButton.style.display = originalDisplay;
-        if (bottomMargin)
-          bottomMargin.style.marginBottom = originalBottomMargin;
-        if (topMargin) topMargin.style.marginTop = originalTopMargin;
-      } catch (error) {
-        if (import.meta.env.DEV) {
-          console.error("Error generating image:", error);
-        }
-      } finally {
-        setIsDownloading(false);
-      }
-    }
-  };
+  // Use the same dark gradient as IntroSlide
+  const darkGradient = `linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%)`;
 
   return (
     <div
@@ -121,20 +56,23 @@ const EndNote: React.FC = () => {
         justifyContent: "center",
         alignItems: "center",
         position: "relative",
-        background: `
-          linear-gradient(90deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px),
-          linear-gradient(180deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px)
-        `,
-        backgroundSize: "20px 20px",
-        animation: "moveMesh 5s linear infinite",
+        background: darkGradient,
         height: "100%",
         overflowY: "auto",
         overflowX: "hidden",
       }}
     >
+      <GradientBg slideIndex={9} animated={false} opacity={0.04} />
+      <AbstractShapesBackground
+        count={2}
+        types={["circle"]}
+        minSize={200}
+        maxSize={300}
+      />
       {/* Foreground Content */}
       <div
         ref={divRef}
+        className="endnote-content"
         style={{
           textAlign: "center",
           color: "#08C2F1",
@@ -150,144 +88,157 @@ const EndNote: React.FC = () => {
         }}
       >
         <div
-          className="hidden-background"
-          style={{
-            display: "flex",
-            inset: 0,
-            position: "absolute",
-            background: `
-          linear-gradient(90deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px),
-          linear-gradient(180deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px)
-        `,
-            visibility: "hidden",
-            overflow: "hidden",
-            backgroundSize: "20px 20px",
-            animation: "moveMesh 5s linear infinite",
-          }}
-        ></div>
-        <div
-          className="top-margin"
-          style={{
-            width: "100%",
-            marginTop: "2rem",
-            position: "sticky",
-            top: 30,
-            zIndex: 50,
-          }}
-        >
-          <NameCard
-            title={`@${data?.userId}`}
-            value={"2024 GitHub Year in Code"}
-          />
-        </div>
-
-        <div
           style={{
             display: "flex",
             flex: 1,
             width: "100%",
             flexDirection: "column",
-            gap: "1rem",
+            gap: "0.5rem",
+            padding: "0.5rem 0",
           }}
         >
-          <div style={{ display: "flex", width: "100%", flex: 1, gap: "1rem" }}>
+          <motion.div
+            className="top-margin"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            style={{
+              width: "100%",
+              marginTop: "2rem",
+              position: "sticky",
+              top: 30,
+              zIndex: 50,
+            }}
+          >
+            <div
+              style={{
+                padding: "1rem",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "start",
+                alignItems: "center",
+                gap: "0.5rem",
+                background: GRADIENTS.purpleBlue,
+                borderRadius: "0.5rem",
+                color: COLORS.white,
+              }}
+            >
+              <img
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  borderRadius: 50,
+                }}
+                src={data?.profilePicture}
+                alt={`${data?.userId || "GitHub user"} profile picture`}
+                loading="lazy"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = "none";
+                }}
+              />
+              <p>{`@${data?.userId}`}</p>
+              <p
+                style={{
+                  fontSize: "clamp(1.2rem, 2vw, 1.3rem)",
+                  fontWeight: "bold",
+                }}
+              >{`${year} GitHub Year in Code`}</p>
+              <div
+                style={{
+                  color: "white",
+                  textAlign: "left",
+                }}
+              ></div>
+            </div>
+          </motion.div>
+          <div style={{ display: "flex", width: "100%", gap: "0.5rem" }}>
             <EndNoteCard
-              icon={starsReceivedIcon}
+              icon={<StarsReceivedIcon />}
               title={starsReceivedTitle}
-              data={data?.totalStars.toString() || ""}
-              glowColor={"240, 187, 120"}
+              data={data?.totalStars.toLocaleString() || "0"}
+              cardIndex={0}
+              delay={0.2}
             />
             <EndNoteCard
-              icon={topLanguageIcon}
+              icon={<TopLanguageIcon />}
               title={topLanguageTitle}
-              data={data?.topLanguage || ""}
-              glowColor={"255, 135, 135"}
+              data={data?.topLanguage || "N/A"}
+              cardIndex={1}
+              delay={0.3}
+            />
+          </div>
+          <div style={{ display: "flex", width: "100%", gap: "0.5rem" }}>
+            <EndNoteCard
+              icon={<CommitsIcon />}
+              title={commitsTitle}
+              data={data?.totalCommits.toLocaleString() || "0"}
+              cardIndex={2}
               delay={0.4}
             />
-          </div>
-          <div style={{ display: "flex", width: "100%", flex: 1, gap: "1rem" }}>
             <EndNoteCard
-              icon={commitsIcon}
-              title={commitsTitle}
-              data={data?.totalCommits.toString() || ""}
-              glowColor={"135, 162, 2590"}
+              icon={<PullRequestsIcon />}
+              title={pullRequestsTitle}
+              data={data?.totalPRs.toLocaleString() || "0"}
+              cardIndex={3}
               delay={0.5}
             />
+          </div>
+          <div style={{ display: "flex", width: "100%", gap: "0.5rem" }}>
             <EndNoteCard
-              icon={pullRequestsIcon}
-              title={pullRequestsTitle}
-              data={data?.totalPRs.toString() || ""}
-              glowColor={"157, 223, 211"}
+              icon={<PeakPerformanceIcon />}
+              title={peakPerformanceTitle}
+              data={data?.peakMonth || "N/A"}
+              cardIndex={4}
               delay={0.6}
             />
-          </div>
-          <div style={{ display: "flex", width: "100%", flex: 1, gap: "1rem" }}>
             <EndNoteCard
-              icon={peakPerformanceIcon}
-              title={peakPerformanceTitle}
-              data={data?.peakMonth || "_"}
-              glowColor={"158, 223, 156"}
+              icon={<StreakIcon />}
+              title={streakTitle}
+              data={data?.longestStreak.toString() || "0"}
+              cardIndex={5}
               delay={0.7}
             />
+          </div>
+          <div style={{ display: "flex", width: "100%", gap: "0.5rem" }}>
             <EndNoteCard
-              icon={streakIcon}
-              title={streakTitle}
-              data={data?.longestStreak.toString() || ""}
-              glowColor={"251, 158, 198"}
+              icon={<PrReviewsIcon />}
+              title={prReviewsTitle}
+              data={data?.totalReviews.toLocaleString() || "0"}
+              cardIndex={0}
+              delay={0.8}
+            />
+            <EndNoteCard
+              icon={<SlangIcon />}
+              title={slangTitle}
+              data={slang.slang}
+              cardIndex={1}
               delay={0.9}
             />
           </div>
-          <div style={{ display: "flex", width: "100%", flex: 1, gap: "1rem" }}>
-            <EndNoteCard
-              icon={prReviewsIcon}
-              title={prReviewsTitle}
-              data={data?.totalReviews.toString() || ""}
-              glowColor={"252, 245, 150"}
-              delay={0.8}
-            />
-
-            <EndNoteCard
-              icon={slangIcon}
-              title={slangTitle}
-              data={slang.slang}
-              glowColor={"61, 178, 255"}
-              delay={1}
-            />
-          </div>
         </div>
-        <div
+        <motion.div
           className="signature"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2 }}
           style={{
             display: "none",
             justifyContent: "center",
             alignItems: "center",
             marginTop: "0.5rem",
             zIndex: 20,
-            fontSize: "0.7rem",
+            fontSize: "0.75rem",
+            color: "rgba(255, 255, 255, 0.7)",
+            fontFamily: "system-ui, sans-serif",
           }}
         >
-          🤍 made by <span style={{ fontWeight: "bold" }}>Victor madu</span>
-        </div>
-        <div
-          className="download-button"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 5,
-            marginBottom: "10px",
-            zIndex: 22,
-          }}
-        >
-          <IconButton
-            text={isDownloading ? "generating..." : "download"}
-            icon={<LuDownload />}
-            handleClick={handleDownload}
-            aria-label={
-              isDownloading ? "Generating image" : "Download wrap as image"
-            }
-          />
-        </div>
+          🤍 made by{" "}
+          <span style={{ fontWeight: 600, color: COLORS.white }}>
+            Victor Madu
+          </span>
+        </motion.div>
+        {/* Download button positioned in unified button area */}
       </div>
     </div>
   );

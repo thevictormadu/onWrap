@@ -1,9 +1,13 @@
 import { motion } from "framer-motion";
-import githubLogo from "../assets/github-logo.png";
 import NameCard from "./NameCard.tsx";
 import { useGitHub } from "../context/GithubContext.tsx";
 import { useEffect, useState } from "react";
 import { INTRO_PRETEXT_DURATION } from "../constants/ui.ts";
+import GradientBg from "./GradientBg.tsx";
+import { AbstractShapesBackground } from "./AbstractShapes.tsx";
+import { getTextGradient } from "../constants/colors.ts";
+import { COLORS } from "../constants/colors.ts";
+import { year } from "../constants.ts";
 
 export default function IntroSlide() {
   const { data } = useGitHub();
@@ -16,6 +20,10 @@ export default function IntroSlide() {
     return () => clearTimeout(timer);
   }, []);
 
+  const textGradient = getTextGradient(COLORS.blue, COLORS.pink);
+  // Use a darker gradient for the intro slide
+  const darkGradient = `linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%)`;
+
   return (
     <div
       style={{
@@ -23,16 +31,19 @@ export default function IntroSlide() {
         justifyContent: "center",
         alignItems: "center",
         position: "relative",
-        background: `
-          linear-gradient(90deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px),
-          linear-gradient(180deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px)
-        `,
-        backgroundSize: "20px 20px",
-        animation: "moveMesh 5s linear infinite",
+        background: darkGradient,
         width: "100%",
         height: "100svh",
+        overflow: "hidden",
       }}
     >
+      <GradientBg slideIndex={0} animated={false} opacity={0.04} />
+      <AbstractShapesBackground
+        count={2}
+        types={["circle"]}
+        minSize={250}
+        maxSize={350}
+      />
       {/* Foreground Content */}
       <div
         style={{
@@ -41,105 +52,140 @@ export default function IntroSlide() {
           left: "50%",
           transform: "translate(-50%, -50%)",
           textAlign: "center",
-          color: "#08C2F1",
+          color: COLORS.white,
           zIndex: 20,
           width: "100%",
           height: "100%",
-          maxWidth: "400px",
+          maxWidth: "600px",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between",
+          justifyContent: "center",
           alignItems: "center",
+          padding: "2rem",
+          gap: "2rem",
         }}
       >
-        <div style={{ marginTop: "3rem" }}>
+        <motion.div
+          style={{ position: "absolute", top: "5rem" }}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
           <NameCard
             title={`@${data?.userId}`}
-            value={`${data?.firstName || ""} ${data?.lastName || ""}`}
+            value={`${year} GitHub Year in Code`}
           />
-        </div>
+        </motion.div>
 
         {showPretext ? (
-          <div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "2rem",
+              alignItems: "center",
+            }}
+          >
             <motion.h1
-              initial={{ opacity: 0, y: 50 }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                textShadow: [
-                  "0 0 10px rgba(255, 255, 255, 0.8)",
-                  "0 0 20px rgba(255, 255, 255, 0.5)",
-                  "0 0 30px rgba(255, 255, 255, 0.8)",
-                ],
-                translateY: [0, -10, 0],
-              }}
-              transition={{
-                opacity: { duration: 1 },
-                textShadow: {
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatType: "mirror",
-                },
-                translateY: {
-                  duration: 4,
-                  repeat: Infinity,
-                  repeatType: "mirror",
-                },
-              }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
               style={{
-                fontSize: "4rem",
-                fontWeight: "bold",
-                margin: "1rem",
+                fontSize: "2.5rem",
+                fontWeight: 800,
+                margin: 0,
                 padding: "0 2rem",
+                lineHeight: 1.1,
               }}
             >
               <span
                 style={{
-                  background: "linear-gradient(45deg, #1E8CD0, #7B57FF)",
+                  background: textGradient,
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  display: "block",
                 }}
               >
-                YOUR 2024 IN CODE
+                👋 Hi {data?.firstName || ""} {data?.lastName || ""}
+              </span>
+              <span
+                style={{
+                  
+               
+                  display: "block",
+                  marginTop: "0.5rem",
+                }}
+              >
+                Welcome to Your {year} GitHub Year in Code
               </span>
             </motion.h1>
             <motion.p
-              className="pretext"
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -50 }}
-              transition={{ duration: 1 }}
-              style={{ fontSize: "1rem", padding: "2rem" }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              style={{
+                fontSize: "clamp(1rem, 2vw, 1.25rem)",
+                padding: "0 2rem",
+                color: "rgba(255, 255, 255, 0.9)",
+                lineHeight: 1.6,
+                maxWidth: "90%",
+              }}
             >
-              Ready to see your achievements, highlights, and the moments that
-              made you shine based on your public repos?
+              Enough about 2024, let's talk about you. Ready to see your
+              achievements, highlights, and the moments that made you shine?
             </motion.p>
-          </div>
+          </motion.div>
         ) : (
-          <motion.p
-            className="pretext"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -50 }}
-            transition={{ duration: 1 }}
-            style={{ fontSize: "1.5rem", padding: "2rem" }}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "1rem",
+            }}
           >
-            Shall we? 🤗
-          </motion.p>
+            <motion.p
+              style={{
+                fontSize: "2rem",
+                padding: "2rem",
+                fontWeight: 600,
+              }}
+            >
+              Shall we? 🤗
+            </motion.p>
+            <motion.p
+              style={{
+                fontSize: "1rem",
+                padding: "2rem",
+                fontWeight: 200,
+              }}
+            >
+              Click anywhere ◂left or right▸ to navigate
+            </motion.p>
+            <motion.div
+              animate={{
+                y: [0, 10, 0],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              style={{
+                fontSize: "3rem",
+              }}
+            >
+              ↓
+            </motion.div>
+          </motion.div>
         )}
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 5,
-            marginBottom: "120px",
-          }}
-        >
-          <img style={{ width: "1.5rem" }} src={githubLogo} alt="GitHub Logo" />
-          <p style={{ opacity: 0.8 }}>#GitHubOnWrap</p>
-        </div>
       </div>
     </div>
   );

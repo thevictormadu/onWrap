@@ -17,29 +17,39 @@ export default function IconButton({
     <button
       aria-label={ariaLabel || text || "Button"}
       style={{
-        border: "1px solid #0C3D4A",
-        backgroundColor: "#091C22",
+        border: "1px solid rgba(255, 255, 255, 0.08)",
+        backgroundColor: "rgba(255, 255, 255, 0.03)",
+        backdropFilter: "blur(8px)",
         padding: "0.5rem",
         borderRadius: "0.5rem",
         cursor: "pointer",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        transition: "background-color 0.3s ease",
-        fontSize: "1.6rem",
-        color: "rgba(0, 140, 175, 1)",
-        gap: "0.7rem",
+        transition: "all 0.2s ease",
+        fontSize: "1.2rem",
+        color: "rgba(255, 255, 255, 0.7)",
+        gap: "0.5rem",
         outline: "none",
+        minWidth: "auto",
       }}
       onFocus={(e) => {
-        e.currentTarget.style.outline = "2px solid rgba(8, 194, 241, 0.8)";
-        e.currentTarget.style.outlineOffset = "2px";
+        e.currentTarget.style.outline = "1px solid rgba(255, 255, 255, 0.3)";
+        e.currentTarget.style.outlineOffset = "1px";
       }}
       onBlur={(e) => {
         e.currentTarget.style.outline = "none";
       }}
-      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#0D2932")}
-      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#091C22")}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
+        e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.15)";
+        e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.03)";
+        e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)";
+        e.currentTarget.style.color = "rgba(255, 255, 255, 0.7)";
+      }}
       onClick={handleClick}
     >
       <div>{icon}</div>

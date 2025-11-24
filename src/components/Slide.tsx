@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import githubLogo from "../assets/github-logo.png";
 import FloatedGlass from "./FloatedGlass.tsx";
 import {
   PRETEXT_DISPLAY_DURATION,
   COUNTDOWN_ANIMATION_DURATION,
 } from "../constants/ui.ts";
+import { getSlideColor } from "../utils/gradients.ts";
+import { getTextGradient } from "../constants/colors.ts";
 
 export interface SlideProps {
   data: string;
@@ -17,6 +18,7 @@ export interface SlideProps {
   countDown?: boolean;
   emoji?: string;
   icon: string;
+  slideIndex?: number;
 }
 
 export default function Slide({
@@ -26,13 +28,19 @@ export default function Slide({
   preText,
   title,
   background = `
-          linear-gradient(90deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px),
-          linear-gradient(180deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px)
-        `,
+    linear-gradient(90deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px)
+  `,
   countDown,
   emoji,
   icon,
+  slideIndex = 0,
 }: SlideProps) {
+  const slideColor = getSlideColor(slideIndex);
+  const textGradient = getTextGradient(
+    slideColor,
+    getSlideColor(slideIndex + 1)
+  );
   const [showPretext, setShowPretext] = useState(true);
   const [count, setCount] = useState(0); // Start count from 0
 
@@ -75,7 +83,7 @@ export default function Slide({
         position: "relative",
         background: background,
         backgroundSize: "20px 20px",
-        // animation: "moveMesh 5s linear infinite",
+        overflow: "hidden",
       }}
     >
       {/* Foreground Content */}
@@ -98,112 +106,125 @@ export default function Slide({
             display: "flex",
             flexDirection: "column",
             width: "100%",
-            justifyContent: "space-between",
+            justifyContent: "center",
             alignItems: "center",
             height: "100%",
+            gap: "2rem",
           }}
         >
-          <div style={{ marginTop: "3rem" }}>
-            <FloatedGlass blur={"02px"}>
+          <motion.div
+            style={{ position: "absolute", top: "3rem" }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <FloatedGlass blur={"10px"}>
               <div
-                style={{ color: "white", fontSize: "1.3rem", padding: "1rem" }}
-              >{`${icon} ${title}`}</div>
+                style={{
+                  color: "white",
+                  fontSize: "1.5rem",
+                  padding: "1rem 1.5rem",
+                  fontWeight: 600,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                <span style={{ fontSize: "1.8rem" }}>{icon}</span>
+                <span>{title}</span>
+              </div>
             </FloatedGlass>
-          </div>
+          </motion.div>
 
           {showPretext ? (
-            <motion.p
-              className="pretext"
-              initial={{ opacity: 0, y: 50 }}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -50 }}
-              transition={{ duration: 1 }}
-              style={{ fontSize: "1.5rem", padding: "2rem" }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 0.8 }}
+              style={{
+                fontSize: "1.5rem",
+                padding: "2rem",
+                color: "rgba(255, 255, 255, 0.9)",
+                lineHeight: 1.6,
+                maxWidth: "90%",
+              }}
             >
               {preText}
-            </motion.p>
+            </motion.div>
           ) : (
-            <div
+            <motion.div
               className="metric"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6 }}
               style={{
                 display: "flex",
                 flex: 1,
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
+                gap: "1rem",
               }}
             >
+              {emoji && (
+                <motion.div
+                  initial={{ scale: 0, rotate: -180 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ duration: 0.8, type: "spring" }}
+                  style={{ fontSize: "5rem" }}
+                >
+                  {emoji}
+                </motion.div>
+              )}
               <motion.h1
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, scale: 0.8 }}
                 animate={{
                   opacity: 1,
-                  y: 0,
-                  textShadow: [
-                    "0 0 10px rgba(255, 255, 255, 0.8)",
-                    "0 0 20px rgba(255, 255, 255, 0.5)",
-                    "0 0 30px rgba(255, 255, 255, 0.8)",
-                  ],
-                  translateY: [0, -10, 0],
+                  scale: 1,
                 }}
-                transition={{
-                  opacity: { duration: 1 },
-                  textShadow: {
-                    duration: 2,
-                    repeat: Infinity,
-                    repeatType: "mirror",
-                  },
-                  translateY: {
-                    duration: 4,
-                    repeat: Infinity,
-                    repeatType: "mirror",
-                  },
-                }}
+                transition={{ duration: 0.8, delay: 0.2 }}
                 style={{
-                  fontSize: "4rem",
-                  fontWeight: "bold",
-                  margin: "1rem",
+                  fontSize: "clamp(3rem, 8vw, 6rem)",
+                  fontWeight: 800,
+                  margin: "0.5rem",
                   padding: "0 2rem",
+                  lineHeight: 1.1,
+                  textAlign: "center",
                 }}
               >
-                {emoji}
-                <br />
                 <span
+                  className="metric-number"
                   style={{
-                    background: "linear-gradient(45deg, #75FFE8, #7B57FF)",
+                    background: textGradient,
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    display: "block",
                   }}
                 >
-                  {countDown ? count : data} {suffix}
+                  {countDown ? count.toLocaleString() : data} {suffix}
                 </span>
               </motion.h1>
-              <motion.p
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.5 }}
-                style={{ fontSize: "1.5rem", padding: "0 2rem" }}
-              >
-                {subText}
-              </motion.p>
-            </div>
+              {subText && (
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  style={{
+                    fontSize: "clamp(1rem, 2vw, 1.5rem)",
+                    padding: "0 2rem",
+                    color: "rgba(255, 255, 255, 0.8)",
+                    textAlign: "center",
+                    lineHeight: 1.5,
+                    maxWidth: "90%",
+                  }}
+                >
+                  {subText}
+                </motion.p>
+              )}
+            </motion.div>
           )}
-
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 5,
-              marginBottom: "120px",
-            }}
-          >
-            <img
-              style={{ width: "1.5rem" }}
-              src={githubLogo}
-              alt="GitHub Logo"
-            />
-            <p style={{ opacity: 0.8 }}>#GitHubOnWrap</p>
-          </div>
         </div>
       </div>
     </div>

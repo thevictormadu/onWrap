@@ -112,13 +112,14 @@ src/
 
 ## Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `VITE_GITHUB_TOKEN` | GitHub Personal Access Token | Yes |
+| Variable            | Description                  | Required |
+| ------------------- | ---------------------------- | -------- |
+| `VITE_GITHUB_TOKEN` | GitHub Personal Access Token | Yes      |
 
 ## GitHub API Rate Limits
 
 The GitHub API has rate limits:
+
 - **Authenticated requests**: 5,000 requests per hour
 - **Unauthenticated requests**: 60 requests per hour
 

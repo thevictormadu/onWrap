@@ -11,7 +11,7 @@ export default function NameCard({title, value}: Props) {
     return (
         <FloatedGlass
             blur={"5px"}
-            borderRadius={"0.5em"}
+            borderRadius={"1rem"}
         >
             <div style={{
                 width: "100%",

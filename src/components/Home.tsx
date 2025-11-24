@@ -6,6 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { useGitHub } from "../context/GithubContext.tsx";
 import { useEffect, useState } from "react";
 import ProgressBar from "./ProgressBar.tsx";
+import { AbstractShapesBackground } from "./AbstractShapes.tsx";
+import { getTextGradient } from "../constants/colors.ts";
+import { COLORS } from "../constants/colors.ts";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const [userName, setUserName] = useState("");
@@ -64,7 +68,13 @@ export default function Home() {
         flex: 1,
       }}
     >
-      <MotionGradientBg opacity={0.15} />
+      <MotionGradientBg opacity={0.1} />
+      <AbstractShapesBackground
+        count={2}
+        types={["circle"]}
+        minSize={250}
+        maxSize={350}
+      />
       <div
         style={{
           padding: "2rem",
@@ -75,198 +85,232 @@ export default function Home() {
           justifyContent: "center",
         }}
       >
-        <FrostedGlass blur={"10px"}>
-          <div
-            style={{
-              maxWidth: "400px",
-              padding: "2rem",
-            }}
-          >
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleClick();
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <FrostedGlass blur={"10px"}>
+            <div
+              style={{
+                maxWidth: "500px",
+                padding: "2.5rem",
               }}
             >
-              <p
-                style={{
-                  margin: "0",
-                  color: "#fff",
-                  fontSize: "2rem",
-                  fontWeight: "bold",
-                  textAlign: "left",
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleClick();
                 }}
               >
-                2024: Your GitHub Story{" "}
-                <span
+                <motion.h1
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
                   style={{
-                    background: "linear-gradient(45deg, #75FFE8, #7B57FF)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
+                    margin: "0",
+                    color: COLORS.white,
+                    fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
+                    fontWeight: 800,
+                    textAlign: "left",
+                    lineHeight: 1.2,
                   }}
                 >
-                  onWrap
-                </span>
-              </p>
-              <p
+                  2024: Your GitHub Story{" "}
+                  <span
+                    style={{
+                      background: getTextGradient(COLORS.pink, COLORS.purple),
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
+                    onWrap
+                  </span>
+                </motion.h1>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  style={{
+                    color: "rgba(255, 255, 255, 0.9)",
+                    margin: "1.5rem 0",
+                    fontSize: "1rem",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  Relive the highlights of your 2024 coding adventure.
+                </motion.p>
+                <motion.input
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  style={{
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    width: "100%",
+                    boxSizing: "border-box",
+                    transition: "all 0.3s ease",
+                    borderRadius: "0.75rem",
+                    fontSize: "16px",
+                    padding: "1rem 1.25rem",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    backdropFilter: "blur(10px)",
+                    marginBottom: "1rem",
+                    color: COLORS.white,
+                    fontFamily: "inherit",
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.outline = `2px solid ${COLORS.purple}`;
+                    e.currentTarget.style.outlineOffset = "2px";
+                    e.currentTarget.style.borderColor = COLORS.purple;
+                    e.currentTarget.style.boxShadow = `0 0 20px ${COLORS.purple}40`;
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.outline = "none";
+                    e.currentTarget.style.borderColor =
+                      "rgba(255, 255, 255, 0.1)";
+                    e.currentTarget.style.boxShadow = "none";
+                  }}
+                  value={userName}
+                  onChange={(e) => {
+                    setUserName(e.target.value);
+                    if (validationError) {
+                      setValidationError(null);
+                    }
+                  }}
+                  type="text"
+                  placeholder="your GitHub username"
+                  aria-label="GitHub username input"
+                />
+                {validationError && (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "0.9rem",
+                      marginTop: "0.5rem",
+                    }}
+                  >
+                    {validationError}
+                  </p>
+                )}
+                {error && (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "0.9rem",
+                      marginTop: "0.5rem",
+                    }}
+                  >
+                    Error: {error}
+                  </p>
+                )}
+                {loading && <ProgressBar />}
+                <motion.button
+                  type="submit"
+                  aria-label="Generate GitHub wrap"
+                  disabled={loading}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  style={{
+                    width: "100%",
+                    transition: "all 0.3s ease",
+                    borderRadius: "0.75rem",
+                    fontWeight: 700,
+                    padding: "1rem 1.5rem",
+                    background: getTextGradient(COLORS.purple, COLORS.pink),
+                    marginTop: "1rem",
+                    border: "none",
+                    color: COLORS.white,
+                    cursor: loading ? "not-allowed" : "pointer",
+                    outline: "none",
+                    fontSize: "1rem",
+                    opacity: loading ? 0.6 : 1,
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.outline = `2px solid ${COLORS.purple}`;
+                    e.currentTarget.style.outlineOffset = "2px";
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.outline = "none";
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!loading) {
+                      e.currentTarget.style.boxShadow = `0 8px 32px ${COLORS.purple}60`;
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = "none";
+                  }}
+                >
+                  Generate My Wrap
+                </motion.button>
+              </form>
+              <div
                 style={{
-                  color: "#fff",
-                  margin: "2rem 0",
-                }}
-              >
-                Relive the highlights of your 2024 coding adventure.
-              </p>
-              <input
-                style={{
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  display: "flex",
                   width: "100%",
-                  boxSizing: "border-box",
-                  transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-                  borderRadius: "0.5rem",
-                  fontSize: "16px",
-                  padding: "1rem",
-                  background: "rgba(217, 217, 217, 0.07)",
-                  marginBottom: "1rem",
-                  color: "#fff",
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.outline =
-                    "2px solid rgba(8, 194, 241, 0.8)";
-                  e.currentTarget.style.outlineOffset = "2px";
-                  e.currentTarget.style.borderColor = "rgba(8, 194, 241, 0.5)";
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.outline = "none";
-                  e.currentTarget.style.borderColor =
-                    "rgba(255, 255, 255, 0.1)";
-                }}
-                value={userName}
-                onChange={(e) => {
-                  setUserName(e.target.value);
-                  if (validationError) {
-                    setValidationError(null);
-                  }
-                }}
-                type="text"
-                placeholder="your GitHub username"
-                aria-label="GitHub username input"
-              />
-              {validationError && (
-                <p
-                  style={{
-                    color: "red",
-                    fontSize: "0.9rem",
-                    marginTop: "0.5rem",
-                  }}
-                >
-                  {validationError}
-                </p>
-              )}
-              {error && (
-                <p
-                  style={{
-                    color: "red",
-                    fontSize: "0.9rem",
-                    marginTop: "0.5rem",
-                  }}
-                >
-                  Error: {error}
-                </p>
-              )}
-              {loading && <ProgressBar />}
-              <button
-                type="submit"
-                aria-label="Generate GitHub wrap"
-                disabled={loading}
-                style={{
-                  width: "100%",
-                  transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-                  borderRadius: "0.5rem",
-                  fontWeight: "bold",
-                  padding: "1rem",
-                  background: "linear-gradient(45deg, #833BDB, #1E8CD0)",
-                  marginTop: "1rem",
-                  border: "none",
-                  color: "#fff",
-                  cursor: "pointer",
-                  outline: "none",
-                  fontSize: "1rem",
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.outline =
-                    "2px solid rgba(131, 59, 219, 0.8)";
-                  e.currentTarget.style.outlineOffset = "2px";
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.outline = "none";
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow =
-                    "0 0 10px rgba(131, 59, 219, 0.6), 0 0 20px rgba(30, 140, 208, 0.6)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = "none";
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginTop: "1.5rem",
                 }}
               >
-                Generate My Wrap
-              </button>
-            </form>
+                <p style={{ margin: 0, opacity: 0.8, fontSize: "0.8rem" }}>
+                  #GitHubOnWrap
+                </p>
+                <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                  <img
+                    src={githubLogo}
+                    alt="GitHub Logo"
+                    style={{ width: "20px" }}
+                  />
+                  <a
+                    href="https://github.com/thevictormadu/onWrap.git"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      margin: 0,
+                      opacity: 0.8,
+                    }}
+                  >
+                    <p style={{ color: "white", fontSize: "0.8rem" }}>
+                      source code
+                    </p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </FrostedGlass>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          <FrostedGlass borderRadius={"2rem"}>
             <div
               style={{
                 display: "flex",
-                width: "100%",
                 justifyContent: "space-between",
                 alignItems: "center",
-                marginTop: "1.5rem",
+                gap: "1rem",
+                padding: "0.5rem 1rem 0.5rem 0.5rem",
               }}
             >
-              <p style={{ margin: 0, opacity: 0.8, fontSize: "0.8rem" }}>
-                #GitHubOnWrap
+              <img
+                style={{ width: "30px", borderRadius: "1rem" }}
+                src={victorPic}
+                alt="Victor Madu"
+              />
+              <p style={{ fontSize: "0.7rem" }}>
+                built with ❤️ by{" "}
+                <span style={{ fontWeight: "bold" }}>Victor Madu</span>
               </p>
-              <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                <img
-                  src={githubLogo}
-                  alt="GitHub Logo"
-                  style={{ width: "20px" }}
-                />
-                <a
-                  href="https://github.com/thevictormadu/onWrap.git"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    margin: 0,
-                    opacity: 0.8,
-                  }}
-                >
-                  <p style={{ color: "white", fontSize: "0.8rem" }}>
-                    source code
-                  </p>
-                </a>
-              </div>
             </div>
-          </div>
-        </FrostedGlass>
-        <FrostedGlass borderRadius={"2rem"}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              gap: "1rem",
-              padding: "0.5rem 1rem 0.5rem 0.5rem",
-            }}
-          >
-            <img
-              style={{ width: "30px", borderRadius: "1rem" }}
-              src={victorPic}
-              alt="Victor Madu"
-            />
-            <p style={{ fontSize: "0.7rem" }}>
-              built with ❤️ by{" "}
-              <span style={{ fontWeight: "bold" }}>Victor Madu</span>
-            </p>
-          </div>
-        </FrostedGlass>
+          </FrostedGlass>
+        </motion.div>
       </div>
     </div>
   );

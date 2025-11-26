@@ -18,14 +18,6 @@ html {
 
 }
 
-/* Monospace font for metrics and numbers only */
-.metric,
-.metric-number {
-    font-family: 'JetBrains Mono', monospace;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.02em;
-}
-
 body {
     margin: 0;
     padding: 0;
@@ -89,3 +81,5 @@ button:focus-visible {
         transform: translateX(500%);
     }
 }
+
+/* Component-specific styles have been moved to inline styles in components */

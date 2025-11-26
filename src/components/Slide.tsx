@@ -4,6 +4,8 @@ import FloatedGlass from "./FloatedGlass.tsx";
 import {
   PRETEXT_DISPLAY_DURATION,
   COUNTDOWN_ANIMATION_DURATION,
+  GRID_PATTERN,
+  GRID_PATTERN_SIZE,
 } from "../constants/ui.ts";
 import { getSlideColor } from "../utils/gradients.ts";
 import { getTextGradient } from "../constants/colors.ts";
@@ -27,10 +29,7 @@ export default function Slide({
   subText,
   preText,
   title,
-  background = `
-    linear-gradient(90deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px)
-  `,
+  background = GRID_PATTERN,
   countDown,
   emoji,
   icon,
@@ -53,7 +52,13 @@ export default function Slide({
   }, []);
 
   useEffect(() => {
+    if (!countDown) {
+      setCount(Number(data));
+      return;
+    }
+
     let startTime: number;
+    let animationFrameId: number;
     const duration = COUNTDOWN_ANIMATION_DURATION;
     const target = Number(data);
 
@@ -66,15 +71,19 @@ export default function Slide({
       );
       setCount(newCount);
 
-      if (progress < duration && countDown) {
-        requestAnimationFrame(animate);
+      if (progress < duration) {
+        animationFrameId = requestAnimationFrame(animate);
       }
     };
 
-    if (countDown) {
-      requestAnimationFrame(animate);
-    }
-  }, [data, showPretext, countDown]);
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [data, countDown]);
 
   return (
     <div
@@ -82,7 +91,7 @@ export default function Slide({
         height: "100svh",
         position: "relative",
         background: background,
-        backgroundSize: "20px 20px",
+        backgroundSize: GRID_PATTERN_SIZE,
         overflow: "hidden",
       }}
     >
@@ -118,7 +127,7 @@ export default function Slide({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <FloatedGlass blur={"10px"}>
+            <FloatedGlass>
               <div
                 style={{
                   color: "white",
@@ -154,7 +163,6 @@ export default function Slide({
             </motion.div>
           ) : (
             <motion.div
-              className="metric"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6 }}
@@ -165,6 +173,9 @@ export default function Slide({
                 justifyContent: "center",
                 alignItems: "center",
                 gap: "1rem",
+                fontFamily: "'JetBrains Mono', monospace",
+                fontVariantNumeric: "tabular-nums",
+                letterSpacing: "-0.02em",
               }}
             >
               {emoji && (
@@ -194,13 +205,15 @@ export default function Slide({
                 }}
               >
                 <span
-                  className="metric-number"
                   style={{
                     background: textGradient,
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
                     display: "block",
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontVariantNumeric: "tabular-nums",
+                    letterSpacing: "-0.02em",
                   }}
                 >
                   {countDown ? count.toLocaleString() : data} {suffix}

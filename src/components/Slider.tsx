@@ -54,7 +54,10 @@ export default function Slider({
 
   // Move to the next slide
   const goToNextSlide = useCallback(() => {
-    clearInterval(intervalRef.current!);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
     setCurrentSlide((prev) => {
       if (prev < slides.length - 1) {
         return prev + 1;
@@ -64,7 +67,10 @@ export default function Slider({
   }, [slides.length]);
 
   const goToPrevSlide = useCallback(() => {
-    clearInterval(intervalRef.current!);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
     setCurrentSlide((prev) => {
       if (prev > 0) {
         return prev - 1;
@@ -83,7 +89,10 @@ export default function Slider({
       }
       return updatedProgress;
     });
-    clearInterval(intervalRef.current!);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
   }, [currentSlide, slides.length]);
 
   // Function to update progress for the current slide
@@ -128,7 +137,10 @@ export default function Slider({
 
   const goToFirstSlide = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    clearInterval(intervalRef.current!);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
     setCurrentSlide(0);
     resetProgressForNextSlide();
   };
@@ -152,7 +164,10 @@ export default function Slider({
         goToPrevSlide();
       } else if (e.key === "Home") {
         e.preventDefault();
-        clearInterval(intervalRef.current!);
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
         setCurrentSlide(0);
         resetProgressForNextSlide();
       } else if (e.key === "Escape") {
@@ -171,13 +186,15 @@ export default function Slider({
     intervalRef.current = setInterval(updateProgress, PROGRESS_UPDATE_INTERVAL);
 
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
     };
   }, [currentSlide, updateProgress, resetProgressForNextSlide]);
 
   return (
     <div
-      className="slider"
       onClick={handleTap}
       role="region"
       aria-label="GitHub wrap slideshow"
@@ -192,7 +209,6 @@ export default function Slider({
     >
       {/* Colorful Segmented Progress Bar */}
       <div
-        className="progress-bars"
         style={{
           position: "absolute",
           top: "1rem",
@@ -353,7 +369,7 @@ export default function Slider({
               }
             />
           )}
-        
+
           {/* Restart Button */}
           <IconButton
             icon={<IoMdRefresh />}
@@ -366,8 +382,8 @@ export default function Slider({
             handleClick={goHome}
             aria-label="Return to home"
           />
-            {/* Sound Button */}
-            {onToggleAudio && (
+          {/* Sound Button */}
+          {onToggleAudio && (
             <IconButton
               icon={!isPlaying ? <MdMusicNote /> : <MdMusicOff />}
               handleClick={onToggleAudio}

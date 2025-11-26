@@ -27,9 +27,7 @@ export default function EndNoteCard({
       style={{
         borderRadius: "0.5rem",
         width: "50%",
-
         background: COLORS.lightGray,
-        //border: `1px solid ${borderColor}`,
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",
@@ -99,13 +97,15 @@ export default function EndNoteCard({
           </p>
         </div>
         <p
-          className="metric-number"
           style={{
             fontSize: "1.5rem",
             fontWeight: 800,
             margin: 0,
             color: cardColor,
             lineHeight: 1.2,
+            fontFamily: "'JetBrains Mono', monospace",
+            fontVariantNumeric: "tabular-nums",
+            letterSpacing: "-0.02em",
           }}
         >
           {data}

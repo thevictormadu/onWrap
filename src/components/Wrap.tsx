@@ -42,6 +42,15 @@ import {
 } from "../constants.ts";
 import { useEffect, useState, useRef } from "react";
 import html2canvas from "html2canvas";
+import {
+  WHATSAPP_STATUS_WIDTH,
+  WHATSAPP_STATUS_HEIGHT,
+  DOWNLOAD_PADDING,
+  ORIGINAL_CONTENT_WIDTH,
+  DOWNLOAD_SCALE_FACTOR,
+  DOWNLOAD_QUALITY,
+  DOWNLOAD_CANVAS_SCALE,
+} from "../constants/ui.ts";
 
 const SlideOne: React.FC = () => <IntroSlide />;
 
@@ -232,23 +241,16 @@ export default function Wrap() {
   const handleDownload = async () => {
     // Find the EndNote content div
     const endNoteDiv = document.querySelector(
-      ".endnote-content"
+      "[data-endnote-content='true']"
     ) as HTMLElement;
     if (!endNoteDiv || isDownloading) return;
 
     setIsDownloading(true);
     try {
       // WhatsApp Status dimensions: 1080x1920 (9:16 aspect ratio)
-      const targetWidth = 1080;
-      const targetHeight = 1920;
-
-      // Add generous padding - use 120px on all sides
-      const padding = 120;
-
-      // Calculate scale factor to fit content within padded area
-      // Original content is ~400px wide, scale to fit nicely with padding
-      const contentWidth = 700; // Target content width with padding
-      const scaleFactor = contentWidth / 400; // ~1.75x scale
+      const targetWidth = WHATSAPP_STATUS_WIDTH;
+      const targetHeight = WHATSAPP_STATUS_HEIGHT;
+      const padding = DOWNLOAD_PADDING;
 
       // Clone the element to avoid modifying the original
       const clone = endNoteDiv.cloneNode(true) as HTMLElement;
@@ -269,32 +271,36 @@ export default function Wrap() {
       wrapper.style.overflow = "hidden";
 
       // Set clone dimensions and use transform scale
-      clone.style.width = "400px";
+      clone.style.width = `${ORIGINAL_CONTENT_WIDTH}px`;
       clone.style.height = "auto";
       clone.style.padding = "2.5rem";
       clone.style.justifyContent = "center";
       clone.style.gap = "1.5rem";
-      clone.style.transform = `scale(${scaleFactor})`;
+      clone.style.transform = `scale(${DOWNLOAD_SCALE_FACTOR})`;
       clone.style.transformOrigin = "center center";
 
       // Show signature
-      const clonedSignature = clone.querySelector(".signature") as HTMLElement;
+      const clonedSignature = clone.querySelector(
+        "[data-signature='true']"
+      ) as HTMLElement;
       if (clonedSignature) {
         clonedSignature.style.display = "flex";
       }
 
       // Hide download button if exists
       const clonedDownloadButton = clone.querySelector(
-        ".download-button"
+        "[data-download-button='true']"
       ) as HTMLElement;
       if (clonedDownloadButton) {
         clonedDownloadButton.style.display = "none";
       }
 
       // Remove margins
-      const clonedTopMargin = clone.querySelector(".top-margin") as HTMLElement;
+      const clonedTopMargin = clone.querySelector(
+        "[data-top-margin='true']"
+      ) as HTMLElement;
       const clonedBottomMargin = clone.querySelector(
-        ".bottom-margin"
+        "[data-bottom-margin='true']"
       ) as HTMLElement;
       if (clonedTopMargin) clonedTopMargin.style.marginTop = "0";
       if (clonedBottomMargin) clonedBottomMargin.style.marginBottom = "0";
@@ -331,7 +337,7 @@ export default function Wrap() {
       const canvas = await html2canvas(wrapper, {
         width: targetWidth,
         height: targetHeight,
-        scale: 2, // High resolution
+        scale: DOWNLOAD_CANVAS_SCALE,
         backgroundColor: "#000000",
         useCORS: true,
         logging: false,
@@ -348,9 +354,9 @@ export default function Wrap() {
           const url = URL.createObjectURL(blob);
           const link = document.createElement("a");
           link.href = url;
-          link.download = `github-onwrap-${
-            data?.userId || "wrap"
-          }-${new Date().getFullYear()}.jpg`;
+          const userId = data?.userId || "wrap";
+          const year = new Date().getFullYear();
+          link.download = `github-onwrap-${userId}-${year}.jpg`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
@@ -360,7 +366,7 @@ export default function Wrap() {
           document.body.removeChild(wrapper);
         },
         "image/jpeg",
-        0.95
+        DOWNLOAD_QUALITY
       );
     } catch (error) {
       if (import.meta.env.DEV) {

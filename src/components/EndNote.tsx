@@ -1,220 +1,173 @@
+import { SLIDE_CONFIG } from "../constants/index.ts";
+import { useGitHub } from "../context/GithubContext.tsx";
+import { getLanguageIconAndColor, getSlang } from "../utils.ts";
+import React, { useRef } from "react";
+import { MOBILE_ENDNOTE_BREAKPOINT } from "../constants/ui.ts";
+import { useMediaQuery } from "../hooks";
+import { COLORS, primaryColor } from "../constants/colors.ts";
+import { motion } from "framer-motion";
+import BasicEndCard from "./BasicEndCard.tsx";
+import BoldEndCard from "./BoldEndCard.tsx";
+import LongEndNoteCard from "./LongEndNoteCard.tsx";
+import ContributionsCard from "./ContributionsCard.tsx";
+import { MdMergeType, MdLightbulb } from "react-icons/md";
+import { PiStarThin } from "react-icons/pi";
+import { GoCodeReview } from "react-icons/go";
+import { LiaAwardSolid } from "react-icons/lia";
+import { RiFireLine } from "react-icons/ri";
 import NameCard from "./NameCard.tsx";
-import EndNoteCard from "./EndNoteCard.tsx";
-import {
-    commitsIcon,
-    commitsTitle, peakPerformanceIcon,
-    peakPerformanceTitle, prReviewsIcon, prReviewsTitle, pullRequestsIcon,
-    pullRequestsTitle, slangIcon, slangTitle, starsReceivedIcon,
-    starsReceivedTitle, streakIcon, streakTitle, topLanguageIcon,
-    topLanguageTitle
-} from "../constants.ts";
-import {useGitHub} from "../context/GithubContext.tsx";
-import {getSlang} from "../utils.ts";
-import {LuDownload} from "react-icons/lu";
-import IconButton from "./IconButton.tsx";
-import React, {useEffect, useRef, useState} from "react";
-import {toJpeg} from "html-to-image";
+import GridBackground from "./GridBackground.tsx";
 
 const EndNote: React.FC = () => {
-    const {data} = useGitHub();
-    const slang = getSlang(data?.totalCommits || 0);
-    const [isMobile, setIsMobile] = useState(false);
-    const divRef = useRef<HTMLDivElement>(null);
+  const { data } = useGitHub();
+  const slang = getSlang(data?.totalCommits || 0);
+  const isMobile = useMediaQuery(MOBILE_ENDNOTE_BREAKPOINT);
+  const divRef = useRef<HTMLDivElement>(null);
+  const languageIconData = getLanguageIconAndColor(data?.topLanguage || "");
 
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 400);
-        };
-
-        handleResize();
-        window.addEventListener('resize', handleResize);
-
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-
-    const handleDownload = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-
-        if (divRef.current) {
-            try {
-
-                const signature = divRef.current.querySelector('.signature') as HTMLElement;
-                const hiddenBackground = divRef.current.querySelector('.hidden-background') as HTMLElement;
-                const downloadButton = divRef.current.querySelector('.download-button') as HTMLElement;
-                const bottomMargin = divRef.current.querySelector('.bottom-margin') as HTMLElement;
-                const topMargin = divRef.current.querySelector('.top-margin') as HTMLElement;
-
-                // Backup original styles
-                const originalHeight = divRef.current.style.height || '';
-                const originalWidth = divRef.current.style.width || '100%';
-                const originalPadding = divRef.current.style.padding || '';
-                const originalSignatureDisplay = signature?.style.display || '';
-                const originalBottomMargin = bottomMargin?.style.marginBottom || '';
-                const originalTopMargin = topMargin?.style.marginTop || '';
-                const originalVisibility = hiddenBackground?.style.visibility || '';
-                const originalDisplay = downloadButton?.style.display || '';
-
-                // Apply styles for the image
-                divRef.current.style.height = '700px';
-                divRef.current.style.width = '400px';
-                divRef.current.style.padding = '1.5rem';
-                if (signature) signature.style.display = 'block';
-                if (hiddenBackground) hiddenBackground.style.visibility = 'visible';
-                if (downloadButton) downloadButton.style.display = 'none';
-                if (bottomMargin) bottomMargin.style.marginBottom = '0';
-                if (topMargin) topMargin.style.marginTop = '0';
-
-                // Generate the image
-                const dataUrl = await toJpeg(divRef.current);
-                const link = document.createElement('a');
-                link.href = dataUrl;
-                link.download = 'my-github-onwrap.jpg';
-                link.click();
-
-                // Restore original styles
-                divRef.current.style.height = originalHeight;
-                divRef.current.style.width = originalWidth;
-                divRef.current.style.padding = originalPadding;
-                if (signature) signature.style.display = originalSignatureDisplay;
-                if (hiddenBackground) hiddenBackground.style.visibility = originalVisibility;
-                if (downloadButton) downloadButton.style.display = originalDisplay;
-                if (bottomMargin) bottomMargin.style.marginBottom = originalBottomMargin;
-                if (topMargin) topMargin.style.marginTop = originalTopMargin;
-
-            } catch (error) {
-                console.error('Error generating image:', error);
-            }
-        }
-    };
-
-    return (
+  return (
+    <GridBackground>
+      <div
+        style={{
+          height: "100%",
+          width: "100%",
+          overflowY: "auto",
+          overflowX: "hidden",
+          alignItems: "center",
+          display: "flex",
+          flexDirection: "column",
+          padding: isMobile ? "1rem" : "0",
+        }}
+      >
+        {/* Foreground Content */}
         <div
-            style={{
-                display: "flex",
+          ref={divRef}
+          data-endnote-content="true"
+          style={{
+            width: isMobile ? "100%" : "400px",
+
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            alignItems: "stretch",
+            padding: isMobile ? "0.5rem 0 5rem 0" : "1rem",
+
+            gap: "0.75rem",
+            position: "relative",
+            marginTop: "20px",
+            boxSizing: "border-box",
+          }}
+        >
+          {/* Profile Card */}
+          <NameCard />
+
+          {/* Commits and Stars Received - Side by Side */}
+          <div style={{ display: "flex", gap: "0.75rem" }}>
+            {/* Commits Card */}
+            <ContributionsCard value={data?.totalCommits || 0} delay={0.1} />
+
+            {/* Stars Received Card */}
+            <BasicEndCard
+              icon={<PiStarThin />}
+              iconColor={COLORS.yellow}
+              value={data?.totalStars || 0}
+              title={SLIDE_CONFIG.starsReceived.title}
+              delay={0.15}
+            />
+          </div>
+
+          {/* PRs and Reviews - Side by Side */}
+          <div style={{ display: "flex", gap: "0.75rem" }}>
+            {/* PRs Card */}
+            <BasicEndCard
+              icon={<MdMergeType />}
+              iconColor={SLIDE_CONFIG.pullRequests.color}
+              value={data?.totalPRs || 0}
+              title={SLIDE_CONFIG.pullRequests.title}
+              delay={0.2}
+            />
+
+            {/* PR Reviews Card */}
+            <BasicEndCard
+              icon={<GoCodeReview />}
+              iconColor={SLIDE_CONFIG.prReviews.color}
+              value={(data?.totalReviews ?? 0).toLocaleString()}
+              title={SLIDE_CONFIG.prReviews.title}
+              delay={0.25}
+            />
+          </div>
+
+          {/* Top Language Card - Full Width */}
+          <LongEndNoteCard
+            icon={React.createElement(languageIconData.icon || MdLightbulb, {
+              color: languageIconData.color || primaryColor,
+            })}
+            iconColor={languageIconData.color || primaryColor}
+            value={data?.topLanguage || "N/A"}
+            title={SLIDE_CONFIG.topLanguage.title}
+            delay={0.4}
+            flex={0}
+          />
+
+          {/* Longest Streak and Peak Performance - Side by Side */}
+          <div style={{ display: "flex", gap: "0.75rem" }}>
+            {/* Longest Streak Card */}
+            <BoldEndCard
+              value={data?.longestStreak || 0}
+              title={"Day Longest Streak"}
+              gradientColors={[COLORS.orange, "#FF8A00"]}
+              delay={0.3}
+            />
+
+            {/* Peak Performance Card */}
+            <BasicEndCard
+              icon={<RiFireLine />}
+              iconColor={SLIDE_CONFIG.peakPerformance.color}
+              value={data?.peakMonth || 0}
+              title={SLIDE_CONFIG.peakPerformance.title}
+              delay={0.35}
+            />
+          </div>
+
+          {/* PR Reviews and Slang - Side by Side */}
+          <div>
+            {/* Slang Card */}
+            <LongEndNoteCard
+              icon={<LiaAwardSolid />}
+              value={slang.slang}
+              title={SLIDE_CONFIG.slang.title}
+              delay={0.4}
+              flex={0}
+            />
+          </div>
+
+          {!isMobile && (
+            <motion.div
+              data-signature="true"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
+              style={{
+                display: "none",
                 justifyContent: "center",
                 alignItems: "center",
-                position: "relative",
-                background: `
-          linear-gradient(90deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px),
-          linear-gradient(180deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px)
-        `,
-                backgroundSize: "20px 20px",
-                animation: "moveMesh 5s linear infinite",
-                height: "100%",
-                overflowY: "auto",
-                overflowX: "hidden"
-            }}
-        >
-
-            {/* Foreground Content */}
-            <div
-                ref={divRef}
-                style={{
-                    textAlign: "center",
-                    color: "#08C2F1",
-                    width: isMobile ? "100%" : "400px",
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "1rem",
-                    gap: "1rem",
-                    position: "relative",
-
-                }}
+                marginTop: "0.5rem",
+                zIndex: 20,
+                fontSize: "0.75rem",
+                color: "rgba(255, 255, 255, 0.7)",
+                fontFamily: "system-ui, sans-serif",
+              }}
             >
-                <div className="hidden-background" style={{
-                    display: "flex",
-                    inset: 0,
-                    position: "absolute",
-                    background: `
-          linear-gradient(90deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px),
-          linear-gradient(180deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px)
-        `,
-                    visibility: "hidden",
-                    overflow: "hidden",
-                    backgroundSize: "20px 20px",
-                    animation: "moveMesh 5s linear infinite",
-                }}>
-
-                </div>
-                <div className="top-margin"
-                     style={{width: "100%", marginTop: "2rem", position: "sticky", top: 30, zIndex: 50}}>
-                    <NameCard title={`@${data?.userId}`} value={"2024 GitHub Year in Code"}/>
-                </div>
-
-                <div style={{
-                    display: "flex",
-                    flex: 1,
-                    width: "100%",
-                    flexDirection: "column",
-                    gap: "1rem",
-                }}>
-                    <div style={{display: "flex", width: "100%", flex: 1, gap: "1rem"}}>
-                        <EndNoteCard icon={starsReceivedIcon} title={starsReceivedTitle}
-                                     data={data?.totalStars.toString() || ""}
-                                     glowColor={"240, 187, 120"}/>
-                        <EndNoteCard icon={topLanguageIcon} title={topLanguageTitle} data={data?.topLanguage || ""}
-                                     glowColor={"255, 135, 135"} delay={0.4}/>
-                    </div>
-                    <div style={{display: "flex", width: "100%", flex: 1, gap: "1rem"}}>
-                        <EndNoteCard icon={commitsIcon} title={commitsTitle} data={data?.totalCommits.toString() || ""}
-                                     glowColor={"135, 162, 2590"} delay={0.5}/>
-                        <EndNoteCard icon={pullRequestsIcon} title={pullRequestsTitle}
-                                     data={data?.totalPRs.toString() || ""}
-                                     glowColor={"157, 223, 211"} delay={0.6}/>
-                    </div>
-                    <div style={{display: "flex", width: "100%", flex: 1, gap: "1rem"}}>
-                        <EndNoteCard icon={peakPerformanceIcon} title={peakPerformanceTitle}
-                                     data={data?.peakMonth || "_"}
-                                     glowColor={"158, 223, 156"} delay={0.7}/>
-                        <EndNoteCard icon={streakIcon} title={streakTitle} data={data?.longestStreak.toString() || ""}
-                                     glowColor={"251, 158, 198"} delay={0.9}/>
-
-                    </div>
-                    <div style={{display: "flex", width: "100%", flex: 1, gap: "1rem"}}>
-                        <EndNoteCard icon={prReviewsIcon} title={prReviewsTitle}
-                                     data={data?.totalReviews.toString() || ""}
-                                     glowColor={"252, 245, 150"} delay={0.8}/>
-
-                        <EndNoteCard icon={slangIcon} title={slangTitle} data={slang.slang}
-                                     glowColor={"61, 178, 255"} delay={1}/>
-                    </div>
-                </div>
-                <div
-                    className="signature"
-                    style={{
-                        display: "none",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: "0.5rem",
-                        zIndex: 20,
-                        fontSize: "0.7rem"
-                    }}
-                >
-                    🤍 made by <span style={{fontWeight: "bold"}}>Victor madu</span>
-
-
-                </div>
-                <div
-                    className="download-button"
-                    style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        gap: 5,
-                        marginBottom: "10px",
-                        zIndex: 22
-                    }}
-                >
-                    <IconButton text={"download"} icon={<LuDownload/>} handleClick={handleDownload}/>
-                </div>
-
-            </div>
+              🤍 made by{" "}
+              <span style={{ fontWeight: 600, color: COLORS.white }}>
+                Victor Madu
+              </span>
+            </motion.div>
+          )}
         </div>
-    );
+      </div>
+    </GridBackground>
+  );
 };
 
 export default EndNote;

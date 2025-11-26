@@ -1,196 +1,269 @@
-import {useState, useEffect} from "react";
-import {motion} from "framer-motion";
-import githubLogo from "../assets/github-logo.png";
-import FloatedGlass from "./FloatedGlass.tsx";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import {
+  PRETEXT_DISPLAY_DURATION,
+  COUNTDOWN_ANIMATION_DURATION,
+  GRID_PATTERN,
+} from "../constants/ui.ts";
+import { COLORS, primaryColor, primaryGradient } from "../constants/colors.ts";
+import Card from "./Card.tsx";
+import GridBackground from "./GridBackground.tsx";
+import { AbstractShapesBackground } from "./AbstractShapes.tsx";
+import { IconType } from "react-icons/lib";
+import React from "react";
 
 export interface SlideProps {
-    data: string;
-    suffix?: string;
-    subText?: string;
-    preText?: string;
-    title: string;
-    background?: string;
-    countDown?: boolean;
-    emoji?: string;
-    icon: string;
+  data: string;
+  suffix?: string;
+  subText?: string;
+  preText?: string;
+  title: string;
+  background?: string;
+  countDown?: boolean;
+  emoji?: string;
+  icon: IconType;
+  gradient?: string;
+  color?: string;
+  slideIndex?: number;
 }
 
 export default function Slide({
-                                  data,
-                                  suffix,
-                                  subText,
-                                  preText,
-                                  title,
-                                  background = `
-          linear-gradient(90deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px),
-          linear-gradient(180deg, rgba(23, 23, 23, 0.6) 1px, transparent 1px)
-        `,
-                                  countDown,
-                                  emoji,
-                                  icon,
-                              }: SlideProps) {
-    const [showPretext, setShowPretext] = useState(true);
-    const [count, setCount] = useState(0); // Start count from 0
+  data,
+  suffix,
+  subText,
+  preText,
+  title,
+  background = GRID_PATTERN,
+  countDown,
+  emoji,
+  icon,
+  gradient,
+  color,
+}: SlideProps) {
+  const [showPretext, setShowPretext] = useState(true);
+  const [count, setCount] = useState(0); // Start count from 0
 
+  useEffect(() => {
+    setShowPretext(true);
+    setCount(0); // Reset count when slide changes
+    const timer = setTimeout(() => {
+      setShowPretext(false);
+    }, PRETEXT_DISPLAY_DURATION);
+    return () => clearTimeout(timer);
+  }, [data]);
 
-    useEffect(() => {
-        setShowPretext(true);
-        const timer = setTimeout(() => {
-            setShowPretext(false);
-        }, 5000);
-        return () => clearTimeout(timer);
-    }, []);
+  useEffect(() => {
+    if (!countDown) {
+      setCount(Number(data));
+      return;
+    }
 
-    useEffect(() => {
-        let startTime: number;
-        const duration = 1000;
-        const target = Number(data);
+    // Only start countdown animation after pretext is hidden
+    if (showPretext) {
+      setCount(0);
+      return;
+    }
 
-        const animate = (timestamp: number) => {
-            if (!startTime) startTime = timestamp;
-            const progress = timestamp - startTime;
-            const newCount = Math.min(Math.round((progress / duration) * target), target);
-            setCount(newCount);
+    let startTime: number;
+    let animationFrameId: number;
+    const duration = COUNTDOWN_ANIMATION_DURATION;
+    const target = Number(data);
 
-            if (progress < duration && countDown) {
-                requestAnimationFrame(animate);
-            }
-        };
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = timestamp - startTime;
+      const newCount = Math.min(
+        Math.round((progress / duration) * target),
+        target
+      );
+      setCount(newCount);
 
-        requestAnimationFrame(animate);
+      if (progress < duration) {
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    };
 
-    }, [data, showPretext]);
+    animationFrameId = requestAnimationFrame(animate);
 
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [data, countDown, showPretext]);
 
-    return (
+  return (
+    <GridBackground background={background}>
+      {/* Foreground Content */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          textAlign: "center",
+          zIndex: 20,
+          width: "100%",
+          height: "100%",
+          maxWidth: "400px",
+        }}
+      >
         <div
-            style={{
-                height: "100svh",
-                position: "relative",
-                background: background,
-                backgroundSize: "20px 20px",
-                // animation: "moveMesh 5s linear infinite",
-            }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            gap: "2rem",
+          }}
         >
-
-            {/* Foreground Content */}
-            <div
+          <motion.div
+            style={{ position: "absolute", top: "3rem" }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <Card>
+              <div
                 style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    textAlign: "center",
-                    color: "#08C2F1",
-                    zIndex: 20,
-                    width: "100%",
-                    height: "100%",
-                    maxWidth: "400px",
+                  color: "white",
+                  fontSize: "1rem",
+
+                  fontWeight: 600,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1rem",
                 }}
-            >
+              >
                 <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: "100%",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        height: "100%",
-                    }}
+                  style={{
+                    background: (color || primaryColor) + "44",
+                    padding: "0.5rem",
+                    borderRadius: "50%",
+                    aspectRatio: 1,
+                    width: "1rem",
+                    height: "1rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
                 >
-                    <div style={{marginTop: "3rem"}}>
-                        <FloatedGlass
-                            blur={"02px"}
-                        >
-                            <div
-                                style={{color: "white", fontSize: "1.3rem", padding: "1rem"}}>{`${icon} ${title}`}</div>
-                        </FloatedGlass>
-                    </div>
-
-                    {showPretext ? (
-                        <motion.p
-                            className="pretext"
-                            initial={{opacity: 0, y: 50}}
-                            animate={{opacity: 1, y: 0}}
-                            exit={{opacity: 0, y: -50}}
-                            transition={{duration: 1}}
-                            style={{fontSize: "1.5rem", padding: "2rem",}}
-                        >
-                            {preText}
-                        </motion.p>
-                    ) : (
-                        <div
-                            className="metric"
-                            style={{
-                                display: "flex",
-                                flex: 1,
-                                flexDirection: "column",
-                                justifyContent: "center",
-                                alignItems: "center"
-                            }}
-                        >
-                            <motion.h1
-                                initial={{opacity: 0, y: 50}}
-                                animate={{
-                                    opacity: 1,
-                                    y: 0,
-                                    textShadow: [
-                                        "0 0 10px rgba(255, 255, 255, 0.8)",
-                                        "0 0 20px rgba(255, 255, 255, 0.5)",
-                                        "0 0 30px rgba(255, 255, 255, 0.8)",
-                                    ],
-                                    translateY: [0, -10, 0],
-                                }}
-                                transition={{
-                                    opacity: {duration: 1},
-                                    textShadow: {
-                                        duration: 2,
-                                        repeat: Infinity,
-                                        repeatType: "mirror",
-                                    },
-                                    translateY: {duration: 4, repeat: Infinity, repeatType: "mirror"},
-                                }}
-                                style={{
-                                    fontSize: "4rem",
-                                    fontWeight: "bold",
-                                    margin: "1rem",
-                                    padding: "0 2rem",
-
-                                }}
-                            >
-                                {emoji}<br/>
-                                <span style={{
-                                    background: "linear-gradient(45deg, #75FFE8, #7B57FF)",
-                                    WebkitBackgroundClip: "text",
-                                    WebkitTextFillColor: "transparent",
-                                }}>{countDown ? count : data} {suffix}</span>
-
-                            </motion.h1>
-                            <motion.p
-                                initial={{opacity: 0, y: 50}}
-                                animate={{opacity: 1, y: 0}}
-                                transition={{duration: 1, delay: 0.5}}
-                                style={{fontSize: "1.5rem", padding: "0 2rem"}}
-                            >
-                                {subText}
-                            </motion.p>
-                        </div>
-                    )}
-
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            gap: 5,
-                            marginBottom: "120px",
-                        }}
-                    >
-                        <img style={{width: "1.5rem"}} src={githubLogo} alt="GitHub Logo"/>
-                        <p style={{opacity: 0.8}}>#GitHubOnWrap</p>
-                    </div>
+                  {icon &&
+                    React.createElement(icon, { color: color || primaryColor })}
                 </div>
-            </div>
+
+                <span>{title.toUpperCase()}</span>
+              </div>
+            </Card>
+          </motion.div>
+
+          {showPretext ? (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 0.8 }}
+              style={{
+                fontSize: "1.5rem",
+                padding: "2rem",
+                color: "rgba(255, 255, 255, 0.9)",
+                lineHeight: 1.6,
+                maxWidth: "90%",
+              }}
+            >
+              {preText}
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6 }}
+              style={{
+                display: "flex",
+                flex: 1,
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "1rem",
+                fontFamily: "'JetBrains Mono', monospace",
+                fontVariantNumeric: "tabular-nums",
+                letterSpacing: "-0.02em",
+              }}
+            >
+              {emoji && (
+                <motion.div
+                  initial={{ scale: 0, rotate: -180 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ duration: 0.8, type: "spring" }}
+                  style={{ fontSize: "5rem" }}
+                >
+                  {emoji}
+                </motion.div>
+              )}
+              <motion.h1
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                style={{
+                  fontSize: "clamp(3rem, 8vw, 6rem)",
+                  fontWeight: 800,
+                  margin: "0.5rem",
+                  padding: "0 2rem",
+                  lineHeight: 1.1,
+                  textAlign: "center",
+                }}
+              >
+                <motion.span
+                  animate={{
+                    y: [0, -10, 0],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  style={{
+                    background: gradient || primaryGradient,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    display: "block",
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontVariantNumeric: "tabular-nums",
+                    letterSpacing: "-0.02em",
+                    textShadow: `0 0 5px ${color || primaryColor}`,
+                    filter: `drop-shadow(0 0 5px ${color || primaryColor})`,
+                  }}
+                >
+                  {countDown ? count.toLocaleString() : data} {suffix}
+                </motion.span>
+              </motion.h1>
+              {subText && (
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  style={{
+                    fontSize: "clamp(1rem, 2vw, 1.5rem)",
+                    padding: "0 2rem",
+                    color: "rgba(255, 255, 255, 0.8)",
+                    textAlign: "center",
+                    lineHeight: 1.5,
+                    maxWidth: "90%",
+                  }}
+                >
+                  {subText}
+                </motion.p>
+              )}
+            </motion.div>
+          )}
         </div>
-    );
-};
+      </div>
+    </GridBackground>
+  );
+}

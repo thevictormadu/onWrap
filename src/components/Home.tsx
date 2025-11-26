@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 
 import Card from "./Card.tsx";
 import GridBackground from "./GridBackground.tsx";
+import { YEAR } from "../constants/index.ts";
 
 export default function Home() {
   const [userName, setUserName] = useState("");
@@ -25,14 +26,27 @@ export default function Home() {
   };
 
   const handleClick = async () => {
-    const trimmedUsername = userName.trim();
+    let cleanedUsername = userName.trim();
 
-    if (!trimmedUsername) {
+    // Remove leading @ if present
+    if (cleanedUsername.startsWith("@")) {
+      cleanedUsername = cleanedUsername.slice(1);
+    }
+
+    if (!cleanedUsername) {
       setValidationError("Please enter a GitHub username");
       return;
     }
 
-    if (!validateUsername(trimmedUsername)) {
+    // Check for email
+    if (cleanedUsername.includes("@")) {
+      setValidationError(
+        "Please use your GitHub username, not your email address."
+      );
+      return;
+    }
+
+    if (!validateUsername(cleanedUsername)) {
       setValidationError(
         "Invalid GitHub username format. Username must be alphanumeric with hyphens, no spaces."
       );
@@ -42,7 +56,7 @@ export default function Home() {
     setValidationError(null);
 
     try {
-      await fetchGitHubData(trimmedUsername);
+      await fetchGitHubData(cleanedUsername);
     } catch (err) {
       if (import.meta.env.DEV) {
         console.error("Error fetching data:", err);
@@ -104,7 +118,7 @@ export default function Home() {
                     lineHeight: 1.2,
                   }}
                 >
-                  2024: Your GitHub Story{" "}
+                  {`${YEAR}: Your GitHub Story `}
                   <span
                     style={{
                       background: primaryGradient,
@@ -127,7 +141,7 @@ export default function Home() {
                     lineHeight: 1.6,
                   }}
                 >
-                  Relive the highlights of your 2024 coding adventure.
+                  Relive the highlights of your {YEAR} coding adventure.
                 </motion.p>
                 <motion.input
                   initial={{ opacity: 0, y: 10 }}
@@ -161,10 +175,21 @@ export default function Home() {
                   }}
                   value={userName}
                   onChange={(e) => {
-                    setUserName(e.target.value);
-                    if (validationError) {
+                    const value = e.target.value;
+
+                    // Check if it looks like an email (has @ after the first character)
+                    const valueWithoutLeadingAt = value.startsWith("@")
+                      ? value.slice(1)
+                      : value;
+                    if (valueWithoutLeadingAt.includes("@")) {
+                      setValidationError(
+                        "Please use your GitHub username, not your email address."
+                      );
+                    } else if (validationError) {
                       setValidationError(null);
                     }
+
+                    setUserName(value);
                   }}
                   type="text"
                   placeholder="your GitHub username"
@@ -293,8 +318,19 @@ export default function Home() {
                 alt="Victor Madu"
               />
               <p style={{ fontSize: "0.7rem" }}>
-                built with ❤️ by{" "}
-                <span style={{ fontWeight: "bold" }}>Victor Madu</span>
+                with ❤️ from{" "}
+                <a
+                  href="https://www.victormadu.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontWeight: "bold",
+                    color: "inherit",
+                    textDecoration: "underline",
+                  }}
+                >
+                  Victor Madu
+                </a>
               </p>
             </div>
           </FrostedGlass>

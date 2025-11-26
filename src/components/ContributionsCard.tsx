@@ -8,6 +8,7 @@ import {
   CONTRIBUTIONS_GRID_ROWS,
   CONTRIBUTIONS_GRID_COLS,
 } from "../constants/ui.ts";
+import { useGitHub } from "../context/GithubContext.tsx";
 
 interface ContributionsCardProps {
   value: string | number;
@@ -40,11 +41,25 @@ export default function ContributionsCard({
     return githubGreens[index];
   };
 
+  const { data } = useGitHub();
+
   // Generate random pattern for active/inactive squares
   // Using a seeded approach for consistency based on value
   const generateGrid = React.useMemo(() => {
     const squares = [];
     const numValue = typeof value === "number" ? value : 500;
+
+    // If value is 0, return all inactive squares
+    if (numValue === 0) {
+      for (let i = 0; i < totalSquares; i++) {
+        squares.push({
+          isActive: false,
+          intensity: 0,
+          color: githubGreens[0],
+        });
+      }
+      return squares;
+    }
 
     // Calculate active squares density relative to commit count
     // Use logarithmic scale to handle wide range of commit values
@@ -160,7 +175,7 @@ export default function ContributionsCard({
 
         <div
           style={{
-            background: "black",
+            background: "#0F0F0F",
             padding: "0.2rem",
             textAlign: "center",
             position: "absolute",
@@ -176,7 +191,7 @@ export default function ContributionsCard({
               marginBottom: "0.2rem",
             }}
           >
-            {typeof value === "number" ? value.toLocaleString() + "+" : value}
+            {typeof value === "number" ? value.toLocaleString() : value}
           </p>
           <p
             style={{
@@ -186,7 +201,18 @@ export default function ContributionsCard({
               lineHeight: 1,
             }}
           >
-            contributions
+            commits
+          </p>
+          <p
+            style={{
+              fontSize: "0.5rem",
+              fontWeight: 500,
+              color: "rgba(255, 255, 255, 0.6)",
+              lineHeight: 1,
+              marginTop: "0.2rem",
+            }}
+          >
+            ∘ {data?.totalContributions?.toLocaleString() || 0} contributions
           </p>
         </div>
       </div>

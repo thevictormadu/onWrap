@@ -1,11 +1,13 @@
 import { createContext, useState, useContext, ReactNode } from "react";
 import { YEAR } from "../constants/index.ts";
 
-interface GitHubData {
+export interface GitHubData {
   totalStars: number;
   totalCommits: number;
+  totalContributions: number;
   totalPRs: number;
   totalReviews: number;
+  totalForkedRepos: number;
   longestStreak: number;
   peakMonth: string;
   topLanguage: string;
@@ -48,13 +50,18 @@ export const GitHubProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
+    // Build date range for the specified year
+    const yearStart = `${YEAR}-01-01T00:00:00Z`;
+    const yearEnd = `${YEAR}-12-31T23:59:59Z`;
+
     const query = `
-            query FetchGitHubData($username: String!) {
+            query FetchGitHubData($username: String!, $from: DateTime!, $to: DateTime!) {
                 user(login: $username) {
                     avatarUrl
                     name
-                    contributionsCollection {
+                    contributionsCollection(from: $from, to: $to) {
                         totalCommitContributions
+                        totalPullRequestContributions
                         totalPullRequestReviewContributions
                         pullRequestContributions(first: 100) {
                             totalCount
@@ -88,6 +95,11 @@ export const GitHubProvider = ({ children }: { children: ReactNode }) => {
                             }
                         }
                     }
+                    forkedRepos: repositories(first: 100, isFork: true, orderBy: {field: CREATED_AT, direction: DESC}) {
+                        nodes {
+                            createdAt
+                        }
+                    }
                 }
             }`;
 
@@ -101,14 +113,15 @@ export const GitHubProvider = ({ children }: { children: ReactNode }) => {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ query, variables: { username } }),
+        body: JSON.stringify({
+          query,
+          variables: { username, from: yearStart, to: yearEnd },
+        }),
       });
 
       if (!response.ok) {
         if (response.status === 401) {
-          throw new Error(
-            "This one is on me. Please try again later."
-          );
+          throw new Error("This one is on me. Please try again later.");
         } else if (response.status === 403) {
           throw new Error("Rate limit exceeded. Please try again later.");
         } else if (response.status === 404) {
@@ -172,27 +185,41 @@ export const GitHubProvider = ({ children }: { children: ReactNode }) => {
       }
       const userId = username;
       const user = result.data.user;
-      const { contributionsCollection, repositories } = user;
+      const { contributionsCollection, repositories, forkedRepos } = user;
 
       // Get the current year
       const currentYear = YEAR;
 
-      // Safely filter Pull Requests by Year
-      const pullRequestNodes =
-        contributionsCollection.pullRequestContributions?.nodes || [];
-      const pullRequestsThisYear = pullRequestNodes.filter((pr: any) => {
-        const date = pr?.pullRequest?.createdAt
-          ? new Date(pr.pullRequest.createdAt)
-          : null;
-        return date && date.getFullYear() === currentYear;
-      });
+      // Calculate metrics - totalCommitContributions is already scoped to the year via query params
+      const totalCommits =
+        contributionsCollection.totalCommitContributions || 0;
 
-      // Calculate metrics
+      // Total contributions from the contribution calendar (already scoped to the year)
+      const totalContributions =
+        contributionsCollection.contributionCalendar.totalContributions || 0;
+
+      // Total PRs - use the API's count which is already scoped to the year
+      const totalPRs =
+        contributionsCollection.totalPullRequestContributions || 0;
+
+      // Total PR reviews - already scoped to the year via query params
+      const totalReviews =
+        contributionsCollection.totalPullRequestReviewContributions || 0;
+
+      // Calculate forked repos in the specified year
+      const forkedRepoNodes = forkedRepos?.nodes || [];
+      const totalForkedRepos = forkedRepoNodes.filter((repo: any) => {
+        const createdDate = repo?.createdAt ? new Date(repo.createdAt) : null;
+        return createdDate && createdDate.getFullYear() === currentYear;
+      }).length;
+
+      // Calculate total stars (cumulative across all owned repos)
       const totalStars = repositories.nodes.reduce(
         (sum: number, repo: any) => sum + (repo.stargazers.totalCount || 0),
         0
       );
 
+      // Calculate top language from all repositories
       const languageCounts: Record<string, number> = {};
       repositories.nodes.forEach((repo: any) => {
         repo.languages.edges.forEach((lang: any) => {
@@ -208,26 +235,6 @@ export const GitHubProvider = ({ children }: { children: ReactNode }) => {
         Object.keys(languageCounts).sort(
           (a, b) => languageCounts[b] - languageCounts[a]
         )[0] || "Unknown";
-
-      const totalCommits =
-        contributionsCollection.contributionCalendar.weeks.reduce(
-          (total: number, week: any) => {
-            return (
-              total +
-              week.contributionDays.reduce((weekTotal: number, day: any) => {
-                const date = new Date(day.date);
-                if (date.getFullYear() === currentYear) {
-                  return weekTotal + day.contributionCount;
-                }
-                return weekTotal;
-              }, 0)
-            );
-          },
-          0
-        );
-      const totalPRs = pullRequestsThisYear.length; // Use filtered PRs
-      const totalReviews =
-        contributionsCollection.totalPullRequestReviewContributions || 0;
 
       // Filter contribution days for the current year and get dates with counts
       const contributionDaysWithDates =
@@ -290,7 +297,7 @@ export const GitHubProvider = ({ children }: { children: ReactNode }) => {
               },
               Object.keys(monthCommitCounts)[0]
             )
-          : "N/A";
+          : "No Month";
 
       // Split the full name into first name and last name
       const fullName = user.name || "";
@@ -301,8 +308,10 @@ export const GitHubProvider = ({ children }: { children: ReactNode }) => {
       setData({
         totalStars,
         totalCommits,
+        totalContributions,
         totalPRs,
         totalReviews,
+        totalForkedRepos,
         longestStreak,
         peakMonth,
         topLanguage,

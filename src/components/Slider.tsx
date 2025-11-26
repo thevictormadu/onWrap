@@ -8,10 +8,10 @@ import { MdMusicNote, MdMusicOff } from "react-icons/md";
 import { LuDownload } from "react-icons/lu";
 import {
   SLIDE_DURATION,
-  MOBILE_BREAKPOINT,
   PROGRESS_BAR_HEIGHT,
   PROGRESS_UPDATE_INTERVAL,
 } from "../constants/ui.ts";
+import { useIsMobile } from "../hooks";
 import githubLogo from "../assets/github-logo.png";
 import { primaryColor } from "../constants/colors.ts";
 
@@ -34,24 +34,12 @@ export default function Slider({
   onDownload,
   isDownloading = false,
 }: SliderProps) {
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useIsMobile();
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [progressValues, setProgressValues] = useState<number[]>(
     Array(slides.length).fill(0)
   );
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Check for mobile screen
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   // Move to the next slide
   const goToNextSlide = useCallback(() => {

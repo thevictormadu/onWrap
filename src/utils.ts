@@ -39,6 +39,7 @@ import {
   SiDash,
   SiPowers,
 } from "react-icons/si";
+import { IoCodeSharp } from "react-icons/io5";
 import { SLIDE_CONFIG, type SlideKey } from "./constants/index.ts";
 import { Slangs } from "./types.ts";
 
@@ -181,7 +182,7 @@ export function getLanguageIconAndColor(language: string): {
 
     // Default fallback
     default:
-      return { icon: SiJavascript, color: "#F7DF1E" };
+      return { icon: IoCodeSharp, color: "#ffffff" };
   }
 }
 

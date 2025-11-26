@@ -70,7 +70,7 @@ export default function IntroSlide() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               style={{
-                fontSize: "2.5rem",
+                fontSize: "2rem",
                 fontWeight: 800,
                 margin: 0,
                 padding: "0 2rem",
@@ -102,14 +102,14 @@ export default function IntroSlide() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               style={{
-                fontSize: "clamp(1rem, 2vw, 1.25rem)",
+                fontSize: "1rem",
                 padding: "0 2rem",
                 color: "rgba(255, 255, 255, 0.9)",
                 lineHeight: 1.6,
                 maxWidth: "90%",
               }}
             >
-              Enough about 2024, let's talk about you. Ready to see your
+              Enough about {YEAR-1}, let's talk about you. Ready to see your
               achievements, highlights, and the moments that made you shine?
             </motion.p>
           </motion.div>
@@ -145,7 +145,7 @@ export default function IntroSlide() {
             </motion.p>
             <motion.div
               animate={{
-                y: [0, 10, 0],
+                x: [0, 10, 0],
               }}
               transition={{
                 duration: 1.5,
@@ -156,7 +156,7 @@ export default function IntroSlide() {
                 fontSize: "3rem",
               }}
             >
-              ↓
+              ↔
             </motion.div>
           </motion.div>
         )}

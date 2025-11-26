@@ -43,8 +43,8 @@ export const GRADIENTS = {
   rainbow: `linear-gradient(135deg, ${COLORS.pink}, ${COLORS.purple}, ${COLORS.blue}, ${COLORS.green}, ${COLORS.yellow}, ${COLORS.orange})`,
 } as const;
 
-export const primaryGradient = GRADIENTS.orangePink;
-export const primaryColor = COLORS.orange;
+export const primaryGradient = GRADIENTS.purpleBlue;
+export const primaryColor = COLORS.blue;
 
 
 // Text gradient utilities

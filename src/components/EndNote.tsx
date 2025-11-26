@@ -1,8 +1,9 @@
 import { SLIDE_CONFIG } from "../constants/index.ts";
 import { useGitHub } from "../context/GithubContext.tsx";
 import { getLanguageIconAndColor, getSlang } from "../utils.ts";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { MOBILE_ENDNOTE_BREAKPOINT } from "../constants/ui.ts";
+import { useMediaQuery } from "../hooks";
 import { COLORS, primaryColor } from "../constants/colors.ts";
 import { motion } from "framer-motion";
 import BasicEndCard from "./BasicEndCard.tsx";
@@ -20,174 +21,149 @@ import GridBackground from "./GridBackground.tsx";
 const EndNote: React.FC = () => {
   const { data } = useGitHub();
   const slang = getSlang(data?.totalCommits || 0);
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useMediaQuery(MOBILE_ENDNOTE_BREAKPOINT);
   const divRef = useRef<HTMLDivElement>(null);
   const languageIconData = getLanguageIconAndColor(data?.topLanguage || "");
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= MOBILE_ENDNOTE_BREAKPOINT);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   return (
     <GridBackground>
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          position: "relative",
-
           height: "100%",
           width: "100%",
-          overflowY: "hidden",
+          overflowY: "auto",
           overflowX: "hidden",
+          alignItems: "center",
+          display: "flex",
+          flexDirection: "column",
+          padding: isMobile ? "1rem" : "0",
         }}
       >
+        {/* Foreground Content */}
         <div
+          ref={divRef}
+          data-endnote-content="true"
           style={{
-            height: "100%",
-            width: "100%",
-            overflowY: "auto",
-            overflowX: "hidden",
-            alignItems: "center",
+            width: isMobile ? "100%" : "400px",
+
             display: "flex",
             flexDirection: "column",
-            padding: isMobile ? "1rem" : "0",
+            justifyContent: "flex-start",
+            alignItems: "stretch",
+            padding: isMobile ? "0.5rem 0 5rem 0" : "1rem",
+
+            gap: "0.75rem",
+            position: "relative",
+            marginTop: "20px",
             boxSizing: "border-box",
           }}
         >
-          {/* Foreground Content */}
-          <div
-            ref={divRef}
-            data-endnote-content="true"
-            style={{
-              width: isMobile ? "100%" : "400px",
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              alignItems: "stretch",
-              padding: isMobile ? "0.5rem 0" : "1rem",
-              gap: "0.75rem",
-              position: "relative",
-              marginTop: "20px",
-              boxSizing: "border-box",
-            }}
-          >
-            {/* Profile Card */}
-            <NameCard />
+          {/* Profile Card */}
+          <NameCard />
 
-            {/* Commits and Stars Received - Side by Side */}
-            <div style={{ display: "flex", gap: "0.75rem" }}>
-              {/* Commits Card */}
-              <ContributionsCard value={data?.totalCommits || 0} delay={0.1} />
+          {/* Commits and Stars Received - Side by Side */}
+          <div style={{ display: "flex", gap: "0.75rem" }}>
+            {/* Commits Card */}
+            <ContributionsCard value={data?.totalCommits || 0} delay={0.1} />
 
-              {/* Stars Received Card */}
-              <BasicEndCard
-                icon={<PiStarThin />}
-                iconColor={COLORS.yellow}
-                value={data?.totalStars || 0}
-                title={SLIDE_CONFIG.starsReceived.title}
-                delay={0.15}
-              />
-            </div>
+            {/* Stars Received Card */}
+            <BasicEndCard
+              icon={<PiStarThin />}
+              iconColor={COLORS.yellow}
+              value={data?.totalStars || 0}
+              title={SLIDE_CONFIG.starsReceived.title}
+              delay={0.15}
+            />
+          </div>
 
-            {/* PRs and Reviews - Side by Side */}
-            <div style={{ display: "flex", gap: "0.75rem" }}>
-              {/* PRs Card */}
-              <BasicEndCard
-                icon={<MdMergeType />}
-                iconColor={COLORS.green}
-                value={data?.totalPRs || 0}
-                title={SLIDE_CONFIG.pullRequests.title}
-                delay={0.2}
-              />
+          {/* PRs and Reviews - Side by Side */}
+          <div style={{ display: "flex", gap: "0.75rem" }}>
+            {/* PRs Card */}
+            <BasicEndCard
+              icon={<MdMergeType />}
+              iconColor={SLIDE_CONFIG.pullRequests.color}
+              value={data?.totalPRs || 0}
+              title={SLIDE_CONFIG.pullRequests.title}
+              delay={0.2}
+            />
 
-              {/* PR Reviews Card */}
-              <BasicEndCard
-                icon={<GoCodeReview />}
-                iconColor={COLORS.cyan}
-                value={(data?.totalReviews ?? 0).toLocaleString()}
-                title={SLIDE_CONFIG.prReviews.title}
-                delay={0.25}
-              />
-            </div>
+            {/* PR Reviews Card */}
+            <BasicEndCard
+              icon={<GoCodeReview />}
+              iconColor={SLIDE_CONFIG.prReviews.color}
+              value={(data?.totalReviews ?? 0).toLocaleString()}
+              title={SLIDE_CONFIG.prReviews.title}
+              delay={0.25}
+            />
+          </div>
 
-            {/* Top Language Card - Full Width */}
+          {/* Top Language Card - Full Width */}
+          <LongEndNoteCard
+            icon={React.createElement(languageIconData.icon || MdLightbulb, {
+              color: languageIconData.color || primaryColor,
+            })}
+            iconColor={languageIconData.color || primaryColor}
+            value={data?.topLanguage || "N/A"}
+            title={SLIDE_CONFIG.topLanguage.title}
+            delay={0.4}
+            flex={0}
+          />
+
+          {/* Longest Streak and Peak Performance - Side by Side */}
+          <div style={{ display: "flex", gap: "0.75rem" }}>
+            {/* Longest Streak Card */}
+            <BoldEndCard
+              value={data?.longestStreak || 0}
+              title={"Day Longest Streak"}
+              gradientColors={[COLORS.orange, "#FF8A00"]}
+              delay={0.3}
+            />
+
+            {/* Peak Performance Card */}
+            <BasicEndCard
+              icon={<RiFireLine />}
+              iconColor={SLIDE_CONFIG.peakPerformance.color}
+              value={data?.peakMonth || 0}
+              title={SLIDE_CONFIG.peakPerformance.title}
+              delay={0.35}
+            />
+          </div>
+
+          {/* PR Reviews and Slang - Side by Side */}
+          <div>
+            {/* Slang Card */}
             <LongEndNoteCard
-              icon={React.createElement(languageIconData.icon || MdLightbulb, {
-                color: languageIconData.color || primaryColor,
-              })}
-              iconColor={languageIconData.color || primaryColor}
-              value={data?.topLanguage || "N/A"}
-              title={SLIDE_CONFIG.topLanguage.title}
+              icon={<LiaAwardSolid />}
+              value={slang.slang}
+              title={SLIDE_CONFIG.slang.title}
               delay={0.4}
               flex={0}
             />
-
-            {/* Longest Streak and Peak Performance - Side by Side */}
-            <div style={{ display: "flex", gap: "0.75rem" }}>
-              {/* Longest Streak Card */}
-              <BoldEndCard
-                value={data?.longestStreak || 0}
-                title={"Day Longest Streak"}
-                gradientColors={[COLORS.orange, "#FF8A00"]}
-                delay={0.3}
-              />
-
-              {/* Peak Performance Card */}
-              <BasicEndCard
-                icon={<RiFireLine />}
-                iconColor={COLORS.orange}
-                value={data?.peakMonth || 0}
-                title={SLIDE_CONFIG.peakPerformance.title}
-                delay={0.35}
-              />
-            </div>
-
-            {/* PR Reviews and Slang - Side by Side */}
-            <div>
-              {/* Slang Card */}
-              <LongEndNoteCard
-                icon={<LiaAwardSolid />}
-                value={slang.slang}
-                title={SLIDE_CONFIG.slang.title}
-                delay={0.4}
-                flex={0}
-              />
-            </div>
-
-            {!isMobile && (
-              <motion.div
-                data-signature="true"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.2 }}
-                style={{
-                  display: "none",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: "0.5rem",
-                  zIndex: 20,
-                  fontSize: "0.75rem",
-                  color: "rgba(255, 255, 255, 0.7)",
-                  fontFamily: "system-ui, sans-serif",
-                }}
-              >
-                🤍 made by{" "}
-                <span style={{ fontWeight: 600, color: COLORS.white }}>
-                  Victor Madu
-                </span>
-              </motion.div>
-            )}
           </div>
+
+          {!isMobile && (
+            <motion.div
+              data-signature="true"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
+              style={{
+                display: "none",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "0.5rem",
+                zIndex: 20,
+                fontSize: "0.75rem",
+                color: "rgba(255, 255, 255, 0.7)",
+                fontFamily: "system-ui, sans-serif",
+              }}
+            >
+              🤍 made by{" "}
+              <span style={{ fontWeight: 600, color: COLORS.white }}>
+                Victor Madu
+              </span>
+            </motion.div>
+          )}
         </div>
       </div>
     </GridBackground>

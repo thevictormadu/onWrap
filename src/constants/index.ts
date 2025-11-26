@@ -63,7 +63,7 @@ export const SLIDE_CONFIG = {
     icon: LuGitCommitVertical,
     subtext: "total commits",
     color: COLORS.green,
-    gradient: GRADIENTS.greenBlue,
+    gradient: GRADIENTS.purpleBlue,
   },
   pullRequests: {
     introduction:
@@ -73,7 +73,7 @@ export const SLIDE_CONFIG = {
     title: "pull requests",
     icon: MdMergeType,
     subtext: "total pull requests opened",
-    color: COLORS.green,
+    color: COLORS.cyan,
     gradient: GRADIENTS.greenBlue,
   },
   prReviews: {
@@ -84,7 +84,7 @@ export const SLIDE_CONFIG = {
     title: "PR reviews",
     icon: GoCodeReview,
     subtext: "total PRs reviewed",
-    color: COLORS.cyan,
+    color: COLORS.blue,
     gradient: GRADIENTS.purpleBlue,
   },
   peakPerformance: {

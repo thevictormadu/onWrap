@@ -3,11 +3,10 @@ import NameCard from "./NameCard.tsx";
 import { useGitHub } from "../context/GithubContext.tsx";
 import { useEffect, useState } from "react";
 import { INTRO_PRETEXT_DURATION } from "../constants/ui.ts";
-import GradientBg from "./GradientBg.tsx";
 import { AbstractShapesBackground } from "./AbstractShapes.tsx";
-import { getTextGradient } from "../constants/colors.ts";
-import { COLORS } from "../constants/colors.ts";
-import { year } from "../constants.ts";
+import { YEAR } from "../constants/index.ts";
+import GridBackground from "./GridBackground.tsx";
+import { COLORS, primaryColor, primaryGradient } from "../constants/colors.ts";
 
 export default function IntroSlide() {
   const { data } = useGitHub();
@@ -20,30 +19,10 @@ export default function IntroSlide() {
     return () => clearTimeout(timer);
   }, []);
 
-  const textGradient = getTextGradient(COLORS.blue, COLORS.pink);
-  // Use a darker gradient for the intro slide
-  const darkGradient = `linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%)`;
+  const textGradient = primaryGradient;
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        position: "relative",
-        background: darkGradient,
-        width: "100%",
-        height: "100svh",
-        overflow: "hidden",
-      }}
-    >
-      <GradientBg slideIndex={0} animated={false} opacity={0.04} />
-      <AbstractShapesBackground
-        count={2}
-        types={["circle"]}
-        minSize={250}
-        maxSize={350}
-      />
+    <GridBackground>
       {/* Foreground Content */}
       <div
         style={{
@@ -71,10 +50,7 @@ export default function IntroSlide() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <NameCard
-            title={`@${data?.userId}`}
-            value={`${year} GitHub Year in Code`}
-          />
+          <NameCard />
         </motion.div>
 
         {showPretext ? (
@@ -114,13 +90,11 @@ export default function IntroSlide() {
               </span>
               <span
                 style={{
-                  
-               
                   display: "block",
                   marginTop: "0.5rem",
                 }}
               >
-                Welcome to Your {year} GitHub Year in Code
+                Welcome to Your {YEAR} GitHub Year in Code
               </span>
             </motion.h1>
             <motion.p
@@ -187,6 +161,6 @@ export default function IntroSlide() {
           </motion.div>
         )}
       </div>
-    </div>
+    </GridBackground>
   );
 }

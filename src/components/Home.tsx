@@ -1,4 +1,3 @@
-import MotionGradientBg from "./MotionGradientBg.tsx";
 import githubLogo from "../assets/github-logo.png";
 import victorPic from "../assets/victor.jpg";
 import FrostedGlass from "./FrostedGlass.tsx";
@@ -6,10 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { useGitHub } from "../context/GithubContext.tsx";
 import { useEffect, useState } from "react";
 import ProgressBar from "./ProgressBar.tsx";
-import { AbstractShapesBackground } from "./AbstractShapes.tsx";
-import { getTextGradient } from "../constants/colors.ts";
+import { primaryGradient, primaryColor } from "../constants/colors.ts";
 import { COLORS } from "../constants/colors.ts";
 import { motion } from "framer-motion";
+
+import Card from "./Card.tsx";
+import GridBackground from "./GridBackground.tsx";
 
 export default function Home() {
   const [userName, setUserName] = useState("");
@@ -56,25 +57,13 @@ export default function Home() {
   }, [error, data, navigate]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "3rem",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100svh",
-        width: "100%",
-        flex: 1,
-      }}
-    >
-      <MotionGradientBg opacity={0.1} />
-      <AbstractShapesBackground
+    <GridBackground>
+      {/* <AbstractShapesBackground
         count={2}
         types={["circle"]}
         minSize={250}
         maxSize={350}
-      />
+      /> */}
       <div
         style={{
           padding: "2rem",
@@ -90,11 +79,10 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <FrostedGlass blur={"10px"}>
+          <Card>
             <div
               style={{
                 maxWidth: "500px",
-                padding: "2.5rem",
               }}
             >
               <form
@@ -119,7 +107,7 @@ export default function Home() {
                   2024: Your GitHub Story{" "}
                   <span
                     style={{
-                      background: getTextGradient(COLORS.pink, COLORS.purple),
+                      background: primaryGradient,
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
                       backgroundClip: "text",
@@ -160,10 +148,10 @@ export default function Home() {
                     fontFamily: "inherit",
                   }}
                   onFocus={(e) => {
-                    e.currentTarget.style.outline = `2px solid ${COLORS.purple}`;
-                    e.currentTarget.style.outlineOffset = "2px";
-                    e.currentTarget.style.borderColor = COLORS.purple;
-                    e.currentTarget.style.boxShadow = `0 0 20px ${COLORS.purple}40`;
+                    e.currentTarget.style.outline = `0.3px solid ${primaryColor}`;
+
+                    e.currentTarget.style.borderColor = primaryColor;
+                    e.currentTarget.style.boxShadow = `0 0 5px ${primaryColor}20`;
                   }}
                   onBlur={(e) => {
                     e.currentTarget.style.outline = "none";
@@ -220,7 +208,7 @@ export default function Home() {
                     borderRadius: "0.75rem",
                     fontWeight: 700,
                     padding: "1rem 1.5rem",
-                    background: getTextGradient(COLORS.purple, COLORS.pink),
+                    background: primaryGradient,
                     marginTop: "1rem",
                     border: "none",
                     color: COLORS.white,
@@ -230,15 +218,15 @@ export default function Home() {
                     opacity: loading ? 0.6 : 1,
                   }}
                   onFocus={(e) => {
-                    e.currentTarget.style.outline = `2px solid ${COLORS.purple}`;
-                    e.currentTarget.style.outlineOffset = "2px";
+                    e.currentTarget.style.outline = `0.3px solid ${primaryColor}`;
+                    e.currentTarget.style.outlineOffset = "1px";
                   }}
                   onBlur={(e) => {
                     e.currentTarget.style.outline = "none";
                   }}
                   onMouseEnter={(e) => {
                     if (!loading) {
-                      e.currentTarget.style.boxShadow = `0 8px 32px ${COLORS.purple}60`;
+                      e.currentTarget.style.boxShadow = `0 8px 32px ${primaryColor}60`;
                     }
                   }}
                   onMouseLeave={(e) => {
@@ -282,7 +270,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </FrostedGlass>
+          </Card>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -312,6 +300,6 @@ export default function Home() {
           </FrostedGlass>
         </motion.div>
       </div>
-    </div>
+    </GridBackground>
   );
 }

@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, ReactNode } from "react";
-import { year } from "../constants.ts";
+import { YEAR } from "../constants/index.ts";
 
 interface GitHubData {
   totalStars: number;
@@ -175,7 +175,7 @@ export const GitHubProvider = ({ children }: { children: ReactNode }) => {
       const { contributionsCollection, repositories } = user;
 
       // Get the current year
-      const currentYear = year;
+      const currentYear = YEAR;
 
       // Safely filter Pull Requests by Year
       const pullRequestNodes =

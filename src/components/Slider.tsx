@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import IconButton from "./IconButton.tsx";
+import Card from "./Card.tsx";
 import { IoMdRefresh, IoMdClose } from "react-icons/io";
 import { TiArrowLeftOutline, TiArrowRightOutline } from "react-icons/ti";
 import { MdMusicNote, MdMusicOff } from "react-icons/md";
@@ -10,9 +11,9 @@ import {
   MOBILE_BREAKPOINT,
   PROGRESS_BAR_HEIGHT,
   PROGRESS_UPDATE_INTERVAL,
-  PRIMARY_COLOR,
 } from "../constants/ui.ts";
 import githubLogo from "../assets/github-logo.png";
+import { primaryColor } from "../constants/colors.ts";
 
 interface SliderProps {
   slides: React.ComponentType[];
@@ -232,8 +233,8 @@ export default function Slider({
                 flexGrow: "1",
                 height: `${progressBarHeight}px`,
                 backgroundColor: isCompleted
-                  ? "rgba(8, 194, 241, 0.2)"
-                  : "rgba(8, 194, 241, 0.1)",
+                  ? primaryColor + "20"
+                  : primaryColor + "80",
                 opacity: isActive ? "1" : isCompleted ? "0.6" : "0.3",
                 overflow: "hidden",
                 borderRadius: "10px",
@@ -245,7 +246,7 @@ export default function Slider({
                 style={{
                   width: `${progressValues[index]}%`,
                   height: "100%",
-                  backgroundColor: PRIMARY_COLOR,
+                  backgroundColor: primaryColor,
                   borderRadius: "10px",
                 }}
                 initial={false}
@@ -313,50 +314,53 @@ export default function Slider({
           left: "1rem",
           right: "1rem",
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: isMobile ? "center" : "space-between",
           alignItems: "center",
           zIndex: 100,
           pointerEvents: "none",
         }}
       >
         {/* GitHub Hashtag - Left side */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "0.5rem",
-            pointerEvents: "auto",
-          }}
-        >
-          <img
-            style={{ width: "1.2rem", height: "1.2rem" }}
-            src={githubLogo}
-            alt="GitHub Logo"
-          />
-          <p
+        {!isMobile && (
+          <div
             style={{
-              opacity: 0.6,
-              fontSize: "0.875rem",
-              fontFamily: "system-ui, sans-serif",
-              color: "rgba(255, 255, 255, 0.7)",
-              margin: 0,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "0.5rem",
+              pointerEvents: "auto",
             }}
           >
-            #GitHubOnWrap
-          </p>
-        </div>
+            <img
+              style={{ width: "1.2rem", height: "1.2rem" }}
+              src={githubLogo}
+              alt="GitHub Logo"
+            />
+            <p
+              style={{
+                opacity: 0.6,
+                fontSize: "0.875rem",
+                fontFamily: "system-ui, sans-serif",
+                color: "rgba(255, 255, 255, 0.7)",
+                margin: 0,
+              }}
+            >
+              #GitHubOnWrap
+            </p>
+          </div>
+        )}
 
         {/* Unified Control Buttons - Right side */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "0.5rem",
-            flexDirection: "row",
-            pointerEvents: "auto",
-          }}
+        <Card
+          flexDirection="row"
+          gap="0.5rem"
+          padding="0"
+          alignItems="center"
+          justifyContent="center"
+          flex="0"
+          delay={0}
+          initial={{ opacity: 1, scale: 1 }}
+          style={{ pointerEvents: "auto" }}
         >
           {/* Download Button */}
           {onDownload && (
@@ -392,7 +396,7 @@ export default function Slider({
               }
             />
           )}
-        </div>
+        </Card>
       </div>
 
       {/* Arrow Navigation Buttons */}

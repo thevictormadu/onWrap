@@ -1,4 +1,4 @@
-import { MouseEventHandler, ReactNode } from "react";
+import { MouseEventHandler, ReactNode, useState } from "react";
 
 interface Props {
   icon: ReactNode;
@@ -13,13 +13,14 @@ export default function IconButton({
   handleClick,
   "aria-label": ariaLabel,
 }: Props) {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <button
       aria-label={ariaLabel || text || "Button"}
       style={{
-        border: "1px solid rgba(255, 255, 255, 0.08)",
-        backgroundColor: "rgba(255, 255, 255, 0.03)",
-        backdropFilter: "blur(8px)",
+        border: "none",
+        backgroundColor: "transparent",
         padding: "0.5rem",
         borderRadius: "0.5rem",
         cursor: "pointer",
@@ -40,20 +41,20 @@ export default function IconButton({
       onBlur={(e) => {
         e.currentTarget.style.outline = "none";
       }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
-        e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.15)";
-        e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.03)";
-        e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)";
-        e.currentTarget.style.color = "rgba(255, 255, 255, 0.7)";
-      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}
     >
-      <div>{icon}</div>
+      <div
+        style={{
+          opacity: isHovered ? 0.5 : 1,
+          transition: "opacity 0.2s ease",
+        }}
+      >
+        {icon}
+      </div>
       {text && <div style={{ fontSize: "1rem" }}>{text}</div>}
     </button>
   );
 }
+

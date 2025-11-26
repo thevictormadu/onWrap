@@ -1,10 +1,11 @@
 import React, { ReactNode } from "react";
 import Card from "./Card.tsx";
+import { COLORS } from "../constants/colors.ts";
 
 interface LongEndNoteCardProps {
   icon: ReactNode;
 
-  iconColor: string;
+  iconColor?: string;
   value: string;
   title: string;
   delay?: number;
@@ -35,7 +36,7 @@ export default function LongEndNoteCard({
           style={{
             fontSize: "1.75rem",
             fontWeight: 700,
-            color: "rgb(255, 255, 255)",
+            color: COLORS.white,
             lineHeight: 1,
           }}
         >
@@ -60,14 +61,14 @@ export default function LongEndNoteCard({
           alignItems: "center",
           justifyContent: "center",
           flexShrink: 0,
-          background: iconColor + "30",
+          background: (iconColor || COLORS.white) + "30",
         }}
       >
         {React.isValidElement(icon)
           ? React.cloneElement(
               icon as React.ReactElement<{ color: string; size: number }>,
               {
-                color: iconColor,
+                color: iconColor || COLORS.white,
                 size: 20,
               }
             )

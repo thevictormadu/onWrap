@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import FloatedGlass from "./FloatedGlass.tsx";
 import {
   PRETEXT_DISPLAY_DURATION,
   COUNTDOWN_ANIMATION_DURATION,
   GRID_PATTERN,
-  GRID_PATTERN_SIZE,
 } from "../constants/ui.ts";
-import { getSlideColor } from "../utils/gradients.ts";
-import { getTextGradient } from "../constants/colors.ts";
+import { COLORS, primaryColor, primaryGradient } from "../constants/colors.ts";
+import Card from "./Card.tsx";
+import GridBackground from "./GridBackground.tsx";
+import { AbstractShapesBackground } from "./AbstractShapes.tsx";
+import { IconType } from "react-icons/lib";
+import React from "react";
 
 export interface SlideProps {
   data: string;
@@ -19,7 +21,9 @@ export interface SlideProps {
   background?: string;
   countDown?: boolean;
   emoji?: string;
-  icon: string;
+  icon: IconType;
+  gradient?: string;
+  color?: string;
   slideIndex?: number;
 }
 
@@ -33,27 +37,30 @@ export default function Slide({
   countDown,
   emoji,
   icon,
-  slideIndex = 0,
+  gradient,
+  color,
 }: SlideProps) {
-  const slideColor = getSlideColor(slideIndex);
-  const textGradient = getTextGradient(
-    slideColor,
-    getSlideColor(slideIndex + 1)
-  );
   const [showPretext, setShowPretext] = useState(true);
   const [count, setCount] = useState(0); // Start count from 0
 
   useEffect(() => {
     setShowPretext(true);
+    setCount(0); // Reset count when slide changes
     const timer = setTimeout(() => {
       setShowPretext(false);
     }, PRETEXT_DISPLAY_DURATION);
     return () => clearTimeout(timer);
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     if (!countDown) {
       setCount(Number(data));
+      return;
+    }
+
+    // Only start countdown animation after pretext is hidden
+    if (showPretext) {
+      setCount(0);
       return;
     }
 
@@ -83,18 +90,10 @@ export default function Slide({
         cancelAnimationFrame(animationFrameId);
       }
     };
-  }, [data, countDown]);
+  }, [data, countDown, showPretext]);
 
   return (
-    <div
-      style={{
-        height: "100svh",
-        position: "relative",
-        background: background,
-        backgroundSize: GRID_PATTERN_SIZE,
-        overflow: "hidden",
-      }}
-    >
+    <GridBackground background={background}>
       {/* Foreground Content */}
       <div
         style={{
@@ -103,7 +102,6 @@ export default function Slide({
           left: "50%",
           transform: "translate(-50%, -50%)",
           textAlign: "center",
-          color: "#08C2F1",
           zIndex: 20,
           width: "100%",
           height: "100%",
@@ -127,22 +125,38 @@ export default function Slide({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <FloatedGlass>
+            <Card>
               <div
                 style={{
                   color: "white",
-                  fontSize: "1.5rem",
-                  padding: "1rem 1.5rem",
+                  fontSize: "1rem",
+
                   fontWeight: 600,
                   display: "flex",
                   alignItems: "center",
-                  gap: "0.5rem",
+                  gap: "1rem",
                 }}
               >
-                <span style={{ fontSize: "1.8rem" }}>{icon}</span>
-                <span>{title}</span>
+                <div
+                  style={{
+                    background: (color || primaryColor) + "44",
+                    padding: "0.5rem",
+                    borderRadius: "50%",
+                    aspectRatio: 1,
+                    width: "1rem",
+                    height: "1rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {icon &&
+                    React.createElement(icon, { color: color || primaryColor })}
+                </div>
+
+                <span>{title.toUpperCase()}</span>
               </div>
-            </FloatedGlass>
+            </Card>
           </motion.div>
 
           {showPretext ? (
@@ -204,9 +218,17 @@ export default function Slide({
                   textAlign: "center",
                 }}
               >
-                <span
+                <motion.span
+                  animate={{
+                    y: [0, -10, 0],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
                   style={{
-                    background: textGradient,
+                    background: gradient || primaryGradient,
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
@@ -214,10 +236,12 @@ export default function Slide({
                     fontFamily: "'JetBrains Mono', monospace",
                     fontVariantNumeric: "tabular-nums",
                     letterSpacing: "-0.02em",
+                    textShadow: `0 0 5px ${color || primaryColor}`,
+                    filter: `drop-shadow(0 0 5px ${color || primaryColor})`,
                   }}
                 >
                   {countDown ? count.toLocaleString() : data} {suffix}
-                </span>
+                </motion.span>
               </motion.h1>
               {subText && (
                 <motion.p
@@ -240,6 +264,6 @@ export default function Slide({
           )}
         </div>
       </div>
-    </div>
+    </GridBackground>
   );
 }

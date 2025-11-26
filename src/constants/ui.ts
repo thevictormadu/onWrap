@@ -10,10 +10,6 @@ export const MOBILE_BREAKPOINT = 500; // pixels
 export const TABLET_BREAKPOINT = 768; // pixels
 export const MOBILE_ENDNOTE_BREAKPOINT = 400; // pixels
 
-// Colors (legacy - use colors.ts for new design)
-export const PRIMARY_COLOR = "#08C2F1";
-export const SECONDARY_COLOR = "#7B57FF";
-export const PROGRESS_BAR_COLOR = "#00d4ff";
 export const PROGRESS_BAR_HEIGHT = 5; // pixels
 
 // Animation durations

@@ -46,6 +46,10 @@ export default function BasicEndCard({
           fontWeight: 700,
           color: "rgb(255, 255, 255)",
           lineHeight: 1,
+          width: "100%",
+          overflowWrap: "break-word",
+          wordBreak: "break-word",
+          maxWidth: "100%",
         }}
       >
         {typeof value === "number" ? value.toLocaleString() : value}

@@ -2,23 +2,21 @@
 
 export const COLORS = {
   // Primary vibrant colors
-  pink: '#FF006E',
-  purple: '#8338EC',
-  yellow: '#FFBE0B',
-  green: '#06FFA5',
-  orange: '#FB5607',
-  blue: '#3A86FF',
-  
+  pink: "#FF006E",
+  purple: "#8338EC",
+  yellow: "#FFBE0B",
+  green: "#06FFA5",
+  orange: "#FB5607",
+  blue: "#3A86FF",
+  cyan: "#08C2F1",
+
   // Neutral colors
-  black: '#000000',
-  white: '#FFFFFF',
-  darkGray: '#0D0D0D',
-  mediumGray: '#1A1A1A',
-  lightGray: '#333333',
-  
-  // Legacy colors (for gradual migration)
-  cyan: '#08C2F1',
-  legacyPurple: '#7B57FF',
+  black: "#000000",
+  white: "#FFFFFF",
+  darkGray: "#0D0D0D",
+  mediumGray: "#1A1A1A",
+  lightGray: "#333333",
+
 } as const;
 
 // Color palette array for dynamic assignment
@@ -29,12 +27,10 @@ export const COLOR_PALETTE = [
   COLORS.green,
   COLORS.orange,
   COLORS.blue,
+  COLORS.cyan,
 ] as const;
 
-// Get color by index (for slide-specific colors)
-export const getColorByIndex = (index: number): string => {
-  return COLOR_PALETTE[index % COLOR_PALETTE.length];
-};
+
 
 // Gradient combinations
 export const GRADIENTS = {
@@ -47,11 +43,9 @@ export const GRADIENTS = {
   rainbow: `linear-gradient(135deg, ${COLORS.pink}, ${COLORS.purple}, ${COLORS.blue}, ${COLORS.green}, ${COLORS.yellow}, ${COLORS.orange})`,
 } as const;
 
-// Get gradient by index
-export const getGradientByIndex = (index: number): string => {
-  const gradients = Object.values(GRADIENTS);
-  return gradients[index % gradients.length];
-};
+export const primaryGradient = GRADIENTS.orangePink;
+export const primaryColor = COLORS.orange;
+
 
 // Text gradient utilities
 export const getTextGradient = (color1: string, color2: string): string => {
@@ -59,7 +53,14 @@ export const getTextGradient = (color1: string, color2: string): string => {
 };
 
 // Background gradients with opacity
-export const getBackgroundGradient = (color1: string, color2: string, opacity: number = 0.15): string => {
-  return `linear-gradient(135deg, ${color1}${Math.round(opacity * 255).toString(16).padStart(2, '0')}, ${color2}${Math.round(opacity * 255).toString(16).padStart(2, '0')})`;
+export const getBackgroundGradient = (
+  color1: string,
+  color2: string,
+  opacity: number = 0.15
+): string => {
+  return `linear-gradient(135deg, ${color1}${Math.round(opacity * 255)
+    .toString(16)
+    .padStart(2, "0")}, ${color2}${Math.round(opacity * 255)
+    .toString(16)
+    .padStart(2, "0")})`;
 };
-

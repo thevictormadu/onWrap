@@ -1,7 +1,4 @@
 import { motion } from 'framer-motion';
-import { getSlideGradient, getRadialGradient, getMeshGradient } from '../utils/gradients';
-import { getSlideColor } from '../utils/gradients';
-import { COLOR_PALETTE } from '../constants/colors';
 
 interface GradientBgProps {
   slideIndex?: number;
@@ -21,19 +18,6 @@ export default function GradientBg({
   const getBackground = () => {
     if (gradient) return gradient;
     
-    // Use only one subtle color per slide instead of full gradients
-    const color = getSlideColor(slideIndex);
-    
-    switch (type) {
-      case 'radial':
-        // Use a single subtle radial gradient
-        return getRadialGradient(color, '#000000', opacity);
-      case 'mesh':
-        return getMeshGradient(color, opacity * 0.5);
-      default:
-        // Use subtle single-color radial gradient instead of full gradient
-        return getRadialGradient(color, '#000000', opacity);
-    }
   };
 
   const backgroundStyle = {

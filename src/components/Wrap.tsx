@@ -2,44 +2,9 @@ import Slide from "./Slide";
 import Slider from "./Slider";
 import IntroSlide from "./IntroSlide.tsx";
 import EndNote from "./EndNote.tsx";
-import {
-  getCommitsIntroduction,
-  getPrReviewsIntroduction,
-  getPullRequestIntroduction,
-  getSlang,
-  getSlangIntroduction,
-  getStarsReceivedIntroduction,
-  getStreakIntroduction,
-  getTopLanguageIntroduction,
-} from "../utils.ts";
+import { getSlang, getIntroduction } from "../utils.ts";
 import { useGitHub } from "../context/GithubContext.tsx";
-import {
-  commitsIcon,
-  commitsSubtext,
-  commitsTitle,
-  peakPerformanceIcon,
-  peakPerformanceIntroduction,
-  peakPerformanceSubtext,
-  peakPerformanceTitle,
-  prReviewsIcon,
-  prReviewsSubtext,
-  prReviewsTitle,
-  pullRequestsIcon,
-  pullRequestsSubtext,
-  pullRequestsTitle,
-  slangSubtext,
-  slangIcon,
-  slangTitle,
-  starsReceivedIcon,
-  starsReceivedSubtext,
-  starsReceivedTitle,
-  streakIcon,
-  streakSubtext,
-  streakTitle,
-  topLanguageIcon,
-  topLanguageSubtext,
-  topLanguageTitle,
-} from "../constants.ts";
+import { SLIDE_CONFIG } from "../constants/index.ts";
 import { useEffect, useState, useRef } from "react";
 import html2canvas from "html2canvas";
 import {
@@ -60,29 +25,33 @@ const SlideTwo: React.FC = () => {
 
   return (
     <Slide
-      icon={starsReceivedIcon}
+      icon={SLIDE_CONFIG.starsReceived.icon}
       data={totalStars.toString()}
-      subText={starsReceivedSubtext}
-      title={starsReceivedTitle}
-      preText={getStarsReceivedIntroduction(totalStars)}
+      subText={SLIDE_CONFIG.starsReceived.subtext}
+      title={SLIDE_CONFIG.starsReceived.title}
+      preText={getIntroduction(totalStars, 3, "starsReceived")}
       countDown
       slideIndex={1}
+      color={SLIDE_CONFIG.starsReceived.color}
+      gradient={SLIDE_CONFIG.starsReceived.gradient}
     />
   );
 };
 
 const SlideThree: React.FC = () => {
   const { data } = useGitHub();
-  const topLanguage = data?.topLanguage ?? "Tricky";
+  const topLanguage = data?.topLanguage || "We Can't Tell";
 
   return (
     <Slide
-      icon={topLanguageIcon}
+      icon={SLIDE_CONFIG.topLanguage.icon}
       data={topLanguage}
-      subText={topLanguageSubtext}
-      title={topLanguageTitle}
-      preText={getTopLanguageIntroduction(topLanguage)}
+      subText={SLIDE_CONFIG.topLanguage.subtext}
+      title={SLIDE_CONFIG.topLanguage.title}
+      preText={getIntroduction(topLanguage, 0, "topLanguage")}
       slideIndex={2}
+      color={SLIDE_CONFIG.topLanguage.color}
+      gradient={SLIDE_CONFIG.topLanguage.gradient}
     />
   );
 };
@@ -93,13 +62,15 @@ const SlideFour: React.FC = () => {
 
   return (
     <Slide
-      icon={commitsIcon}
+      icon={SLIDE_CONFIG.commits.icon}
       data={commits.toString()}
-      subText={commitsSubtext}
-      title={commitsTitle}
-      preText={getCommitsIntroduction(commits)}
+      subText={SLIDE_CONFIG.commits.subtext}
+      title={SLIDE_CONFIG.commits.title}
+      preText={getIntroduction(commits, 20, "commits")}
       countDown
       slideIndex={3}
+      color={SLIDE_CONFIG.commits.color}
+      gradient={SLIDE_CONFIG.commits.gradient}
     />
   );
 };
@@ -110,13 +81,15 @@ const SlideFive: React.FC = () => {
 
   return (
     <Slide
-      icon={pullRequestsIcon}
+      icon={SLIDE_CONFIG.pullRequests.icon}
       data={pullRequest.toString()}
-      subText={pullRequestsSubtext}
-      title={pullRequestsTitle}
-      preText={getPullRequestIntroduction(pullRequest)}
+      subText={SLIDE_CONFIG.pullRequests.subtext}
+      title={SLIDE_CONFIG.pullRequests.title}
+      preText={getIntroduction(pullRequest, 5, "pullRequests")}
       countDown
       slideIndex={4}
+      color={SLIDE_CONFIG.pullRequests.color}
+      gradient={SLIDE_CONFIG.pullRequests.gradient}
     />
   );
 };
@@ -127,12 +100,14 @@ const SlideSix: React.FC = () => {
 
   return (
     <Slide
-      icon={peakPerformanceIcon}
+      icon={SLIDE_CONFIG.peakPerformance.icon}
       data={peakMonth.toString()}
-      subText={peakPerformanceSubtext}
-      title={peakPerformanceTitle}
-      preText={peakPerformanceIntroduction}
+      subText={SLIDE_CONFIG.peakPerformance.subtext}
+      title={SLIDE_CONFIG.peakPerformance.title}
+      preText={getIntroduction(peakMonth, 0, "peakPerformance")}
       slideIndex={5}
+      color={SLIDE_CONFIG.peakPerformance.color}
+      gradient={SLIDE_CONFIG.peakPerformance.gradient}
     />
   );
 };
@@ -143,13 +118,15 @@ const SlideSeven: React.FC = () => {
 
   return (
     <Slide
-      icon={streakIcon}
+      icon={SLIDE_CONFIG.streak.icon}
       data={longestStreak.toString()}
-      subText={streakSubtext}
-      title={streakTitle}
-      preText={getStreakIntroduction(longestStreak)}
+      subText={SLIDE_CONFIG.streak.subtext}
+      title={SLIDE_CONFIG.streak.title}
+      preText={getIntroduction(longestStreak, 3, "streak")}
       countDown
       slideIndex={6}
+      color={SLIDE_CONFIG.streak.color}
+      gradient={SLIDE_CONFIG.streak.gradient}
     />
   );
 };
@@ -160,13 +137,15 @@ const SlideEight: React.FC = () => {
 
   return (
     <Slide
-      icon={prReviewsIcon}
+      icon={SLIDE_CONFIG.prReviews.icon}
       data={reviews.toString()}
-      subText={prReviewsSubtext}
-      title={prReviewsTitle}
-      preText={getPrReviewsIntroduction(reviews)}
+      subText={SLIDE_CONFIG.prReviews.subtext}
+      title={SLIDE_CONFIG.prReviews.title}
+      preText={getIntroduction(reviews, 3, "prReviews")}
       countDown
       slideIndex={7}
+      color={SLIDE_CONFIG.prReviews.color}
+      gradient={SLIDE_CONFIG.prReviews.gradient}
     />
   );
 };
@@ -177,13 +156,15 @@ const SlideNine: React.FC = () => {
   const slang = getSlang(commits);
   return (
     <Slide
-      icon={slangIcon}
+      icon={SLIDE_CONFIG.slang.icon}
       data={slang.slang}
-      subText={slangSubtext}
-      title={slangTitle}
-      preText={getSlangIntroduction(commits)}
+      subText={SLIDE_CONFIG.slang.subtext}
+      title={SLIDE_CONFIG.slang.title}
+      preText={getIntroduction(commits, 5, "slang")}
       emoji={slang.emoji}
       slideIndex={8}
+      color={SLIDE_CONFIG.slang.color}
+      gradient={SLIDE_CONFIG.slang.gradient}
     />
   );
 };

@@ -1,8 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono, Sansita } from "next/font/google";
+import { Inter, JetBrains_Mono, Sansita } from "next/font/google";
 import { GitHubProvider } from "@/context/GithubContext";
 import { YEAR } from "@/constants/index";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -143,7 +149,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en">
+    <html lang="en" className={inter.variable}>
       <head>
         <script
           type="application/ld+json"

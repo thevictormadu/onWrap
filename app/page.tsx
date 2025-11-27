@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGitHub } from "@/context/GithubContext";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { motion } from "framer-motion";
 
 import Card from "@/components/Card";
@@ -13,7 +13,7 @@ import ProgressBar from "@/components/ProgressBar";
 import { primaryGradient, primaryColor, COLORS } from "@/constants/colors";
 import { YEAR } from "@/constants/index";
 
-export default function Home() {
+function HomeContent() {
   const [userName, setUserName] = useState("");
   const [validationError, setValidationError] = useState<string | null>(null);
   const [hasAutoStarted, setHasAutoStarted] = useState(false);
@@ -425,5 +425,35 @@ export default function Home() {
         </motion.div>
       </div>
     </GridBackground>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense
+      fallback={
+        <GridBackground>
+          <div
+            style={{
+              padding: "2rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "3rem",
+              alignItems: "center",
+              justifyContent: "center",
+              minHeight: "100vh",
+            }}
+          >
+            <Card>
+              <div style={{ maxWidth: "500px", padding: "2rem" }}>
+                <p style={{ color: COLORS.white }}>Loading...</p>
+              </div>
+            </Card>
+          </div>
+        </GridBackground>
+      }
+    >
+      <HomeContent />
+    </Suspense>
   );
 }

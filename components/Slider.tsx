@@ -198,7 +198,13 @@ export default function Slider({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [goToNextSlide, goToPrevSlide, resetProgressForNextSlide]);
+  }, [
+    goToNextSlide,
+    goToPrevSlide,
+    resetProgressForNextSlide,
+    clearData,
+    router,
+  ]);
 
   // Start the timer for the current slide
   useEffect(() => {

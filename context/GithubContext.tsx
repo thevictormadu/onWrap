@@ -36,13 +36,25 @@ export const useGitHub = () => {
   return context;
 };
 
+// Read the token once so it's consistent across renders.
+const GITHUB_TOKEN = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
+
+// Helper to ensure we're using the public token key and to centralise the
+// configuration error message in one place.
+function getGitHubToken(): string | null {
+  if (!GITHUB_TOKEN) {
+    return null;
+  }
+  return GITHUB_TOKEN;
+}
+
 export const GitHubProvider = ({ children }: { children: ReactNode }) => {
   const [data, setData] = useState<GitHubData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchGitHubData = async (username: string): Promise<void> => {
-    const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
+    const token = getGitHubToken();
 
     if (!token) {
       setError(
@@ -210,28 +222,33 @@ export const GitHubProvider = ({ children }: { children: ReactNode }) => {
 
       // Calculate forked repos in the specified year
       const forkedRepoNodes = forkedRepos?.nodes || [];
-      const totalForkedRepos = forkedRepoNodes.filter((repo: { createdAt?: string }) => {
-        const createdDate = repo?.createdAt ? new Date(repo.createdAt) : null;
-        return createdDate && createdDate.getFullYear() === currentYear;
-      }).length;
+      const totalForkedRepos = forkedRepoNodes.filter(
+        (repo: { createdAt?: string }) => {
+          const createdDate = repo?.createdAt ? new Date(repo.createdAt) : null;
+          return createdDate && createdDate.getFullYear() === currentYear;
+        }
+      ).length;
 
       // Calculate total stars (cumulative across all owned repos)
       const totalStars = repositories.nodes.reduce(
-        (sum: number, repo: { stargazers: { totalCount: number } }) => sum + (repo.stargazers.totalCount || 0),
+        (sum: number, repo: { stargazers: { totalCount: number } }) =>
+          sum + (repo.stargazers.totalCount || 0),
         0
       );
 
       // Calculate top language from all repositories
       const languageCounts: Record<string, number> = {};
-      repositories.nodes.forEach((repo: { languages: { edges: { node: { name: string } }[] } }) => {
-        repo.languages.edges.forEach((lang: { node: { name: string } }) => {
-          const langName = lang.node.name;
-          // Exclude HTML and CSS from being counted
-          if (langName !== "HTML" && langName !== "CSS") {
-            languageCounts[langName] = (languageCounts[langName] || 0) + 1;
-          }
-        });
-      });
+      repositories.nodes.forEach(
+        (repo: { languages: { edges: { node: { name: string } }[] } }) => {
+          repo.languages.edges.forEach((lang: { node: { name: string } }) => {
+            const langName = lang.node.name;
+            // Exclude HTML and CSS from being counted
+            if (langName !== "HTML" && langName !== "CSS") {
+              languageCounts[langName] = (languageCounts[langName] || 0) + 1;
+            }
+          });
+        }
+      );
 
       const topLanguage =
         Object.keys(languageCounts).sort(
@@ -241,7 +258,9 @@ export const GitHubProvider = ({ children }: { children: ReactNode }) => {
       // Filter contribution days for the current year and get dates with counts
       const contributionDaysWithDates =
         contributionsCollection.contributionCalendar.weeks.flatMap(
-          (week: { contributionDays: { date: string; contributionCount: number }[] }) =>
+          (week: {
+            contributionDays: { date: string; contributionCount: number }[];
+          }) =>
             week.contributionDays
               .filter((day: { date: string; contributionCount: number }) => {
                 const date = new Date(day.date);
@@ -275,17 +294,23 @@ export const GitHubProvider = ({ children }: { children: ReactNode }) => {
       // Calculate Peak Performance Month
       const monthCommitCounts: Record<string, number> = {};
       contributionsCollection.contributionCalendar.weeks.forEach(
-        (week: { contributionDays: { date: string; contributionCount: number }[] }) => {
-          week.contributionDays.forEach((day: { date: string; contributionCount: number }) => {
-            if (day.contributionCount > 0) {
-              const date = new Date(day.date);
-              if (date.getFullYear() === currentYear) {
-                const month = date.toLocaleString("default", { month: "long" });
-                monthCommitCounts[month] =
-                  (monthCommitCounts[month] || 0) + day.contributionCount;
+        (week: {
+          contributionDays: { date: string; contributionCount: number }[];
+        }) => {
+          week.contributionDays.forEach(
+            (day: { date: string; contributionCount: number }) => {
+              if (day.contributionCount > 0) {
+                const date = new Date(day.date);
+                if (date.getFullYear() === currentYear) {
+                  const month = date.toLocaleString("default", {
+                    month: "long",
+                  });
+                  monthCommitCounts[month] =
+                    (monthCommitCounts[month] || 0) + day.contributionCount;
+                }
               }
             }
-          });
+          );
         }
       );
 
@@ -342,4 +367,3 @@ export const GitHubProvider = ({ children }: { children: ReactNode }) => {
     </GitHubContext.Provider>
   );
 };
-

@@ -138,11 +138,17 @@ export default function ContributionsCard({
   const gridSquares = generateGrid;
 
   return (
-    <Card flex={1} flexDirection="column" gap="0" overflow="hidden" delay={delay}>
+    <Card
+      flex={1}
+      flexDirection="column"
+      gap="0"
+      overflow="hidden"
+      delay={delay}
+    >
       <div
         style={{
           position: "relative",
-          display: "flex",
+          
           alignItems: "center",
           justifyContent: "center",
         }}
@@ -171,11 +177,11 @@ export default function ContributionsCard({
 
         <div
           style={{
-            background: "#0F0F0F",
-            padding: "0.2rem",
+            background: "transparent",
+            padding: "0.4rem",
             textAlign: "center",
-            position: "absolute",
-            bottom: -35,
+            borderRadius: "0.5rem",
+            marginTop: "0.2rem",
           }}
         >
           <p
@@ -215,4 +221,3 @@ export default function ContributionsCard({
     </Card>
   );
 }
-

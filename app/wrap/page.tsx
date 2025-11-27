@@ -124,6 +124,7 @@ export default function WrapPage() {
         onToggleAudio={toggle}
         onDownload={download}
         isDownloading={isDownloading}
+        downloadSlideIndex={slides.length - 1}
       />
     </div>
   );

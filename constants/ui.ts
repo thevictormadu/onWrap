@@ -64,8 +64,8 @@ export const GLASSMORPHISM_SHADOW = "0 4px 30px rgba(0, 0, 0, 0.1)";
 // Download image constants
 export const WHATSAPP_STATUS_WIDTH = 1080;
 export const WHATSAPP_STATUS_HEIGHT = 1920;
-export const DOWNLOAD_PADDING = 120;
-export const DOWNLOAD_CONTENT_WIDTH = 700;
+export const DOWNLOAD_PADDING = 100;
+export const DOWNLOAD_CONTENT_WIDTH = 800;
 export const ORIGINAL_CONTENT_WIDTH = 400;
 export const DOWNLOAD_SCALE_FACTOR =
   DOWNLOAD_CONTENT_WIDTH / ORIGINAL_CONTENT_WIDTH;
@@ -79,4 +79,3 @@ export const MAX_DENSITY = 0.9;
 export const SEED_MODULUS = 1000;
 export const CONTRIBUTIONS_GRID_ROWS = 4;
 export const CONTRIBUTIONS_GRID_COLS = 11;
-

@@ -47,13 +47,11 @@ const EndNote: React.FC = () => {
           data-endnote-content="true"
           style={{
             width: isMobile ? "100%" : "400px",
-
             display: "flex",
             flexDirection: "column",
             justifyContent: "flex-start",
             alignItems: "stretch",
             padding: isMobile ? "0.5rem 0 5rem 0" : "1rem",
-
             gap: "0.75rem",
             position: "relative",
             marginTop: "20px",
@@ -70,8 +68,10 @@ const EndNote: React.FC = () => {
 
             {/* Stars Received Card */}
             <BasicEndCard
-              icon={<PiStarThin />}
-              iconColor={COLORS.yellow}
+              icon={React.createElement(SLIDE_CONFIG.starsReceived.icon, {
+                color: SLIDE_CONFIG.starsReceived.color,
+              })}
+              iconColor={SLIDE_CONFIG.starsReceived.color}
               value={data?.totalStars || 0}
               title={SLIDE_CONFIG.starsReceived.title}
               delay={0.15}
@@ -82,7 +82,9 @@ const EndNote: React.FC = () => {
           <div style={{ display: "flex", gap: "0.75rem" }}>
             {/* PRs Card */}
             <BasicEndCard
-              icon={<MdMergeType />}
+              icon={React.createElement(SLIDE_CONFIG.pullRequests.icon, {
+                color: SLIDE_CONFIG.pullRequests.color,
+              })}
               iconColor={SLIDE_CONFIG.pullRequests.color}
               value={data?.totalPRs || 0}
               title={SLIDE_CONFIG.pullRequests.title}
@@ -91,10 +93,12 @@ const EndNote: React.FC = () => {
 
             {/* PR Reviews Card */}
             <BasicEndCard
-              icon={<GoCodeReview />}
-              iconColor={SLIDE_CONFIG.prReviews.color}
-              value={(data?.totalReviews ?? 0).toLocaleString()}
-              title={SLIDE_CONFIG.prReviews.title}
+              icon={React.createElement(SLIDE_CONFIG.forks.icon, {
+                color: SLIDE_CONFIG.forks.color,
+              })}
+              iconColor={SLIDE_CONFIG.forks.color}
+              value={(data?.totalForkedRepos ?? 0).toLocaleString()}
+              title={SLIDE_CONFIG.forks.title}
               delay={0.25}
             />
           </div>
@@ -123,7 +127,9 @@ const EndNote: React.FC = () => {
 
             {/* Peak Performance Card */}
             <BasicEndCard
-              icon={<RiFireLine />}
+              icon={React.createElement(SLIDE_CONFIG.peakPerformance.icon, {
+                color: SLIDE_CONFIG.peakPerformance.color,
+              })}
               iconColor={SLIDE_CONFIG.peakPerformance.color}
               value={data?.peakMonth || 0}
               title={SLIDE_CONFIG.peakPerformance.title}
@@ -135,7 +141,9 @@ const EndNote: React.FC = () => {
           <div>
             {/* Slang Card */}
             <LongEndNoteCard
-              icon={<LiaAwardSolid />}
+              icon={React.createElement(SLIDE_CONFIG.slang.icon, {
+                color: SLIDE_CONFIG.slang.color,
+              })}
               value={slang.slang}
               title={SLIDE_CONFIG.slang.title}
               delay={0.4}

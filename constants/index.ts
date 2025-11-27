@@ -1,12 +1,13 @@
-import { GoCodeReview, GoZap } from "react-icons/go";
+import { GoZap } from "react-icons/go";
 import { IconType } from "react-icons/lib";
 import { COLORS } from "./colors";
 import { GRADIENTS } from "./colors";
-import { PiStarThin } from "react-icons/pi";
 import { MdCode, MdMergeType } from "react-icons/md";
 import { LuGitCommitVertical } from "react-icons/lu";
 import { RiFireLine } from "react-icons/ri";
 import { LiaAwardSolid } from "react-icons/lia";
+import { RiGitForkLine } from "react-icons/ri";
+import { FaRegStar } from "react-icons/fa";
 
 export const YEAR: number = 2025;
 
@@ -38,7 +39,7 @@ export const SLIDE_CONFIG = {
     altIntroduction:
       "Not much stardust this year, but hey, the sky's the limit for 2025!",
     title: "stars received",
-    icon: PiStarThin,
+    icon: FaRegStar,
     subtext: "total stars collected",
     color: COLORS.yellow,
     gradient: GRADIENTS.yellowOrange,
@@ -76,14 +77,14 @@ export const SLIDE_CONFIG = {
     color: COLORS.cyan,
     gradient: GRADIENTS.greenBlue,
   },
-  prReviews: {
+  forks: {
     introduction:
-      "You've been the gatekeeper of quality! Let's check how many pull requests you reviewed in 2024.",
+      "You've been the gatekeeper of quality! Let's check how many repos you forked in 2024.",
     altIntroduction:
-      "PR reviews? Looks like you kept your opinions to yourself this year. Share the wisdom next time!",
-    title: "PR reviews",
-    icon: GoCodeReview,
-    subtext: "total PRs reviewed",
+      "Forking? Looks like you kept your opinions to yourself this year. Share the wisdom next time!",
+    title: "forks",
+    icon: RiGitForkLine,
+    subtext: "total repos forked",
     color: COLORS.blue,
     gradient: GRADIENTS.purpleBlue,
   },
@@ -112,4 +113,3 @@ export const SLIDE_CONFIG = {
 } as const satisfies Record<string, SlideConfig>;
 
 export type SlideKey = keyof typeof SLIDE_CONFIG;
-

@@ -25,6 +25,8 @@ interface SliderProps {
   onToggleAudio?: () => void;
   onDownload?: () => void;
   isDownloading?: boolean;
+  /** Index of the slide where downloading is allowed (e.g. endnote slide). */
+  downloadSlideIndex?: number;
 }
 
 export default function Slider({
@@ -35,6 +37,7 @@ export default function Slider({
   onToggleAudio,
   onDownload,
   isDownloading = false,
+  downloadSlideIndex,
 }: SliderProps) {
   const isMobile = useIsMobile();
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -354,8 +357,8 @@ export default function Slider({
           initial={{ opacity: 1, scale: 1 }}
           style={{ pointerEvents: "auto" }}
         >
-          {/* Download Button */}
-          {onDownload && (
+          {/* Download Button - only active on the designated slide */}
+          {onDownload && downloadSlideIndex === currentSlide && (
             <IconButton
               icon={<LuDownload />}
               text={isDownloading ? "generating..." : undefined}
@@ -424,4 +427,3 @@ export default function Slider({
     </div>
   );
 }
-

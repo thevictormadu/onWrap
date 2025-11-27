@@ -45,7 +45,14 @@ export default function IconButton({
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={handleClick}
+      onClick={(e) => {
+        // Prevent clicks on icon buttons from triggering parent click handlers
+        // (e.g. the slider tap area that changes slides).
+        e.stopPropagation();
+        if (handleClick) {
+          handleClick(e);
+        }
+      }}
     >
       <div
         style={{
@@ -59,4 +66,3 @@ export default function IconButton({
     </button>
   );
 }
-

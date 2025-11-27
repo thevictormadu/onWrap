@@ -195,8 +195,13 @@ export default function Slide({
             >
               {emoji && (
                 <motion.div
-                  initial={{ scale: 0, rotate: -180 }}
-                  animate={{ scale: 1, rotate: 0 }}
+                  key={title}
+                  initial={{ scale: 0, rotate: -180, opacity: 0 }}
+                  animate={{
+                    scale: [0, 1.2, 1],
+                    rotate: [-180, 0, 0],
+                    opacity: 1,
+                  }}
                   transition={{ duration: 0.8, type: "spring" }}
                   style={{ fontSize: "5rem" }}
                 >
@@ -268,4 +273,3 @@ export default function Slide({
     </GridBackground>
   );
 }
-

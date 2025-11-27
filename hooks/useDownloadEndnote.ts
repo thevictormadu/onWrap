@@ -93,7 +93,12 @@ function createScreenshotWrapper(): HTMLDivElement {
   wrapper.style.top = "0";
   wrapper.style.width = `${WHATSAPP_STATUS_WIDTH}px`;
   wrapper.style.height = `${WHATSAPP_STATUS_HEIGHT}px`;
-  wrapper.style.backgroundColor = "#000000";
+  // Abstract colorful background for the exported image
+  wrapper.style.background =
+    "radial-gradient(circle at top left, rgba(255, 0, 110, 0.35), transparent 60%)," +
+    "radial-gradient(circle at bottom right, rgba(8, 194, 241, 0.35), transparent 55%)," +
+    "radial-gradient(circle at top right, rgba(255, 190, 11, 0.28), transparent 60%)," +
+    "#000000";
   wrapper.style.display = "flex";
   wrapper.style.justifyContent = "center";
   wrapper.style.alignItems = "center";
@@ -148,28 +153,23 @@ async function captureAndDownload(
     allowTaint: false,
   });
 
-  return new Promise((resolve, reject) => {
-    canvas.toBlob(
-      (blob) => {
-        if (!blob) {
-          reject(new Error("Failed to create blob"));
-          return;
-        }
+  // Use a data URL so the browser reliably recognises this as an image
+  // and applies the correct file type/extension across platforms.
+  const dataUrl = canvas.toDataURL("image/jpeg", DOWNLOAD_QUALITY);
 
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        const year = new Date().getFullYear();
-        link.download = `github-onwrap-${userId}-${year}.jpg`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        resolve();
-      },
-      "image/jpeg",
-      DOWNLOAD_QUALITY
-    );
+  return new Promise((resolve) => {
+    const link = document.createElement("a");
+    const year = new Date().getFullYear();
+    link.href = dataUrl;
+    link.download = `github-onwrap-${userId}-${year}.jpg`;
+
+    // Some browsers (especially iOS Safari) don't fully respect the
+    // download attribute; falling back to opening in a new tab still
+    // presents a proper image to the user.
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    resolve();
   });
 }
 
@@ -235,7 +235,9 @@ export function useDownloadEndnote(): UseDownloadEndnoteReturn {
       }
       setIsDownloading(false);
     }
-  }, [data?.userId, isDownloading]);
+    // Depend on the full data object so this stays in sync if we ever
+    // start using more than just userId inside the callback.
+  }, [data, isDownloading]);
 
   return { download, isDownloading };
 }

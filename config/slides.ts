@@ -88,10 +88,10 @@ export const SLIDES: SlideDefinition[] = [
   },
   {
     type: "stat",
-    configKey: "prReviews",
-    dataKey: "totalReviews",
+    configKey: "forks",
+    dataKey: "totalForkedRepos",
     countDown: true,
-    cutOff: 3,
+    cutOff: 1,
   },
   {
     type: "slang",
@@ -124,7 +124,7 @@ export function generateStatSlideProps(
   data: GitHubData | null,
   slideIndex: number
 ): GeneratedSlideProps {
-  const config = SLIDE_CONFIG[definition.configKey];
+  const config = SLIDE_CONFIG[definition.configKey] ?? SLIDE_CONFIG.commits;
   const value = data?.[definition.dataKey] ?? 0;
   const displayValue =
     typeof value === "number" ? value.toString() : String(value);
@@ -169,4 +169,3 @@ export function generateSlangSlideProps(
     gradient: config.gradient,
   };
 }
-

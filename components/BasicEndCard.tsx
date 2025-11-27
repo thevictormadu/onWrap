@@ -44,7 +44,7 @@ export default function BasicEndCard({
       </div>
       <div
         style={{
-          fontSize: "1.75rem",
+          fontSize: "1.55rem",
           fontWeight: 700,
           color: "rgb(255, 255, 255)",
           lineHeight: 1,

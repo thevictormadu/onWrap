@@ -12,17 +12,13 @@ import BasicEndCard from "./BasicEndCard";
 import BoldEndCard from "./BoldEndCard";
 import LongEndNoteCard from "./LongEndNoteCard";
 import ContributionsCard from "./ContributionsCard";
-import { MdMergeType, MdLightbulb } from "react-icons/md";
-import { PiStarThin } from "react-icons/pi";
-import { GoCodeReview } from "react-icons/go";
-import { LiaAwardSolid } from "react-icons/lia";
-import { RiFireLine } from "react-icons/ri";
+import { MdLightbulb } from "react-icons/md";
 import NameCard from "./NameCard";
 import GridBackground from "./GridBackground";
 
 const EndNote: React.FC = () => {
   const { data } = useGitHub();
-  const slang = getSlang(data?.totalCommits || 0);
+  const slang = getSlang(data?.totalContributions || 0);
   const isMobile = useMediaQuery(MOBILE_ENDNOTE_BREAKPOINT);
   const divRef = useRef<HTMLDivElement>(null);
   const languageIconData = getLanguageIconAndColor(data?.topLanguage || "");

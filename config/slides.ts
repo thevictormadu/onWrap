@@ -148,7 +148,8 @@ export function generateSlangSlideProps(
 ): GeneratedSlideProps {
   const config = SLIDE_CONFIG.slang;
   const commits = data?.totalCommits ?? 0;
-  const slang = getSlang(commits);
+  const contributions = data?.totalContributions ?? 0;
+  const slang = getSlang(contributions);
 
   return {
     icon: config.icon,

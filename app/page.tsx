@@ -80,7 +80,8 @@ function HomeContent() {
     if (!hasAutoStarted && auto === "1" && uname && !data && !loading) {
       setHasAutoStarted(true);
       setUserName(uname);
-      fetchGitHubData(uname);
+      // Use OAuth token when coming from OAuth callback
+      fetchGitHubData(uname, true);
     }
   }, [searchParams, hasAutoStarted, data, loading, fetchGitHubData]);
 

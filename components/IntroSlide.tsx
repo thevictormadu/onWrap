@@ -110,7 +110,7 @@ export default function IntroSlide() {
                 maxWidth: "90%",
               }}
             >
-              Enough about {YEAR - 1}, let&apos;s talk about you. Ready to see your
+              Enough about {YEAR}, let&apos;s talk about you. Ready to see your
               achievements, highlights, and the moments that made you shine?
             </motion.p>
           </motion.div>
@@ -165,4 +165,3 @@ export default function IntroSlide() {
     </GridBackground>
   );
 }
-

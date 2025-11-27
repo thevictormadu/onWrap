@@ -188,7 +188,7 @@ export default function Slide({
                 justifyContent: "center",
                 alignItems: "center",
                 gap: "1rem",
-                fontFamily: "'JetBrains Mono', monospace",
+                fontFamily: "var(--font-jetbrains-mono), monospace",
                 fontVariantNumeric: "tabular-nums",
                 letterSpacing: "-0.02em",
               }}
@@ -239,7 +239,7 @@ export default function Slide({
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
                     display: "block",
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "var(--font-jetbrains-mono), monospace",
                     fontVariantNumeric: "tabular-nums",
                     letterSpacing: "-0.02em",
                     textShadow: `0 0 5px ${color || primaryColor}`,

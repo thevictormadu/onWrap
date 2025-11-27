@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono, Sansita } from "next/font/google";
 import { GitHubProvider } from "@/context/GithubContext";
 import { YEAR } from "@/constants/index";
 import "./globals.css";
@@ -7,6 +7,7 @@ import "./globals.css";
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
+  display: "swap",
 });
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://onwrap.vercel.app";

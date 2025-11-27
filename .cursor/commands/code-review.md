@@ -62,3 +62,5 @@ do ALL of the following: 1. General review
 • A suggested fix or code snippet / pseudo-diff where possible.
 
 Always be specific and practical. Prioritise things that matter before I push to Git: correctness, readability, maintainability, consistency, and safety.
+
+Finally run build to ensure the app runs correctly

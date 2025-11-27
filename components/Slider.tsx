@@ -45,6 +45,7 @@ export default function Slider({
     Array(slides.length).fill(0)
   );
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const autoAdvanceTriggeredRef = useRef(false);
 
   // Move to the next slide
   const goToNextSlide = useCallback(() => {
@@ -94,11 +95,15 @@ export default function Slider({
     setProgressValues((prev) => {
       const updatedProgress = [...prev];
       const increment = 100 / (slideDuration / PROGRESS_UPDATE_INTERVAL);
-      if (updatedProgress[currentSlide] + increment >= 100) {
-        updatedProgress[currentSlide] = 100;
+      const nextValue = Math.min(
+        updatedProgress[currentSlide] + increment,
+        100
+      );
+      updatedProgress[currentSlide] = nextValue;
+
+      if (nextValue >= 100 && !autoAdvanceTriggeredRef.current) {
+        autoAdvanceTriggeredRef.current = true;
         goToNextSlide();
-      } else {
-        updatedProgress[currentSlide] += increment;
       }
       return updatedProgress;
     });
@@ -176,6 +181,7 @@ export default function Slider({
 
   // Start the timer for the current slide
   useEffect(() => {
+    autoAdvanceTriggeredRef.current = false;
     resetProgressForNextSlide();
     intervalRef.current = setInterval(updateProgress, PROGRESS_UPDATE_INTERVAL);
 

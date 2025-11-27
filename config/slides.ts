@@ -17,8 +17,6 @@ interface StatSlideDefinition extends BaseSlideDefinition {
   configKey: SlideKey;
   dataKey: keyof GitHubData;
   countDown?: boolean;
-  /** Threshold for determining which intro text to show */
-  cutOff?: number;
 }
 
 interface SlangSlideDefinition extends BaseSlideDefinition {
@@ -51,47 +49,46 @@ export const SLIDES: SlideDefinition[] = [
     configKey: "starsReceived",
     dataKey: "totalStars",
     countDown: true,
-    cutOff: 3,
   },
   {
     type: "stat",
     configKey: "topLanguage",
     dataKey: "topLanguage",
-    cutOff: 0,
   },
   {
     type: "stat",
     configKey: "commits",
     dataKey: "totalCommits",
     countDown: true,
-    cutOff: 20,
+  },
+  {
+    type: "stat",
+    configKey: "contributions",
+    dataKey: "totalContributions",
+    countDown: true,
   },
   {
     type: "stat",
     configKey: "pullRequests",
     dataKey: "totalPRs",
     countDown: true,
-    cutOff: 5,
   },
   {
     type: "stat",
     configKey: "peakPerformance",
     dataKey: "peakMonth",
-    cutOff: 0,
   },
   {
     type: "stat",
     configKey: "streak",
     dataKey: "longestStreak",
     countDown: true,
-    cutOff: 3,
   },
   {
     type: "stat",
     configKey: "forks",
     dataKey: "totalForkedRepos",
     countDown: true,
-    cutOff: 1,
   },
   {
     type: "slang",
@@ -134,11 +131,7 @@ export function generateStatSlideProps(
     data: displayValue,
     subText: config.subtext,
     title: config.title,
-    preText: getIntroduction(
-      value as number | string,
-      definition.cutOff ?? 0,
-      definition.configKey
-    ),
+    preText: getIntroduction(value as number | string, definition.configKey),
     countDown: definition.countDown,
     slideIndex,
     color: config.color,
@@ -162,7 +155,7 @@ export function generateSlangSlideProps(
     data: slang.slang,
     subText: config.subtext,
     title: config.title,
-    preText: getIntroduction(commits, 5, "slang"),
+    preText: getIntroduction(commits, "slang"),
     emoji: slang.emoji,
     slideIndex,
     color: config.color,

@@ -40,7 +40,7 @@ import {
   SiPowers,
 } from "react-icons/si";
 import { IoCodeSharp } from "react-icons/io5";
-import { SLIDE_CONFIG, type SlideKey } from "@/constants/index";
+import { SLIDE_CONFIG, type SlideKey, type IntroTier } from "@/constants/index";
 import { Slangs } from "@/types";
 
 export const easeInOutQuad = (t: number): number => {
@@ -49,21 +49,35 @@ export const easeInOutQuad = (t: number): number => {
 
 export function getIntroduction(
   value: number | string,
-  cutOff: number,
   slide: SlideKey
 ): string {
+  const config = SLIDE_CONFIG[slide];
+
+  // Handle string-valued stats like "topLanguage" or unknowns
   if (typeof value === "string") {
-    if (value == "Unknown") {
-      return SLIDE_CONFIG[slide].altIntroduction;
-    } else {
-      return SLIDE_CONFIG[slide].introduction;
+    if (
+      value === "Unknown" &&
+      "unknownIntroduction" in config &&
+      config.unknownIntroduction
+    ) {
+      return config.unknownIntroduction;
     }
+
+    // Fallback to the first tier text if available
+    return config.introductions[0]?.text ?? "";
   }
-  if (value < cutOff) {
-    return SLIDE_CONFIG[slide].altIntroduction;
-  } else {
-    return SLIDE_CONFIG[slide].introduction;
-  }
+
+  // Numeric stats – pick the tier whose [min, max) range matches
+  const tiers = config.introductions as readonly IntroTier[];
+
+  const tier =
+    tiers.find((t) => {
+      const minOk = t.min === undefined || value >= t.min;
+      const maxOk = t.max === undefined || value < t.max;
+      return minOk && maxOk;
+    }) ?? tiers[tiers.length - 1];
+
+  return tier.text;
 }
 
 export function getLanguageIconAndColor(language: string): {
@@ -215,4 +229,3 @@ export function getSlang(commits: number): Slangs {
     return { slang: "Dey play!", emoji: "😩" };
   }
 }
-

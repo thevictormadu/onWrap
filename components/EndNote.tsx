@@ -47,7 +47,10 @@ const EndNote: React.FC = () => {
             flexDirection: "column",
             justifyContent: "flex-start",
             alignItems: "stretch",
-            padding: isMobile ? "0.5rem 0 5rem 0" : "1rem",
+            paddingTop: isMobile ? "0.5rem" : "1rem",
+            paddingRight: isMobile ? "0" : "1rem",
+            paddingBottom: isMobile ? "5rem" : "1rem",
+            paddingLeft: isMobile ? "0" : "1rem",
             gap: "0.75rem",
             position: "relative",
             marginTop: "20px",
@@ -168,6 +171,10 @@ const EndNote: React.FC = () => {
                 Victor Madu
               </span>
             </div>
+          )}
+          {/* Spacer for Android browser padding-bottom fix */}
+          {isMobile && (
+            <div style={{ height: "5rem", minHeight: "5rem", flexShrink: 0 }} />
           )}
         </div>
       </div>

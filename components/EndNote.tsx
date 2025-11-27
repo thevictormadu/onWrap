@@ -130,10 +130,11 @@ const EndNote: React.FC = () => {
               value={data?.peakMonth || 0}
               title={SLIDE_CONFIG.peakPerformance.title}
               delay={0.35}
+              align="left"
             />
           </div>
 
-          {/* PR Reviews and Slang - Side by Side */}
+          {/* Slang  */}
           <div>
             {/* Slang Card */}
             <LongEndNoteCard
@@ -144,15 +145,13 @@ const EndNote: React.FC = () => {
               title={SLIDE_CONFIG.slang.title}
               delay={0.4}
               flex={0}
+              iconColor={SLIDE_CONFIG.slang.color}
             />
           </div>
 
           {!isMobile && (
-            <motion.div
+            <div
               data-signature="true"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.2 }}
               style={{
                 display: "none",
                 justifyContent: "center",
@@ -168,7 +167,7 @@ const EndNote: React.FC = () => {
               <span style={{ fontWeight: 600, color: COLORS.white }}>
                 Victor Madu
               </span>
-            </motion.div>
+            </div>
           )}
         </div>
       </div>

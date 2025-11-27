@@ -214,21 +214,25 @@ export function getSlang(commits: number): Slangs {
   } else if (commits > 500) {
     return { slang: "Opor!", emoji: "🫡" };
   } else if (commits > 400) {
-    return { slang: "Who dey breathe!", emoji: "✌️" };
+    return { slang: "Big energy!", emoji: "💪" };
   } else if (commits > 300) {
-    return { slang: "E choke!", emoji: "🫣️" };
+    return { slang: "E choke!", emoji: "🙅" };
   } else if (commits > 200) {
     return { slang: "Omo!", emoji: "🙂" };
   } else if (commits > 100) {
     return { slang: "Odogwu!", emoji: "🤑" };
   } else if (commits > 50) {
     return { slang: "On colos!", emoji: "🤐️" };
-  } else if (commits > 10) {
-    return { slang: "We mueve!", emoji: "🤐️" };
-  } else if (commits > 5) {
+  }  else if (commits > 30) {
     return { slang: "Wahala!", emoji: "🤐️" };
-  } else if (commits > 2) {
-    return { slang: "God abeg!", emoji: "🤲" };
+  } else if (commits > 20) {
+    return { slang: "Who you epp?", emoji: "🤐️" };
+  } else if (commits > 10) {
+    return { slang: "Wetin b dis!", emoji: "🙂" };
+  } else if (commits > 5) {
+    return { slang: "God abeg!", emoji: "🙆" };
+  } else if (commits > 1) {
+    return { slang: "Na wa o!", emoji: "🤲" };
   } else {
     return { slang: "Dey play!", emoji: "😩" };
   }

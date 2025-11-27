@@ -56,7 +56,7 @@ export const SLIDE_CONFIG = {
       {
         level: "elite",
         min: 30,
-        text: "Consistency is the key, and you have the padlock! It's obvious you are a serious person.",
+        text: "if consistency is the key, then you are the padlock! It's obvious you are a serious person.",
       },
       {
         level: "strong",
@@ -68,7 +68,7 @@ export const SLIDE_CONFIG = {
         level: "casual",
         min: 3,
         max: 10,
-        text: `You and consistency were in a situationship this ${YEAR}. Not terrible… but definitely complicated.`,
+        text: `Your consistency this ${YEAR} was like a Airtel signal - strong on some days, questionable on others.`,
       },
       {
         level: "ghost",
@@ -87,26 +87,24 @@ export const SLIDE_CONFIG = {
       {
         level: "elite",
         min: 50,
-        text: `You are a star, and you know it! GitHub couldn't stop shining your way in ${YEAR}.`,
+        text: `You are a star, and you know it! GitHub practically needed sunglasses around you in ${YEAR}.`,
       },
       {
         level: "strong",
         min: 20,
         max: 50,
-        text: "You lit up a good part of GitHub this year. Your repos definitely turned heads.",
+        text: "You lit up a good part of GitHub this year. Your repos were getting attention like they owed people money.",
       },
       {
         level: "casual",
         min: 5,
         max: 20,
-        text: `You dropped some gems in ${YEAR}. A few people noticed, the rest will catch up.`,
+        text: `You dropped a few shiny things in ${YEAR}. Some folks noticed - the rest are late to the party.`,
       },
       {
         level: "ghost",
         max: 5,
-        text: `Not much stardust this year, but hey, the sky's the limit for ${
-          YEAR + 1
-        }!`,
+        text: `Your star count was humble. But no pressure. ${YEAR + 1} could be the year you finally 'blow'!.`,
       },
     ],
   },
@@ -119,11 +117,11 @@ export const SLIDE_CONFIG = {
     introductions: [
       {
         level: "elite",
-        text: `Your coding palette is vibrant and you seem to be enjoying yourself! Here's the language that ruled your ${YEAR}.`,
+        text: `You tried a bit of many things, but one language clearly had you in a chokehold. Here's the real MVP of your ${YEAR}.`,
       },
     ],
     unknownIntroduction:
-      "It's either you couldn't pick a favorite language or your stack is from Mars.",
+      "Your language usage is so chaotic, even GitHub is confused. Pick a side next year.",
   },
   commits: {
     title: "commits",
@@ -141,7 +139,7 @@ export const SLIDE_CONFIG = {
         level: "strong",
         min: 400,
         max: 1000,
-        text: `You showed up and shipped. Solid commit energy all through ${YEAR}.`,
+        text: `You showed up and shipped. Solid commit energy in ${YEAR}.`,
       },
       {
         level: "casual",
@@ -152,7 +150,7 @@ export const SLIDE_CONFIG = {
       {
         level: "ghost",
         max: 100,
-        text: "If coding is a crime, you might be innocent. You have not committed much.",
+        text: "If coding is a crime, then you are trying so hard to be innocent.",
       },
     ],
   },
@@ -166,13 +164,13 @@ export const SLIDE_CONFIG = {
       {
         level: "elite",
         min: 2000,
-        text: `You didn't just touch grass, you touched every repo. Your ${YEAR} contributions were ridiculous in the best way.`,
+        text: `It looks like you were really trying to prove a point. Point noted! Your ${YEAR} contributions were ridiculous in the best way.`,
       },
       {
         level: "strong",
         min: 800,
         max: 2000,
-        text: "You showed up all year. Commits, issues, PRs—your contribution graph was busy.",
+        text: "You showed up all year. Commits, issues, PRs. Your contribution graph was busy.",
       },
       {
         level: "casual",
@@ -199,7 +197,7 @@ export const SLIDE_CONFIG = {
       {
         level: "elite",
         min: 100,
-        text: `Your pull requests were basically peace treaties for the codebase — ${YEAR} was you fixing drama up and down.`,
+        text: `Your pull requests were basically peace treaties for the codebase - ${YEAR} was you fixing drama up and down.`,
       },
       {
         level: "strong",
@@ -211,7 +209,7 @@ export const SLIDE_CONFIG = {
         level: "casual",
         min: 5,
         max: 30,
-        text: "You pulled up when it mattered. Not everyday superhero, mostimes you chose Netflix over GitHub.",
+        text: "You pulled up when it mattered. Not everyday superhero. Mostimes you chose Netflix over GitHub.",
       },
       {
         level: "ghost",
@@ -224,7 +222,7 @@ export const SLIDE_CONFIG = {
     title: "forks",
     icon: RiGitForkLine,
     subtext: "total repos forked",
-    color: COLORS.blue,
+    color: COLORS.green,
     gradient: GRADIENTS.purpleBlue,
     introductions: [
       {
@@ -247,7 +245,7 @@ export const SLIDE_CONFIG = {
       {
         level: "ghost",
         max: 3,
-        text: `Forking? Barely. Your ${YEAR} was looking like an empty fridge — nothing inside. Maybe this year’s the comeback.`,
+        text: `Forking? Barely. Your ${YEAR} was looking like an empty fridge - nothing inside. Maybe this year’s the comeback.`,
       },
     ],
   },
@@ -264,21 +262,21 @@ export const SLIDE_CONFIG = {
       },
       {
         level: "ghost",
-        text: `Peak performance? More like peak nap time. But here's when you were least inactive in ${YEAR}!`,
+        text: `Peak performance? More like peak nap time. We are having a hard time finding you in ${YEAR}!`,
       },
     ],
   },
   slang: {
-    title: "befitting slang",
+    title: "aura",
     icon: LiaAwardSolid,
     subtext: "is how we feel about your coding journey this year",
-    color: COLORS.white,
+    color: COLORS.blue,
     gradient: GRADIENTS.rainbow,
     introductions: [
       {
         level: "elite",
         min: 500,
-        text: `Your GitHub aura is unmatched! Let's crown you with the perfect Naija 🇳🇬 slang for ${YEAR}.`,
+        text: `Your GitHub presence was premium this year. Your aura alone deserves a full Naija 🇳🇬 coronation for ${YEAR}.`,
       },
       {
         level: "strong",
@@ -295,7 +293,7 @@ export const SLIDE_CONFIG = {
       {
         level: "ghost",
         max: 10,
-        text: `Well, every kingdom has its jester. Let's see what Naija 🇳🇬 slang suits your ${YEAR} vibes.`,
+        text: `Every kingdom has that one silent character. Let’s see which Naija 🇳🇬 slang best captures your ${YEAR} energy.`,
       },
     ],
   },

@@ -9,6 +9,7 @@ interface BasicEndCardProps {
   value: string | number;
   title: string;
   delay?: number;
+  align?: "center" | "left" | "right";
 }
 
 export default function BasicEndCard({
@@ -17,9 +18,22 @@ export default function BasicEndCard({
   value,
   title,
   delay = 0.15,
+  align = "center",
 }: BasicEndCardProps) {
   return (
-    <Card flex={1} flexDirection="column" gap="0.5rem" delay={delay}>
+    <Card
+      flex={1}
+      flexDirection="column"
+      alignItems={
+        align === "center"
+          ? "center"
+          : align === "left"
+          ? "flex-start"
+          : "flex-end"
+      }
+      gap="0.5rem"
+      delay={delay}
+    >
       <div
         style={{
           width: "2.5rem",
@@ -52,6 +66,7 @@ export default function BasicEndCard({
           overflowWrap: "break-word",
           wordBreak: "break-word",
           maxWidth: "100%",
+          textAlign: align,
         }}
       >
         {typeof value === "number" ? value.toLocaleString() : value}
@@ -61,6 +76,7 @@ export default function BasicEndCard({
           color: "rgba(255, 255, 255, 0.6)",
           fontSize: "0.875rem",
           fontWeight: 500,
+          textAlign: align,
         }}
       >
         {title}
@@ -68,4 +84,3 @@ export default function BasicEndCard({
     </Card>
   );
 }
-

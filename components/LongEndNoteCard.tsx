@@ -31,13 +31,14 @@ export default function LongEndNoteCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1,  }}>
         <div
           style={{
             fontSize: "1.75rem",
             fontWeight: 700,
             color: COLORS.white,
             lineHeight: 1,
+            marginBottom: "0.2rem",
           }}
         >
           {value}

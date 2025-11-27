@@ -21,7 +21,7 @@ export interface GitHubData {
 
 interface GitHubContextType {
   data: GitHubData | null;
-  fetchGitHubData: (username: string) => Promise<void>;
+  fetchGitHubData: (username: string, useOAuth?: boolean) => Promise<void>;
   loading: boolean;
   error: string | null;
   clearError: () => void;
@@ -43,7 +43,10 @@ export const GitHubProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchGitHubData = async (username: string): Promise<void> => {
+  const fetchGitHubData = async (
+    username: string,
+    useOAuth: boolean = false
+  ): Promise<void> => {
     setLoading(true);
     setError(null);
 
@@ -53,7 +56,7 @@ export const GitHubProvider = ({ children }: { children: ReactNode }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username }),
+        body: JSON.stringify({ username, useOAuth }),
       });
 
       const result = await response.json();

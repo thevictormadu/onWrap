@@ -55,6 +55,7 @@ interface GitHubDataResponse {
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
   const username = body?.username as string | undefined;
+  const useOAuth = body?.useOAuth === true; // Explicit flag to use OAuth token
 
   if (!username) {
     return NextResponse.json(
@@ -63,10 +64,55 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Prefer per‑user OAuth token, then app‑level token, then legacy public token
   const cookieToken = req.cookies.get("gh_access_token")?.value;
-  const isAuthenticated = !!cookieToken; // User is authenticated if they have an OAuth token
-  const token = cookieToken || APP_FALLBACK_TOKEN || PUBLIC_FALLBACK_TOKEN;
+
+  // Trim whitespace from tokens (common issue with env vars)
+  const appToken = APP_FALLBACK_TOKEN?.trim() || undefined;
+  const publicToken = PUBLIC_FALLBACK_TOKEN?.trim() || undefined;
+
+  // Token selection logic:
+  // - If useOAuth is true (coming from OAuth flow), use OAuth token if available
+  // - If useOAuth is false or undefined (manual username entry), ignore OAuth token and use fallback tokens
+  let token: string | undefined;
+  let isAuthenticated = false;
+
+  if (useOAuth && cookieToken) {
+    // User explicitly wants to use OAuth (e.g., from "Continue with GitHub" flow)
+    token = cookieToken;
+    isAuthenticated = true;
+  } else {
+    // User entered username manually - use fallback tokens (ignore OAuth cookie)
+    token = appToken || publicToken;
+    isAuthenticated = false;
+  }
+
+  // Debug logging (only in development)
+  if (process.env.NODE_ENV === "development") {
+    const tokenSource =
+      useOAuth && cookieToken
+        ? "OAuth cookie (explicit)"
+        : token === cookieToken
+        ? "OAuth cookie (fallback)"
+        : token === appToken
+        ? "GITHUB_APP_TOKEN"
+        : token === publicToken
+        ? "NEXT_PUBLIC_GITHUB_TOKEN"
+        : "none";
+
+    console.log("Token check:", {
+      username,
+      useOAuth,
+      hasCookieToken: !!cookieToken,
+      hasAppToken: !!appToken,
+      hasPublicToken: !!publicToken,
+      tokenSource,
+      isAuthenticated,
+      tokenLength: token?.length || 0,
+      tokenPreview: token
+        ? `${token.substring(0, 4)}...${token.substring(token.length - 4)}`
+        : "none",
+    });
+  }
 
   if (!token) {
     return NextResponse.json(
@@ -151,13 +197,53 @@ export async function POST(req: NextRequest) {
     });
 
     if (!response.ok) {
+      // Log the actual error response for debugging
+      let errorBody: string | null = null;
+      try {
+        errorBody = await response.text();
+        if (process.env.NODE_ENV === "development") {
+          console.log("GitHub API error response:", {
+            status: response.status,
+            statusText: response.statusText,
+            body: errorBody.substring(0, 500), // First 500 chars
+          });
+        }
+      } catch {
+        // Ignore if we can't read the error body
+      }
+
       if (response.status === 401) {
-        return NextResponse.json(
-          {
-            error: "Authentication failed. Please re-authenticate with GitHub.",
-          },
-          { status: 401 }
-        );
+        // Provide different error messages based on token source
+        if (cookieToken) {
+          // User was authenticated via OAuth but token is invalid/expired
+          return NextResponse.json(
+            {
+              error:
+                "Your GitHub session has expired. Please click 'Continue with GitHub' to sign in again.",
+            },
+            { status: 401 }
+          );
+        } else if (appToken || publicToken) {
+          // Fallback token is invalid or expired
+          const tokenType = appToken
+            ? "GITHUB_APP_TOKEN"
+            : "NEXT_PUBLIC_GITHUB_TOKEN";
+          return NextResponse.json(
+            {
+              error: `GitHub token (${tokenType}) is invalid or expired. Please sign in with GitHub to continue, or verify your token has the correct permissions (repo, read:user) and is not expired. Check your .env file and restart the server if you just added the token.`,
+            },
+            { status: 401 }
+          );
+        } else {
+          // No token at all (shouldn't reach here due to earlier check, but just in case)
+          return NextResponse.json(
+            {
+              error:
+                "No GitHub token available. Please sign in with GitHub or configure a server token.",
+            },
+            { status: 401 }
+          );
+        }
       } else if (response.status === 403) {
         return NextResponse.json(
           { error: "Rate limit exceeded. Please try again later." },
@@ -187,6 +273,11 @@ export async function POST(req: NextRequest) {
       Array.isArray(result.errors) &&
       result.errors.length > 0
     ) {
+      // Log GraphQL errors for debugging
+      if (process.env.NODE_ENV === "development") {
+        console.log("GitHub GraphQL errors:", result.errors);
+      }
+
       const errorMessages = result.errors.map((err) => {
         if (
           err.type === "NOT_FOUND" ||
@@ -200,9 +291,15 @@ export async function POST(req: NextRequest) {
           return "GitHub API rate limit exceeded. Please try again later.";
         } else if (
           err.message.includes("Bad credentials") ||
-          err.message.includes("401")
+          err.message.includes("401") ||
+          err.message.includes("Unauthorized")
         ) {
-          return "Authentication failed. Please check your GitHub token.";
+          // Provide context-aware error message
+          if (cookieToken) {
+            return "Your GitHub session has expired. Please sign in again with GitHub.";
+          } else {
+            return "GitHub token is invalid. Please sign in with GitHub or check your server token configuration.";
+          }
         }
         return err.message;
       });

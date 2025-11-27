@@ -1,0 +1,22 @@
+{
+  "name": "onWrap - GitHub Year in Review",
+  "short_name": "onWrap",
+  "description": "Generate your personalized GitHub Year in Review. View your coding stats, contributions, and share your developer journey!",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/brand-github-copilot.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["developer", "productivity", "utilities"],
+  "lang": "en-US",
+  "dir": "ltr"
+}
+

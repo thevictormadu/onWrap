@@ -38,7 +38,9 @@ import {
   SiShell,
   SiDash,
   SiPowers,
+  
 } from "react-icons/si";
+import { FaJava } from "react-icons/fa";
 import { IoCodeSharp } from "react-icons/io5";
 import { SLIDE_CONFIG, type SlideKey, type IntroTier } from "@/constants/index";
 import { Slangs } from "@/types";
@@ -193,6 +195,8 @@ export function getLanguageIconAndColor(language: string): {
       return { icon: SiDash, color: "#4EAA25" };
     case "PowerShell":
       return { icon: SiPowers, color: "#012456" };
+      case "Java":
+        return { icon: FaJava, color: "#5382A1" };
 
     // Default fallback
     default:

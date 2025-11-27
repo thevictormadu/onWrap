@@ -148,7 +148,7 @@ export default function ContributionsCard({
       <div
         style={{
           position: "relative",
-          
+
           alignItems: "center",
           justifyContent: "center",
         }}
@@ -214,7 +214,8 @@ export default function ContributionsCard({
               marginTop: "0.2rem",
             }}
           >
-            ∘ {data?.totalCommits?.toLocaleString() || 0} public commits
+            ∘ {data?.totalCommits?.toLocaleString() || 0}{" "}
+            {data?.isAuthenticated ? "total" : "public"} commits
           </p>
         </div>
       </div>

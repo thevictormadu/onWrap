@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import IconButton from "./IconButton";
 import Card from "./Card";
 import { IoMdRefresh, IoMdClose } from "react-icons/io";
@@ -16,6 +17,7 @@ import {
 } from "@/constants/ui";
 import { useIsMobile } from "@/hooks";
 import { primaryColor } from "@/constants/colors";
+import { useGitHub } from "@/context/GithubContext";
 
 interface SliderProps {
   slides: React.ComponentType[];
@@ -40,6 +42,8 @@ export default function Slider({
   downloadSlideIndex,
 }: SliderProps) {
   const isMobile = useIsMobile();
+  const router = useRouter();
+  const { clearData } = useGitHub();
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [progressValues, setProgressValues] = useState<number[]>(
     Array(slides.length).fill(0)
@@ -119,9 +123,25 @@ export default function Slider({
     }
   };
 
-  const goHome = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const goHome = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    window.location.href = "/";
+
+    // Clear the GitHub context data before logging out
+    clearData();
+
+    try {
+      // Attempt to log out GitHub-authenticated users; if there's no session,
+      // the route is a no-op and we'll still navigate home.
+      await fetch("/api/github-auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch {
+      // Ignore logout errors and still navigate home
+    }
+
+    // Use router.replace to avoid full page reload and prevent double navigation
+    router.replace("/");
   };
 
   const goNext = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -171,7 +191,8 @@ export default function Slider({
         resetProgressForNextSlide();
       } else if (e.key === "Escape") {
         e.preventDefault();
-        window.location.href = "/";
+        clearData();
+        router.replace("/");
       }
     };
 

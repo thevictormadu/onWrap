@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useGitHub } from "@/context/GithubContext";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -16,8 +16,10 @@ import { YEAR } from "@/constants/index";
 export default function Home() {
   const [userName, setUserName] = useState("");
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [hasAutoStarted, setHasAutoStarted] = useState(false);
   const router = useRouter();
-  const { fetchGitHubData, loading, error, data } = useGitHub();
+  const searchParams = useSearchParams();
+  const { fetchGitHubData, loading, error, data, clearError } = useGitHub();
 
   const validateUsername = (username: string): boolean => {
     // GitHub username: alphanumeric, hyphens, no spaces, 1-39 characters
@@ -63,6 +65,24 @@ export default function Home() {
       }
     }
   };
+
+  const handleGitHubSignIn = () => {
+    // Redirect to GitHub OAuth login route
+    window.location.href = "/api/github-auth/login";
+  };
+
+  // If we return from GitHub OAuth with autostart + username, automatically
+  // fetch data for that user and let the existing effect navigate to /wrap.
+  useEffect(() => {
+    const auto = searchParams.get("autostart");
+    const uname = searchParams.get("username");
+
+    if (!hasAutoStarted && auto === "1" && uname && !data && !loading) {
+      setHasAutoStarted(true);
+      setUserName(uname);
+      fetchGitHubData(uname);
+    }
+  }, [searchParams, hasAutoStarted, data, loading, fetchGitHubData]);
 
   useEffect(() => {
     if (data && !error) {
@@ -151,7 +171,7 @@ export default function Home() {
                     padding: "1rem 1.25rem",
                     background: "rgba(255, 255, 255, 0.05)",
                     backdropFilter: "blur(10px)",
-                    marginBottom: "1rem",
+
                     color: COLORS.white,
                     fontFamily: "inherit",
                   }}
@@ -180,6 +200,10 @@ export default function Home() {
                       );
                     } else if (validationError) {
                       setValidationError(null);
+                    }
+
+                    if (error) {
+                      clearError();
                     }
 
                     setUserName(value);
@@ -252,6 +276,74 @@ export default function Home() {
                   }}
                 >
                   Generate My Wrap
+                </motion.button>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.75rem",
+                    marginTop: "1rem",
+                    marginBottom: "0.75rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      flex: 1,
+                      height: "1px",
+                      background: "rgba(255, 255, 255, 0.1)",
+                    }}
+                  />
+                  <p
+                    style={{
+                      margin: 0,
+                      color: "rgba(255, 255, 255, 0.6)",
+                      fontSize: "0.875rem",
+                    }}
+                  >
+                    or to include private activity
+                  </p>
+                  <div
+                    style={{
+                      flex: 1,
+                      height: "1px",
+                      background: "rgba(255, 255, 255, 0.1)",
+                    }}
+                  />
+                </div>
+                <motion.button
+                  type="button"
+                  aria-label="Sign in with GitHub to include private activity"
+                  disabled={loading}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.55 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  style={{
+                    width: "100%",
+                    borderRadius: "0.75rem",
+                    fontWeight: 600,
+                    padding: "0.8rem 1.25rem",
+                    background: "rgba(255,255,255,0.08)",
+                    border: "1px solid rgba(255,255,255,0.16)",
+                    color: COLORS.white,
+                    cursor: loading ? "not-allowed" : "pointer",
+                    outline: "none",
+                    fontSize: "0.95rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "0.5rem",
+                  }}
+                  onClick={handleGitHubSignIn}
+                >
+                  <Image
+                    src="/assets/github-logo.png"
+                    alt="GitHub"
+                    width={18}
+                    height={18}
+                  />
+                  Continue with GitHub
                 </motion.button>
               </form>
               <div

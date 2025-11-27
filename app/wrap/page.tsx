@@ -86,7 +86,7 @@ function createSlideComponent(
 export default function WrapPage() {
   const router = useRouter();
   const { data } = useGitHub();
-  const { isPlaying, toggle } = useAudio("/comfy-vibe.mp3");
+  const { isPlaying, toggle, play } = useAudio("/comfy-vibe.mp3");
   const { download, isDownloading } = useDownloadEndnote();
 
   // Redirect to home if no data
@@ -95,6 +95,13 @@ export default function WrapPage() {
       router.replace("/");
     }
   }, [data, router]);
+
+  // Start music when data is available
+  useEffect(() => {
+    if (data) {
+      play();
+    }
+  }, [data, play]);
 
   // Generate slide components from configuration
   const slides = useMemo(

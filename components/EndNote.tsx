@@ -4,7 +4,7 @@ import { SLIDE_CONFIG } from "@/constants/index";
 import { useGitHub } from "@/context/GithubContext";
 import { getLanguageIconAndColor, getSlang } from "@/lib/utils";
 import React, { useRef } from "react";
-import { MOBILE_ENDNOTE_BREAKPOINT } from "@/constants/ui";
+import { MOBILE_BREAKPOINT } from "@/constants/ui";
 import { useMediaQuery } from "@/hooks";
 import { COLORS, primaryColor } from "@/constants/colors";
 import { motion } from "framer-motion";
@@ -19,7 +19,7 @@ import GridBackground from "./GridBackground";
 const EndNote: React.FC = () => {
   const { data } = useGitHub();
   const slang = getSlang(data?.totalContributions || 0);
-  const isMobile = useMediaQuery(MOBILE_ENDNOTE_BREAKPOINT);
+  const isMobile = useMediaQuery(MOBILE_BREAKPOINT);
   const divRef = useRef<HTMLDivElement>(null);
   const languageIconData = getLanguageIconAndColor(data?.topLanguage || "");
 
@@ -47,10 +47,7 @@ const EndNote: React.FC = () => {
             flexDirection: "column",
             justifyContent: "flex-start",
             alignItems: "stretch",
-            paddingTop: isMobile ? "0.5rem" : "1rem",
-            paddingRight: isMobile ? "0" : "1rem",
-            paddingBottom: isMobile ? "5rem" : "1rem",
-            paddingLeft: isMobile ? "0" : "1rem",
+            padding: isMobile ? "0.5rem 0 5rem 0" : "1rem ",
             gap: "0.75rem",
             position: "relative",
             marginTop: "20px",
@@ -171,10 +168,6 @@ const EndNote: React.FC = () => {
                 Victor Madu
               </span>
             </div>
-          )}
-          {/* Spacer for Android browser padding-bottom fix */}
-          {isMobile && (
-            <div style={{ height: "5rem", minHeight: "5rem", flexShrink: 0 }} />
           )}
         </div>
       </div>

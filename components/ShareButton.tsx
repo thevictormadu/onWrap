@@ -16,7 +16,8 @@ export default function ShareButton({
   text,
   onShare,
 }: ShareButtonProps) {
-  const shareUrl = url || (typeof window !== "undefined" ? window.location.href : "");
+  const shareUrl =
+    url || (typeof window !== "undefined" ? window.location.href : "");
   const shareText = text || "Check out my 2024 GitHub Wrapped! #GitHubOnWrap";
 
   const handleShare = () => {
@@ -26,29 +27,23 @@ export default function ShareButton({
 
     switch (type) {
       case "twitter":
-        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+          shareText
+        )}&url=${encodeURIComponent(shareUrl)}`;
         window.open(twitterUrl, "_blank", "width=550,height=420");
         break;
 
       case "linkedin":
-        const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+        const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+          shareUrl
+        )}`;
         window.open(linkedinUrl, "_blank", "width=550,height=420");
         break;
 
       case "copy":
-        navigator.clipboard
-          .writeText(`${shareText} ${shareUrl}`)
-          .then(() => {
-            // You could add a toast notification here
-            if (process.env.NODE_ENV !== "production") {
-              console.log("Copied to clipboard!");
-            }
-          })
-          .catch((err) => {
-            if (process.env.NODE_ENV !== "production") {
-              console.error("Failed to copy:", err);
-            }
-          });
+        navigator.clipboard.writeText(`${shareText} ${shareUrl}`).catch(() => {
+          // Silently handle clipboard errors
+        });
         break;
     }
   };
@@ -83,4 +78,3 @@ export default function ShareButton({
     />
   );
 }
-

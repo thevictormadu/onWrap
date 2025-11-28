@@ -36,11 +36,13 @@ function prepareCloneForCapture(clone: HTMLElement): void {
   ) as HTMLElement | null;
   if (longestStreakTitle) {
     longestStreakTitle.style.background = "none";
-    // reset any text-clip specifics
-    // @ts-expect-error - vendor-specific properties
-    longestStreakTitle.style.WebkitBackgroundClip = "initial";
-    // @ts-expect-error - vendor-specific properties
-    longestStreakTitle.style.WebkitTextFillColor = "";
+    // Reset any text-clip specifics for html2canvas compatibility
+    const webkitStyle = longestStreakTitle.style as CSSStyleDeclaration & {
+      WebkitBackgroundClip?: string;
+      WebkitTextFillColor?: string;
+    };
+    webkitStyle.WebkitBackgroundClip = "initial";
+    webkitStyle.WebkitTextFillColor = "";
     longestStreakTitle.style.backgroundClip = "initial";
     longestStreakTitle.style.color = COLORS.orange;
   }
@@ -64,6 +66,16 @@ function prepareCloneForCapture(clone: HTMLElement): void {
   ) as HTMLElement;
   if (downloadButton) {
     downloadButton.style.display = "none";
+  }
+
+  // Remove bottom padding from endnote content for download
+  const endNoteContent = clone.querySelector(
+    "[data-endnote-content='true']"
+  ) as HTMLElement | null;
+  if (endNoteContent) {
+    // Remove bottom padding (5rem on mobile, 1rem on desktop)
+    // Keep top and horizontal padding
+    endNoteContent.style.paddingBottom = "0";
   }
 
   // Remove margins
@@ -222,10 +234,8 @@ export function useDownloadEndnote(): UseDownloadEndnoteReturn {
 
       // Capture and download
       await captureAndDownload(wrapper, data?.userId || "wrap");
-    } catch (error) {
-      if (process.env.NODE_ENV !== "production") {
-        console.error("Error generating image:", error);
-      }
+    } catch {
+      // Silently handle download errors
     } finally {
       // Clean up
       if (wrapper && wrapper.parentNode) {

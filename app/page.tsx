@@ -59,10 +59,8 @@ function HomeContent() {
 
     try {
       await fetchGitHubData(cleanedUsername);
-    } catch (err) {
-      if (process.env.NODE_ENV !== "production") {
-        console.error("Error fetching data:", err);
-      }
+    } catch {
+      // Error is handled by the context
     }
   };
 

@@ -40,10 +40,7 @@ export function useAudio(
       audio
         .play()
         .then(() => setIsPlaying(true))
-        .catch((error) => {
-          if (process.env.NODE_ENV !== "production") {
-            console.error("Error auto-playing audio:", error);
-          }
+        .catch(() => {
           setIsPlaying(false);
         });
     }
@@ -64,10 +61,8 @@ export function useAudio(
     audioRef.current
       .play()
       .then(() => setIsPlaying(true))
-      .catch((error) => {
-        if (process.env.NODE_ENV !== "production") {
-          console.error("Error playing audio:", error);
-        }
+      .catch(() => {
+        // Silently handle audio play errors
       });
   }, []);
 
@@ -88,4 +83,3 @@ export function useAudio(
 
   return { isPlaying, toggle, play, pause };
 }
-

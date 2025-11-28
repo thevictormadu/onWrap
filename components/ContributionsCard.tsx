@@ -133,7 +133,7 @@ export default function ContributionsCard({
     }
 
     return squares;
-  }, [value, totalSquares]);
+  }, [totalSquares, data?.totalContributions]);
 
   const gridSquares = generateGrid;
 

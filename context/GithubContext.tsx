@@ -77,9 +77,6 @@ export const GitHubProvider = ({ children }: { children: ReactNode }) => {
           ? err.message
           : "An unexpected error occurred. Please try again.";
       setError(errorMessage);
-      if (process.env.NODE_ENV !== "production") {
-        console.error("GitHub API Error:", err);
-      }
     } finally {
       setLoading(false);
     }

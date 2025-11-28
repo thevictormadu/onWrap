@@ -38,7 +38,6 @@ import {
   SiShell,
   SiDash,
   SiPowers,
-  
 } from "react-icons/si";
 import { FaJava } from "react-icons/fa";
 import { IoCodeSharp } from "react-icons/io5";
@@ -195,8 +194,8 @@ export function getLanguageIconAndColor(language: string): {
       return { icon: SiDash, color: "#4EAA25" };
     case "PowerShell":
       return { icon: SiPowers, color: "#012456" };
-      case "Java":
-        return { icon: FaJava, color: "#5382A1" };
+    case "Java":
+      return { icon: FaJava, color: "#5382A1" };
 
     // Default fallback
     default:
@@ -223,7 +222,7 @@ export function getSlang(commits: number): Slangs {
     return { slang: "Odogwu!", emoji: "🤑" };
   } else if (commits > 50) {
     return { slang: "On colos!", emoji: "🤐️" };
-  }  else if (commits > 30) {
+  } else if (commits > 30) {
     return { slang: "Wahala!", emoji: "🤐️" };
   } else if (commits > 20) {
     return { slang: "Who you epp?", emoji: "🤐️" };

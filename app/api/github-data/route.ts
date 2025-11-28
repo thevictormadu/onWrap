@@ -89,34 +89,6 @@ export async function POST(req: NextRequest) {
     isAuthenticated = false;
   }
 
-  // Debug logging (only in development)
-  if (process.env.NODE_ENV === "development") {
-    const tokenSource =
-      useOAuth && cookieToken
-        ? "OAuth cookie (explicit)"
-        : token === cookieToken
-        ? "OAuth cookie (fallback)"
-        : token === appToken
-        ? "GITHUB_APP_TOKEN"
-        : token === publicToken
-        ? "NEXT_PUBLIC_GITHUB_TOKEN"
-        : "none";
-
-    console.log("Token check:", {
-      username,
-      useOAuth,
-      hasCookieToken: !!cookieToken,
-      hasAppToken: !!appToken,
-      hasPublicToken: !!publicToken,
-      tokenSource,
-      isAuthenticated,
-      tokenLength: token?.length || 0,
-      tokenPreview: token
-        ? `${token.substring(0, 4)}...${token.substring(token.length - 4)}`
-        : "none",
-    });
-  }
-
   if (!token) {
     return NextResponse.json(
       {
@@ -203,21 +175,6 @@ export async function POST(req: NextRequest) {
     });
 
     if (!response.ok) {
-      // Log the actual error response for debugging
-      let errorBody: string | null = null;
-      try {
-        errorBody = await response.text();
-        if (process.env.NODE_ENV === "development") {
-          console.log("GitHub API error response:", {
-            status: response.status,
-            statusText: response.statusText,
-            body: errorBody.substring(0, 500), // First 500 chars
-          });
-        }
-      } catch {
-        // Ignore if we can't read the error body
-      }
-
       if (response.status === 401) {
         // Provide different error messages based on token source
         if (cookieToken) {
@@ -279,11 +236,6 @@ export async function POST(req: NextRequest) {
       Array.isArray(result.errors) &&
       result.errors.length > 0
     ) {
-      // Log GraphQL errors for debugging
-      if (process.env.NODE_ENV === "development") {
-        console.log("GitHub GraphQL errors:", result.errors);
-      }
-
       const errorMessages = result.errors.map((err) => {
         if (
           err.type === "NOT_FOUND" ||

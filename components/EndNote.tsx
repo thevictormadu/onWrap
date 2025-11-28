@@ -149,26 +149,24 @@ const EndNote: React.FC = () => {
             />
           </div>
 
-          {!isMobile && (
-            <div
-              data-signature="true"
-              style={{
-                display: "none",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: "0.5rem",
-                zIndex: 20,
-                fontSize: "0.75rem",
-                color: "rgba(255, 255, 255, 0.7)",
-                fontFamily: "system-ui, sans-serif",
-              }}
-            >
-              with ♥︎ from{" "}
-              <span style={{ fontWeight: 600, color: COLORS.white }}>
-                Victor Madu
-              </span>
-            </div>
-          )}
+          <div
+            data-signature="true"
+            style={{
+              display: "none",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "0.5rem",
+              zIndex: 20,
+              fontSize: "0.75rem",
+              color: "rgba(255, 255, 255, 0.7)",
+              fontFamily: "system-ui, sans-serif",
+            }}
+          >
+            with ♥︎ from{" "}
+            <span style={{ fontWeight: 600, color: COLORS.white }}>
+              Victor Madu
+            </span>
+          </div>
         </div>
       </div>
     </GridBackground>

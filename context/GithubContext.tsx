@@ -9,6 +9,7 @@ export interface GitHubData {
   totalPRs: number;
   totalReviews: number;
   totalForkedRepos: number;
+  totalFollowers: number;
   longestStreak: number;
   peakMonth: string;
   topLanguage: string;

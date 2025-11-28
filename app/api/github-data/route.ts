@@ -9,6 +9,9 @@ interface GitHubDataResponse {
     user: {
       avatarUrl: string;
       name: string | null;
+      followers: {
+        totalCount: number;
+      };
       contributionsCollection: {
         totalCommitContributions: number;
         totalPullRequestContributions: number;
@@ -132,6 +135,9 @@ export async function POST(req: NextRequest) {
       user(login: $username) {
         avatarUrl
         name
+        followers {
+          totalCount
+        }
         contributionsCollection(from: $from, to: $to) {
           totalCommitContributions
           totalPullRequestContributions
@@ -424,6 +430,8 @@ export async function POST(req: NextRequest) {
     const firstName = nameParts[0] || null;
     const lastName = nameParts.slice(1).join(" ") || null;
 
+    const totalFollowers = user.followers?.totalCount || 0;
+
     return NextResponse.json({
       totalStars,
       totalCommits,
@@ -431,6 +439,7 @@ export async function POST(req: NextRequest) {
       totalPRs,
       totalReviews,
       totalForkedRepos,
+      totalFollowers,
       longestStreak,
       peakMonth,
       topLanguage,

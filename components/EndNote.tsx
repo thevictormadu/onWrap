@@ -15,6 +15,7 @@ import ContributionsCard from "./ContributionsCard";
 import { MdLightbulb } from "react-icons/md";
 import NameCard from "./NameCard";
 import GridBackground from "./GridBackground";
+import DoubleBasicEndCard from "./DoubleBasicEndCard";
 
 const EndNote: React.FC = () => {
   const { data } = useGitHub();
@@ -63,31 +64,57 @@ const EndNote: React.FC = () => {
             <ContributionsCard value={data?.totalCommits || 0} delay={0.1} />
 
             {/* Stars Received Card */}
-            <BasicEndCard
-              icon={React.createElement(SLIDE_CONFIG.starsReceived.icon, {
-                color: SLIDE_CONFIG.starsReceived.color,
-              })}
-              iconColor={SLIDE_CONFIG.starsReceived.color}
-              value={data?.totalStars || 0}
-              title={SLIDE_CONFIG.starsReceived.title}
+            <DoubleBasicEndCard
+              content={[
+                {
+                  icon: React.createElement(SLIDE_CONFIG.starsReceived.icon, {
+                    color: SLIDE_CONFIG.starsReceived.color,
+                  }),
+                  iconColor: SLIDE_CONFIG.starsReceived.color,
+                  value: data?.totalStars || 0,
+                  title: SLIDE_CONFIG.starsReceived.title,
+                },
+                {
+                  icon: React.createElement(SLIDE_CONFIG.followers.icon, {
+                    color: SLIDE_CONFIG.followers.color,
+                  }),
+                  iconColor: SLIDE_CONFIG.followers.color,
+                  value: data?.totalFollowers || 0,
+                  title: SLIDE_CONFIG.followers.title,
+                },
+              ]}
               delay={0.15}
+              align="left"
             />
           </div>
 
           {/* PRs and Reviews - Side by Side */}
           <div style={{ display: "flex", gap: "0.75rem" }}>
             {/* PRs Card */}
-            <BasicEndCard
-              icon={React.createElement(SLIDE_CONFIG.pullRequests.icon, {
-                color: SLIDE_CONFIG.pullRequests.color,
-              })}
-              iconColor={SLIDE_CONFIG.pullRequests.color}
-              value={data?.totalPRs || 0}
-              title={SLIDE_CONFIG.pullRequests.title}
+            <DoubleBasicEndCard
+              content={[
+                {
+                  icon: React.createElement(SLIDE_CONFIG.pullRequests.icon, {
+                    color: SLIDE_CONFIG.pullRequests.color,
+                  }),
+                  iconColor: SLIDE_CONFIG.pullRequests.color,
+                  value: data?.totalPRs || 0,
+                  title: SLIDE_CONFIG.pullRequests.title,
+                },
+                {
+                  icon: React.createElement(SLIDE_CONFIG.prReviews.icon, {
+                    color: SLIDE_CONFIG.prReviews.color,
+                  }),
+                  iconColor: SLIDE_CONFIG.prReviews.color,
+                  value: data?.totalReviews || 0,
+                  title: SLIDE_CONFIG.prReviews.title,
+                },
+              ]}
               delay={0.2}
+              align="left"
             />
 
-            {/* PR Reviews Card */}
+            {/* Forks Card */}
             <BasicEndCard
               icon={React.createElement(SLIDE_CONFIG.forks.icon, {
                 color: SLIDE_CONFIG.forks.color,

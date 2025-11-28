@@ -4,10 +4,11 @@ import { COLORS } from "./colors";
 import { GRADIENTS } from "./colors";
 import { MdCode, MdMergeType } from "react-icons/md";
 import { LuGitCommitVertical } from "react-icons/lu";
-import { RiFireLine } from "react-icons/ri";
+import { RiFireLine, RiUserFollowLine } from "react-icons/ri";
 import { LiaAwardSolid } from "react-icons/lia";
 import { RiGitForkLine } from "react-icons/ri";
 import { FaRegStar } from "react-icons/fa";
+import { VscCodeReview } from "react-icons/vsc";
 
 export const YEAR: number = 2025;
 
@@ -68,7 +69,7 @@ export const SLIDE_CONFIG = {
         level: "casual",
         min: 3,
         max: 10,
-        text: `Your consistency this ${YEAR} was like a Airtel signal - strong on some days, questionable on others.`,
+        text: `Your consistency this ${YEAR} was like Airtel network - strong on some days, questionable on others.`,
       },
       {
         level: "ghost",
@@ -104,7 +105,9 @@ export const SLIDE_CONFIG = {
       {
         level: "ghost",
         max: 5,
-        text: `Your star count was humble. But no pressure. ${YEAR + 1} could be the year you finally 'blow'!.`,
+        text: `Your star count was humble. But no pressure. ${
+          YEAR + 1
+        } could be the year you finally 'blow'!.`,
       },
     ],
   },
@@ -263,6 +266,68 @@ export const SLIDE_CONFIG = {
       {
         level: "ghost",
         text: `Peak performance? More like peak nap time. We are having a hard time finding you in ${YEAR}!`,
+      },
+    ],
+  },
+  prReviews: {
+    title: "PRs reviewed",
+    icon: VscCodeReview,
+    subtext: "total PRs reviewed",
+    color: COLORS.blue,
+    gradient: GRADIENTS.greenBlue,
+    introductions: [
+      {
+        level: "elite",
+        min: 100,
+        text: `You reviewed PRs like it was a full-time job. At this point, the codebase should be paying you rent.`,
+      },
+      {
+        level: "strong",
+        min: 30,
+        max: 100,
+        text: `You actually took time to review PRs this year. The devs on your team definitely owe you snacks.`,
+      },
+      {
+        level: "casual",
+        min: 5,
+        max: 30,
+        text: `You dropped in for a few reviews here and there. Not heroic, but helpful enough to pretend you tried.`,
+      },
+      {
+        level: "ghost",
+        max: 5,
+        text: `Your PR reviews were so rare this year, GitHub might label them an endangered species.`,
+      },
+    ],
+  },
+  followers: {
+    title: "followers",
+    icon: RiUserFollowLine,
+    subtext: "total followers",
+    color: COLORS.pink,
+    gradient: GRADIENTS.pinkPurple,
+    introductions: [
+      {
+        level: "elite",
+        min: 300,
+        text: "People don’t just follow you — they *rate* you. Your GitHub presence is pulling serious gravity.",
+      },
+      {
+        level: "strong",
+        min: 50,
+        max: 300,
+        text: "You’ve built a solid crew. Folks clearly respect the work you put out there.",
+      },
+      {
+        level: "casual",
+        min: 20,
+        max: 50,
+        text: "You're gathering followers at a steady pace. Keep shipping and they'll keep coming.",
+      },
+      {
+        level: "ghost",
+        max: 20,
+        text: "Not a huge crowd yet, but every community starts small. One good repo and this number jumps fast.",
       },
     ],
   },

@@ -52,6 +52,12 @@ export const SLIDES: SlideDefinition[] = [
   },
   {
     type: "stat",
+    configKey: "followers",
+    dataKey: "totalFollowers",
+    countDown: true,
+  },
+  {
+    type: "stat",
     configKey: "topLanguage",
     dataKey: "topLanguage",
   },
@@ -71,6 +77,12 @@ export const SLIDES: SlideDefinition[] = [
     type: "stat",
     configKey: "pullRequests",
     dataKey: "totalPRs",
+    countDown: true,
+  },
+  {
+    type: "stat",
+    configKey: "prReviews",
+    dataKey: "totalReviews",
     countDown: true,
   },
   {

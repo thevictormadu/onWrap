@@ -205,7 +205,7 @@ export const SLIDE_CONFIG = {
         level: "strong",
         min: 800,
         max: 2000,
-        text: "You showed up all year. Commits, issues, PRs. Your contribution graph was busy.",
+        text: "You showed up all year - back to back! Commits, issues, PRs... Please are you single? - Asking for a friend.",
       },
       {
         level: "elite",

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono, Sansita } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
+import { type ReactNode } from "react";
 import { GitHubProvider } from "@/context/GithubContext";
 import { YEAR } from "@/constants/index";
 import "./globals.css";
@@ -120,11 +121,7 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",

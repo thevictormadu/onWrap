@@ -169,10 +169,11 @@ export default function AboutPage() {
                       >
                         source code is public
                       </a>{" "}
-                      - you can check it out, and while you're at it, if you find this
-                      app useful, please consider giving the repo a ⭐ on
-                      GitHub! And if you have any suggestions or feedback, please
-                      feel free to open an issue or submit a pull request.
+                      - you can check it out, and while you&apos;re at it, if
+                      you find this app useful, please consider giving the repo
+                      a ⭐ on GitHub! And if you have any suggestions or
+                      feedback, please feel free to open an issue or submit a
+                      pull request.
                     </p>
                   </div>
                 </section>

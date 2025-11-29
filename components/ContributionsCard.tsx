@@ -40,7 +40,7 @@ export default function ContributionsCard({
     ];
 
     const squares = [];
-    const numValue = data?.totalContributions || 10;
+    const numValue = data?.totalContributions || 0;
 
     // If value is 0, return all inactive squares
     if (numValue === 0) {

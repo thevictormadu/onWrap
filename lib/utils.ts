@@ -56,12 +56,23 @@ export function getIntroduction(
 
   // Handle string-valued stats like "topLanguage" or unknowns
   if (typeof value === "string") {
+    // Check if value indicates unknown/missing data
+    const isUnknown = value === "Unknown" || value === "No Month";
+
     if (
-      value === "Unknown" &&
+      isUnknown &&
       "unknownIntroduction" in config &&
       config.unknownIntroduction
     ) {
       return config.unknownIntroduction;
+    }
+
+    // If unknown but no unknownIntroduction, try to find a "ghost" tier
+    if (isUnknown) {
+      const ghostTier = config.introductions.find((t) => t.level === "ghost");
+      if (ghostTier) {
+        return ghostTier.text;
+      }
     }
 
     // Fallback to the first tier text if available
@@ -70,6 +81,14 @@ export function getIntroduction(
 
   // Numeric stats – pick the tier whose [min, max) range matches
   const tiers = config.introductions as readonly IntroTier[];
+
+  // Check for zero value first
+  if (value === 0) {
+    const zeroTier = tiers.find((t) => t.level === "zero");
+    if (zeroTier) {
+      return zeroTier.text;
+    }
+  }
 
   const tier =
     tiers.find((t) => {
@@ -233,6 +252,6 @@ export function getSlang(commits: number): Slangs {
   } else if (commits > 1) {
     return { slang: "Na wa o!", emoji: "🤲" };
   } else {
-    return { slang: "Dey play!", emoji: "😩" };
+    return { slang: "Yeye!", emoji: "😩" };
   }
 }

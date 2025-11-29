@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useEffect } from "react";
+import { type FC, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Slide from "@/components/Slide";
 import Slider from "@/components/Slider";
@@ -23,17 +23,17 @@ function createSlideComponent(
   definition: SlideDefinition,
   data: ReturnType<typeof useGitHub>["data"],
   index: number
-): React.FC {
+): FC {
   switch (definition.type) {
     case "intro": {
-      const IntroComponent: React.FC = () => <IntroSlide />;
+      const IntroComponent: FC = () => <IntroSlide />;
       IntroComponent.displayName = "IntroSlideWrapper";
       return IntroComponent;
     }
 
     case "stat": {
       const props = generateStatSlideProps(definition, data, index);
-      const StatComponent: React.FC = () => (
+      const StatComponent: FC = () => (
         <Slide
           icon={props.icon}
           data={props.data}
@@ -52,7 +52,7 @@ function createSlideComponent(
 
     case "slang": {
       const props = generateSlangSlideProps(data, index);
-      const SlangComponent: React.FC = () => (
+      const SlangComponent: FC = () => (
         <Slide
           icon={props.icon}
           data={props.data}
@@ -70,13 +70,13 @@ function createSlideComponent(
     }
 
     case "endnote": {
-      const EndnoteComponent: React.FC = () => <EndNote />;
+      const EndnoteComponent: FC = () => <EndNote />;
       EndnoteComponent.displayName = "EndnoteWrapper";
       return EndnoteComponent;
     }
 
     default: {
-      const NullComponent: React.FC = () => null;
+      const NullComponent: FC = () => null;
       NullComponent.displayName = "NullSlide";
       return NullComponent;
     }

@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGitHub } from "@/context/GithubContext";
 import { useEffect, useState, Suspense } from "react";
 import { motion } from "framer-motion";
+import { FaInfoCircle } from "react-icons/fa";
 
 import Card from "@/components/Card";
 import GridBackground from "@/components/GridBackground";
@@ -358,25 +360,30 @@ function HomeContent() {
                   #GitHubOnWrap
                 </p>
                 <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                  <Image
-                    src="/assets/github-logo.png"
-                    alt="GitHub Logo"
-                    width={20}
-                    height={20}
-                  />
-                  <a
-                    href="https://github.com/thevictormadu/onWrap.git"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    href="/about"
                     style={{
                       margin: 0,
                       opacity: 0.8,
+                      textDecoration: "underline",
+                      textDecorationStyle: "dotted",
+                      color: "white",
+                      fontSize: "0.8rem",
+                      transition: "color 0.3s ease",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.25rem",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = COLORS.blue;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = "white";
                     }}
                   >
-                    <p style={{ color: "white", fontSize: "0.8rem" }}>
-                      source code
-                    </p>
-                  </a>
+                    <FaInfoCircle size={14} />
+                    Privacy & Info
+                  </Link>
                 </div>
               </div>
             </div>

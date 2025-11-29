@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useMemo } from "react";
 import Card from "./Card";
 import {
   MAX_COMMITS_FOR_SCALING,
@@ -28,7 +28,7 @@ export default function ContributionsCard({
 
   // Generate random pattern for active/inactive squares
   // Using a seeded approach for consistency based on value
-  const generateGrid = React.useMemo(() => {
+  const generateGrid = useMemo(() => {
     // GitHub contribution graph green shades
     const githubGreens = [
       "#161b22", // Darkest (no contributions) - almost black

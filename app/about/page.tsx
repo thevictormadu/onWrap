@@ -122,11 +122,31 @@ export default function AboutPage() {
                     >
                       The data exists only in memory during the request-response
                       cycle. Once your wrap is generated and sent to your
-                      browser, it&apos;s gone from our servers. We don&apos;t
-                      log, persist, or analyze your GitHub data. No cookies
-                      beyond the OAuth session token (which you can revoke
-                      anytime in your GitHub settings), no analytics tracking,
-                      no third-party services storing your information.
+                      browser, it&apos;s gone from our servers. The app
+                      doesn&apos;t log, persist, or analyze your GitHub data. No
+                      cookies beyond the OAuth session token (which you can
+                      revoke anytime in your GitHub settings), no analytics
+                      tracking, no third-party services storing your
+                      information.
+                    </p>
+                    <p
+                      style={{
+                        color: "rgba(255, 255, 255, 0.9)",
+                        fontSize: "1rem",
+                        lineHeight: 1.7,
+                        margin: 0,
+                      }}
+                    >
+                      <strong style={{ color: COLORS.white }}>
+                        No AI, no data sharing.
+                      </strong>{" "}
+                      All commentaries and messages in your wrap are
+                      pre-configured in the app&apos;s codebase. The app
+                      doesn&apos;t use any AI services, and your data is never
+                      sent to any AI providers or third-party services.
+                      Everything runs locally on the server using only the
+                      GitHub API and your OAuth token if you choose to
+                      authenticate.
                     </p>
                     <p
                       style={{
@@ -147,11 +167,12 @@ export default function AboutPage() {
                           fontWeight: 600,
                         }}
                       >
-                        source code is open source
+                        source code is public
                       </a>{" "}
-                      - you can check it out. And while at it, if you find this
+                      - you can check it out, and while you're at it, if you find this
                       app useful, please consider giving the repo a ⭐ on
-                      GitHub!
+                      GitHub! And if you have any suggestions or feedback, please
+                      feel free to open an issue or submit a pull request.
                     </p>
                   </div>
                 </section>
@@ -194,7 +215,8 @@ export default function AboutPage() {
                           margin: 0,
                         }}
                       >
-                        When you enter your GitHub username, we only access your
+                        When you enter your GitHub username, the app only
+                        accesses your
                         <strong style={{ color: COLORS.white }}>
                           {" "}
                           public activities

@@ -132,7 +132,7 @@ export const SLIDE_CONFIG = {
     introductions: [
       {
         level: "elite",
-        text: `You tried a bit of many things, but one language clearly had you in a chokehold. Here's the real MVP of your ${YEAR}.`,
+        text: `You flirted with a few languages, but one clearly got all your attention - the real star of your code.`,
       },
     ],
     unknownIntroduction:
